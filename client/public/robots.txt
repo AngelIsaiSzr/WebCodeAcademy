@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Sitemap: https://www.webcodeacademy.com.mx/sitemap.xml
+
+# No permitir rastreo de rutas de API y admin
+Disallow: /api/
+Disallow: /admin/
+Disallow: /auth/
+
+# Permitir rastreo de páginas principales
+Allow: /cursos/
+Allow: /editor/
+Allow: /acerca-de/
+Allow: /contacto/ 
