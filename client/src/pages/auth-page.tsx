@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useAuth, loginSchema, registerSchema } from "@/hooks/use-auth";
 import { useLocation } from "wouter";
@@ -30,6 +30,17 @@ import { Loader2 } from "lucide-react";
 export default function AuthPage() {
   const { user, loginMutation, registerMutation } = useAuth();
   const [, navigate] = useLocation();
+  const [location] = useLocation();
+  const [activeTab, setActiveTab] = useState("login");
+
+  // Set active tab based on URL query parameter
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tab = params.get("tab");
+    if (tab === "register") {
+      setActiveTab("register");
+    }
+  }, [location]);
 
   // Redirect if already logged in
   useEffect(() => {
@@ -101,7 +112,7 @@ export default function AuthPage() {
             </p>
           </div>
 
-          <Tabs defaultValue="login" className="w-full max-w-md">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full max-w-md">
             <TabsList className="grid w-full grid-cols-2 mb-8">
               <TabsTrigger value="login">Iniciar Sesión</TabsTrigger>
               <TabsTrigger value="register">Crear Cuenta</TabsTrigger>
@@ -252,7 +263,7 @@ export default function AuthPage() {
                       />
                       <Button 
                         type="submit" 
-                        className="w-full bg-accent-red hover:bg-accent-red hover:opacity-90"
+                        className="w-full bg-accent-blue hover:bg-accent-blue hover:opacity-90"
                         disabled={registerMutation.isPending}
                       >
                         {registerMutation.isPending ? (

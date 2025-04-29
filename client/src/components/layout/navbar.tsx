@@ -271,7 +271,7 @@ export default function Navbar() {
                         <Link href="/auth">
                           <Button
                             variant="outline"
-                            className="w-full border-accent-blue text-accent-blue hover:bg-accent-blue hover:text-white"
+                            className="w-full border-accent-blue text-accent-blue hover:bg-accent-blue hover:text-white mb-3"
                           >
                             Iniciar sesión
                           </Button>
