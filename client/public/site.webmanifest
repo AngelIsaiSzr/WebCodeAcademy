@@ -1,0 +1,16 @@
+{
+  "name": "Web Code Academy",
+  "short_name": "WebCodeAcademy",
+  "description": "Educación tecnológica gratuita para todos",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/AngelIsaiSzr/Resources/main/images/Web%20Code%20Academy.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+} 
