@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { PageLoader } from "@/components/layout/page-loader";
 import { PageTransition } from "@/components/ui/page-transition";
+import { useDynamicTitle } from './hooks/useDynamicTitle';
 
 import HomePage from "@/pages/home-page";
 import AuthPage from "@/pages/auth-page";
@@ -42,6 +43,7 @@ function Router() {
 }
 
 function App() {
+  useDynamicTitle();
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="dark" storageKey="web-code-academy-theme">
