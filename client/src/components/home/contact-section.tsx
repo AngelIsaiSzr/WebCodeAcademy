@@ -78,7 +78,7 @@ export default function ContactSection() {
                 </div>
                 <div>
                   <h3 className="font-medium text-lg">Ubicación</h3>
-                  <p className="text-muted">Ciudad de México, México</p>
+                  <p className="text-muted">Papantla de Olarte, Ver, MX</p>
                 </div>
               </div>
               
@@ -98,7 +98,7 @@ export default function ContactSection() {
                 </div>
                 <div>
                   <h3 className="font-medium text-lg">Teléfono</h3>
-                  <p className="text-muted">+52 55 1234 5678</p>
+                  <p className="text-muted">+52 784 110 0108</p>
                 </div>
               </div>
             </div>
@@ -106,19 +106,19 @@ export default function ContactSection() {
             <div>
               <h3 className="font-medium text-lg mb-3">Síguenos</h3>
               <div className="flex space-x-4">
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-secondary-800 flex items-center justify-center text-muted hover:bg-accent-red hover:text-white transition-colors">
+                <a href="https://facebook.com/webcodeacademy0" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-secondary-800 flex items-center justify-center text-muted hover:bg-accent-red hover:text-white transition-colors">
                   <i className="fab fa-facebook-f"></i>
                 </a>
-                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-secondary-800 flex items-center justify-center text-muted hover:bg-accent-blue hover:text-white transition-colors">
+                <a href="https://twitter.com/webcodeacademy0" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-secondary-800 flex items-center justify-center text-muted hover:bg-accent-blue hover:text-white transition-colors">
                   <i className="fab fa-twitter"></i>
                 </a>
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-secondary-800 flex items-center justify-center text-muted hover:bg-accent-red hover:text-white transition-colors">
+                <a href="https://instagram.com/webcodeacademy0" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-secondary-800 flex items-center justify-center text-muted hover:bg-accent-red hover:text-white transition-colors">
                   <i className="fab fa-instagram"></i>
                 </a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-secondary-800 flex items-center justify-center text-muted hover:bg-accent-blue hover:text-white transition-colors">
+                <a href="https://linkedin.com/in/webcodeacademy0" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-secondary-800 flex items-center justify-center text-muted hover:bg-accent-blue hover:text-white transition-colors">
                   <i className="fab fa-linkedin-in"></i>
                 </a>
-                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-secondary-800 flex items-center justify-center text-muted hover:bg-accent-yellow hover:text-primary-900 transition-colors">
+                <a href="https://youtube.com/@webcodeacademy0" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-secondary-800 flex items-center justify-center text-muted hover:bg-accent-yellow hover:text-primary-900 transition-colors">
                   <i className="fab fa-youtube"></i>
                 </a>
               </div>

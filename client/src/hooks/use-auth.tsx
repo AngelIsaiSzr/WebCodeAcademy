@@ -31,6 +31,7 @@ type AuthContextType = {
   loginMutation: UseMutationResult<Omit<SelectUser, "password">, Error, z.infer<typeof loginSchema>>;
   logoutMutation: UseMutationResult<void, Error, void>;
   registerMutation: UseMutationResult<Omit<SelectUser, "password">, Error, z.infer<typeof registerSchema>>;
+  logout: () => void;
 };
 
 type LoginData = z.infer<typeof loginSchema>;
@@ -114,6 +115,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     },
   });
 
+  const logout = () => {
+    logoutMutation.mutate();
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -123,6 +128,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         loginMutation,
         logoutMutation,
         registerMutation,
+        logout,
       }}
     >
       {children}

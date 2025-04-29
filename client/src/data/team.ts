@@ -7,9 +7,9 @@ export const initialTeam: InsertTeam[] = [
     role: "CEO & Fundador",
     bio: "Creador de Web Code Academy, apasionado por democratizar la educación tecnológica y ayudar a otros a alcanzar sus metas profesionales.",
     image: "https://raw.githubusercontent.com/AngelIsaiSzr/Resources/refs/heads/main/images/Angel%20Salazar.png",
-    linkedIn: "https://linkedin.com/in/angelsalazar",
-    github: "https://github.com/angelsalazar",
-    twitter: "https://twitter.com/angelsalazar",
+    linkedIn: "https://www.linkedin.com/in/angelisaiszr/",
+    github: "https://github.com/AngelIsaiSzr",
+    instagram: "https://www.instagram.com/angel_szr1/",
     order: 1
   },
   {

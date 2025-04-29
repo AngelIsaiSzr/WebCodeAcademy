@@ -92,7 +92,7 @@ interface EnrollmentWithCourse {
 }
 
 export default function ProfilePage() {
-  const { user, isLoading } = useAuth();
+  const { user, isLoading, logout } = useAuth();
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -157,6 +157,33 @@ export default function ProfilePage() {
         title: "Error",
         description: error.message,
         variant: "destructive",
+      });
+    },
+  });
+
+  // Mutation to delete account
+  const deleteAccountMutation = useMutation({
+    mutationFn: async () => {
+      const response = await apiRequest("DELETE", "/api/user");
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Error al eliminar la cuenta");
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Cuenta eliminada",
+        description: "Tu cuenta ha sido eliminada exitosamente.",
+      });
+      logout();
+      window.location.href = "/";
+    },
+    onError: (error: Error) => {
+      toast({ 
+        title: "Error", 
+        description: error.message,
+        variant: "destructive" 
       });
     },
   });
@@ -619,7 +646,45 @@ export default function ProfilePage() {
           <p className="text-red-600/80 dark:text-red-400/80 mb-4">
             Una vez que elimines tu cuenta, no hay vuelta atrás. Por favor, asegúrate de estar seguro.
           </p>
-          <Button variant="destructive">Eliminar Cuenta</Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive" disabled={deleteAccountMutation.isPending}>
+                {deleteAccountMutation.isPending ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Eliminando...
+                  </>
+                ) : (
+                  "Eliminar Cuenta"
+                )}
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>¿Estás absolutamente seguro?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Esta acción no se puede deshacer. Esto eliminará permanentemente tu cuenta
+                  y todos los datos asociados, incluyendo tu progreso en los cursos.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => deleteAccountMutation.mutate()}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                >
+                  {deleteAccountMutation.isPending ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Eliminando...
+                    </>
+                  ) : (
+                    "Sí, eliminar cuenta"
+                  )}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </div>
     </div>
