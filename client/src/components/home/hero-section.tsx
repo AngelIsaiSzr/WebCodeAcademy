@@ -6,17 +6,17 @@ import { motion } from 'framer-motion';
 export default function HeroSection() {
   const codeLines = [
     { content: 'class <span class="text-accent-yellow">WebCodeAcademy</span> {', className: 'text-accent-blue' },
-    { content: '<span class="text-accent-red">constructor</span>() {', className: 'ml-4' },
+    { content: '<span class="text-accent-red">constructor</span><span class="text-white">() {</span>', className: 'ml-4' },
     { content: '// Comienza tu viaje en programación', className: 'ml-8 text-muted' },
     { content: 'this<span class="text-white">.</span>mission <span class="text-white">=</span> <span class="text-accent-red">"Educación tecnológica para todos"</span>;', className: 'ml-8 text-accent-blue' },
-    { content: '}', className: 'ml-4' },
+    { content: '}', className: 'text-white ml-4' },
     { content: '}', className: 'text-accent-blue' },
   ];
 
   return (
     <section className="min-h-[100vh] bg-gradient-to-b from-primary-900 to-primary-800 relative overflow-hidden max-w-[100vw] flex items-center pt-24 md:pt-32 pb-16 md:pb-24">
-      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1587620962725-abab7fe55159?ixlib=rb-4.0.3&auto=format&fit=crop&w=1489&q=80')] opacity-5 bg-center bg-cover"></div>
-      <div className="absolute inset-0 bg-gradient-to-r from-primary-900 to-primary-800 opacity-90"></div>
+      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1587620962725-abab7fe55159?ixlib=rb-4.0.3&auto=format&fit=crop&w=1489&q=80')] opacity-[0.06] bg-center bg-cover"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-primary-900/95 to-primary-800/95"></div>
       
       <div className="container mx-auto px-4 relative z-10 overflow-x-hidden">
         <div className="flex flex-col md:flex-row items-center overflow-hidden">

@@ -5,40 +5,40 @@
 @tailwind utilities;
 
 :root {
-  --background: 0 0% 7%;
-  --foreground: 210 40% 98%;
-  --muted: 0 0% 12%;
-  --muted-foreground: 218 11% 65%;
-  --popover: 240 10% 3.9%;
-  --popover-foreground: 0 0% 98%;
-  --card: 0 0% 12%;
-  --card-foreground: 210 40% 98%;
-  --border: 216 14% 27%;
-  --input: 216 14% 27%;
-  --primary: 210 100% 50%; /* Updated Blue from the logo */
+  --background: 0 0% 98%;
+  --foreground: 240 10% 3.9%;
+  --muted: 240 4.8% 96.9%;
+  --muted-foreground: 240 3.8% 46.1%;
+  --popover: 0 0% 98%;
+  --popover-foreground: 240 10% 3.9%;
+  --card: 0 0% 98%;
+  --card-foreground: 240 10% 3.9%;
+  --border: 240 5.9% 92%;
+  --input: 240 5.9% 92%;
+  --primary: 210 100% 50%;
   --primary-foreground: 211 100% 99%;
-  --secondary: 217 0% 5%;
-  --secondary-foreground: 210 40% 98%;
-  --accent: 216 14% 27%;
-  --accent-foreground: 210 40% 98%;
+  --secondary: 240 4.8% 96.9%;
+  --secondary-foreground: 240 5.9% 10%;
+  --accent: 240 4.8% 96.9%;
+  --accent-foreground: 240 5.9% 10%;
   --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 0 0% 98%;
-  --ring: 210 100% 50%; /* Updated Blue from the logo */
+  --ring: 210 100% 50%;
   --radius: 0.5rem;
 
   /* Web Code Academy Custom Colors */
-  --accent-blue: 210 100% 50%; /* Updated Blue from the logo */
+  --accent-blue: 210 100% 50%;
   --accent-yellow: 50 100% 52%;
-  --accent-red: 355 100% 60%; /* Kept red but will be less used */
+  --accent-red: 355 100% 60%;
   --accent-green: 135 89% 25%;
-  --primary-900: 0 0% 3%;
-  --primary-800: 0 0% 7%;
-  --primary-700: 0 0% 12%;
-  --secondary-900: 217 0% 5%;
-  --secondary-800: 215 19% 18%;
-  --secondary-700: 216 14% 27%;
-  --text-light: 210 40% 98%;
-  --text-muted: 218 11% 65%;
+  --primary-900: 0 0% 98%;
+  --primary-800: 240 4.8% 96.9%;
+  --primary-700: 240 5.9% 92%;
+  --secondary-900: 240 4.8% 96.9%;
+  --secondary-800: 240 5.9% 92%;
+  --secondary-700: 240 5.9% 88%;
+  --text-light: 240 10% 3.9%;
+  --text-muted: 240 3.8% 46.1%;
 }
 
 /* Modo oscuro */
@@ -53,7 +53,7 @@
   --card-foreground: 0 0% 98%;
   --border: 240 3.7% 15.9%;
   --input: 240 3.7% 15.9%;
-  --primary: 210 100% 50%; /* Blue from the logo */
+  --primary: 210 100% 50%;
   --primary-foreground: 211 100% 99%;
   --secondary: 240 3.7% 15.9%;
   --secondary-foreground: 0 0% 98%;
@@ -61,8 +61,22 @@
   --accent-foreground: 0 0% 98%;
   --destructive: 0 62.8% 30.6%;
   --destructive-foreground: 0 0% 98%;
-  --ring: 210 100% 50%; /* Blue from the logo */
+  --ring: 210 100% 50%;
   --radius: 0.5rem;
+
+  /* Web Code Academy Custom Colors */
+  --accent-blue: 210 100% 50%;
+  --accent-yellow: 50 100% 52%;
+  --accent-red: 355 100% 60%;
+  --accent-green: 135 89% 25%;
+  --primary-900: 0 0% 3%;
+  --primary-800: 0 0% 7%;
+  --primary-700: 0 0% 12%;
+  --secondary-900: 217 0% 5%;
+  --secondary-800: 215 19% 18%;
+  --secondary-700: 216 14% 27%;
+  --text-light: 210 40% 98%;
+  --text-muted: 218 11% 65%;
 }
 
 @layer base {

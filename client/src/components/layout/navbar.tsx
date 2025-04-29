@@ -175,7 +175,7 @@ export default function Navbar() {
                     <ThemeToggle />
                     <SheetClose asChild className="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
                       <Button variant="ghost" size="icon">
-                        <X className="h-6 w-6" />
+                        <X className="!h-5 !w-5" />
                       </Button>
                     </SheetClose>
                   </div>
