@@ -69,7 +69,7 @@ export default function CoursesPage() {
   return (
     <>
       <Helmet>
-        <title>Cursos - Web Code Academy</title>
+        <title>Web Code Academy</title>
         <meta 
           name="description" 
           content="Explora nuestra variedad de cursos gratuitos de programación y tecnología, desde desarrollo web hasta ciencia de datos."

@@ -7,7 +7,7 @@ export default function AboutPage() {
   return (
     <>
       <Helmet>
-        <title>Acerca de - Web Code Academy</title>
+        <title>Web Code Academy</title>
         <meta 
           name="description" 
           content="Conoce la misión y visión de Web Code Academy, una academia de programación y tecnología gratuita que busca combatir el analfabetismo digital."

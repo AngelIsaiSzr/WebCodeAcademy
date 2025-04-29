@@ -1020,7 +1020,7 @@ export default function AdminPage() {
       {testimonialDeleteDialog}
       
       <Helmet>
-        <title>Panel de Administración - Web Code Academy</title>
+        <title>Web Code Academy</title>
       </Helmet>
 
       <div className="container mx-auto px-4 py-8">

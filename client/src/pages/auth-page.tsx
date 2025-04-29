@@ -78,7 +78,7 @@ export default function AuthPage() {
   return (
     <>
       <Helmet>
-        <title>Iniciar Sesión - Web Code Academy</title>
+        <title>Web Code Academy</title>
         <meta 
           name="description" 
           content="Inicia sesión o regístrate en Web Code Academy para acceder a cursos gratuitos de programación y tecnología."

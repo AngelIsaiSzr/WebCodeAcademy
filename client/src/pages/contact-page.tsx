@@ -70,7 +70,7 @@ export default function ContactPage() {
   return (
     <>
       <Helmet>
-        <title>Contacto - Web Code Academy</title>
+        <title>Web Code Academy</title>
         <meta 
           name="description" 
           content="Contáctanos para obtener más información sobre nuestros cursos gratuitos de programación o para cualquier consulta que tengas."
