@@ -1,0 +1,308 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700&family=Fira+Code:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 7%;
+  --foreground: 210 40% 98%;
+  --muted: 0 0% 12%;
+  --muted-foreground: 218 11% 65%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --card: 0 0% 12%;
+  --card-foreground: 210 40% 98%;
+  --border: 216 14% 27%;
+  --input: 216 14% 27%;
+  --primary: 210 100% 50%; /* Updated Blue from the logo */
+  --primary-foreground: 211 100% 99%;
+  --secondary: 217 0% 5%;
+  --secondary-foreground: 210 40% 98%;
+  --accent: 216 14% 27%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 210 100% 50%; /* Updated Blue from the logo */
+  --radius: 0.5rem;
+
+  /* Web Code Academy Custom Colors */
+  --accent-blue: 210 100% 50%; /* Updated Blue from the logo */
+  --accent-yellow: 50 100% 52%;
+  --accent-red: 355 100% 60%; /* Kept red but will be less used */
+  --accent-green: 135 89% 25%;
+  --primary-900: 0 0% 3%;
+  --primary-800: 0 0% 7%;
+  --primary-700: 0 0% 12%;
+  --secondary-900: 217 0% 5%;
+  --secondary-800: 215 19% 18%;
+  --secondary-700: 216 14% 27%;
+  --text-light: 210 40% 98%;
+  --text-muted: 218 11% 65%;
+}
+
+/* Modo oscuro */
+.dark {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --primary: 210 100% 50%; /* Blue from the logo */
+  --primary-foreground: 211 100% 99%;
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
+  --accent: 240 3.7% 15.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 210 100% 50%; /* Blue from the logo */
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden; /* Ocultar scrollbar horizontal */
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    overflow-x: hidden; /* Ocultar scrollbar horizontal */
+    max-width: 100%;
+    /* Prevenir el padding automático cuando aparecen modales */
+    padding-right: 0 !important;
+  }
+
+  /* Ocultar scrollbar horizontal para Chrome, Safari y Opera */
+  ::-webkit-scrollbar-horizontal {
+    display: none;
+  }
+
+  /* Ocultar scrollbar horizontal para Firefox */
+  html, body {
+    scrollbar-width: auto;
+    scrollbar-color: hsl(var(--muted)) transparent;
+  }
+  
+  /* Prevenir la adición de padding en elementos con dropdown */
+  [data-radix-popper-content-wrapper] {
+    position: absolute !important;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
+
+@layer components {
+  .accent-red {
+    @apply text-[hsl(var(--accent-red))];
+  }
+
+  .accent-blue {
+    @apply text-[hsl(var(--accent-blue))];
+  }
+
+  .accent-yellow {
+    @apply text-[hsl(var(--accent-yellow))];
+  }
+
+  .accent-green {
+    @apply text-[hsl(var(--accent-green))];
+  }
+
+  .text-accent-red {
+    @apply text-[hsl(var(--accent-red))];
+  }
+
+  .text-accent-blue {
+    @apply text-[hsl(var(--accent-blue))];
+  }
+
+  .text-accent-yellow {
+    @apply text-[hsl(var(--accent-yellow))];
+  }
+
+  .text-accent-green {
+    @apply text-[hsl(var(--accent-green))];
+  }
+  
+  .bg-accent-red {
+    @apply bg-[hsl(var(--accent-red))];
+  }
+
+  .bg-accent-blue {
+    @apply bg-[hsl(var(--accent-blue))];
+  }
+
+  .bg-accent-yellow {
+    @apply bg-[hsl(var(--accent-yellow))];
+  }
+
+  .border-accent-red {
+    @apply border-[hsl(var(--accent-red))];
+  }
+
+  .border-accent-blue {
+    @apply border-[hsl(var(--accent-blue))];
+  }
+
+  .border-accent-yellow {
+    @apply border-[hsl(var(--accent-yellow))];
+  }
+
+  .hover-accent-red {
+    @apply hover:text-[hsl(var(--accent-red))] transition-colors;
+  }
+
+  .hover-accent-blue {
+    @apply hover:text-[hsl(var(--accent-blue))] transition-colors;
+  }
+
+  .hover-accent-yellow {
+    @apply hover:text-[hsl(var(--accent-yellow))] transition-colors;
+  }
+
+  .hover-text-primary-900 {
+    @apply hover:text-[hsl(var(--primary-900))] transition-colors;
+  }
+
+  .nav-link {
+    @apply relative;
+  }
+  
+  .nav-link::after {
+    @apply content-[''] absolute w-0 h-0.5 bottom-[-2px] left-0 bg-[hsl(var(--accent-blue))] transition-all duration-300;
+  }
+  
+  .nav-link:hover::after {
+    @apply w-full;
+  }
+
+  .code-window {
+    @apply bg-[#1E1E1E] rounded-xl overflow-hidden;
+  }
+
+  .code-window-header {
+    @apply bg-[#252525] p-2 flex items-center;
+  }
+
+  .window-button {
+    @apply h-3 w-3 rounded-full mr-1.5;
+  }
+
+  .red-button {
+    @apply bg-[#FF5F56];
+  }
+  
+  .yellow-button {
+    @apply bg-[#FFBD2E];
+  }
+  
+  .green-button {
+    @apply bg-[#27C93F];
+  }
+
+  .course-card {
+    @apply transition-all duration-300;
+  }
+  
+  .course-card:hover {
+    @apply transform -translate-y-1 shadow-xl;
+  }
+
+  .code-line {
+    @apply opacity-0 transform translate-y-2.5 animate-fadeInUp max-w-full overflow-hidden;
+  }
+
+  .typewriter h2 {
+    @apply overflow-hidden border-r-[.15em] border-solid border-[hsl(var(--accent-blue))] whitespace-nowrap m-0 animate-typing;
+  }
+}
+
+@layer utilities {
+  .text-primary-900 {
+    @apply text-[hsl(var(--primary-900))];
+  }
+
+  .text-primary-800 {
+    @apply text-[hsl(var(--primary-800))];
+  }
+
+  .text-primary-700 {
+    @apply text-[hsl(var(--primary-700))];
+  }
+ 
+  .bg-primary-900 {
+    @apply bg-[hsl(var(--primary-900))];
+  }
+  
+  .bg-primary-800 {
+    @apply bg-[hsl(var(--primary-800))];
+  }
+  
+  .bg-primary-700 {
+    @apply bg-[hsl(var(--primary-700))];
+  }
+  
+  .bg-secondary-900 {
+    @apply bg-[hsl(var(--secondary-900))];
+  }
+  
+  .bg-secondary-800 {
+    @apply bg-[hsl(var(--secondary-800))];
+  }
+  
+  .bg-secondary-700 {
+    @apply bg-[hsl(var(--secondary-700))];
+  }
+  
+  .text-light {
+    @apply text-[hsl(var(--text-light))];
+  }
+  
+  .text-muted {
+    @apply text-[hsl(var(--text-muted))];
+  }
+
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }
+
+  @keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: hsl(var(--accent-blue)); }
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-typing {
+    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+  }
+
+  .animate-fadeInUp {
+    animation: fadeInUp 0.5s forwards;
+  }
+
+  .code-line:nth-child(2) { animation-delay: 0.2s; }
+  .code-line:nth-child(3) { animation-delay: 0.4s; }
+  .code-line:nth-child(4) { animation-delay: 0.6s; }
+  .code-line:nth-child(5) { animation-delay: 0.8s; }
+  .code-line:nth-child(6) { animation-delay: 1.0s; }
+}

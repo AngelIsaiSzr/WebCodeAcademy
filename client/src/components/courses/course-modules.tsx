@@ -1,0 +1,168 @@
+import { useState } from 'react';
+import { Module } from '@shared/schema';
+import { useQuery } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
+import { ChevronDown, ChevronUp, Lock, CheckCircle } from 'lucide-react';
+
+type CourseModulesProps = {
+  modules: Module[];
+  isEnrolled: boolean;
+};
+
+export default function CourseModules({ modules, isEnrolled }: CourseModulesProps) {
+  const [expandedModuleId, setExpandedModuleId] = useState<number | null>(
+    modules.length > 0 ? modules[0].id : null
+  );
+
+  const toggleModule = (moduleId: number) => {
+    setExpandedModuleId(expandedModuleId === moduleId ? null : moduleId);
+  };
+
+  return (
+    <div className="space-y-6">
+      {modules.map((module, index) => (
+        <ModuleAccordion
+          key={module.id}
+          module={module}
+          isExpanded={expandedModuleId === module.id}
+          toggleExpanded={() => toggleModule(module.id)}
+          isEnrolled={isEnrolled}
+          index={index}
+        />
+      ))}
+    </div>
+  );
+}
+
+type ModuleAccordionProps = {
+  module: Module;
+  isExpanded: boolean;
+  toggleExpanded: () => void;
+  isEnrolled: boolean;
+  index: number;
+};
+
+function ModuleAccordion({ module, isExpanded, toggleExpanded, isEnrolled, index }: ModuleAccordionProps) {
+  // Fetch sections for this module
+  const { data: sections, isLoading } = useQuery({
+    queryKey: [`/api/modules/${module.id}/sections`],
+    enabled: isExpanded,
+  });
+
+  return (
+    <motion.div 
+      className="bg-primary-700 rounded-xl overflow-hidden"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ 
+        duration: 0.5,
+        delay: index * 0.1
+      }}
+    >
+      <div 
+        className="p-6 flex items-center justify-between cursor-pointer"
+        onClick={toggleExpanded}
+      >
+        <div>
+          <div className="flex items-center">
+            <h3 className="text-xl font-heading font-semibold mr-3">
+              Módulo {index + 1}: {module.title}
+            </h3>
+            <span className="px-3 py-1 text-xs rounded-full bg-secondary-800 text-muted">
+              {module.duration} horas
+            </span>
+            <span className="ml-3 px-3 py-1 text-xs rounded-full bg-secondary-800 text-muted">
+              {getDifficultyLabel(module.difficulty)}
+            </span>
+          </div>
+          <p className="text-muted mt-2 pr-8">{module.description}</p>
+        </div>
+        <div className="text-accent-blue">
+          {isExpanded ? (
+            <ChevronUp className="h-6 w-6" />
+          ) : (
+            <ChevronDown className="h-6 w-6" />
+          )}
+        </div>
+      </div>
+
+      {isExpanded && (
+        <div className="px-6 pb-6">
+          <div className="border-t border-secondary-800 pt-4 mt-2">
+            <div className="flex items-center mb-4">
+              <div className="w-8 h-8 rounded-full bg-accent-blue flex items-center justify-center text-white mr-3">
+                <i className="fas fa-user"></i>
+              </div>
+              <p className="text-sm">
+                Instructor: <span className="font-medium">{module.instructor}</span>
+              </p>
+            </div>
+
+            {isLoading ? (
+              <div className="py-4 text-center text-muted">
+                Cargando secciones...
+              </div>
+            ) : sections && sections.length > 0 ? (
+              <div className="space-y-3">
+                {sections.map((section, sectionIndex) => (
+                  <div 
+                    key={section.id} 
+                    className={`p-4 rounded-lg flex justify-between items-center ${
+                      isEnrolled 
+                        ? 'bg-primary-800 cursor-pointer hover:bg-opacity-80' 
+                        : 'bg-primary-800 opacity-75'
+                    }`}
+                  >
+                    <div className="flex items-start">
+                      <div className="w-6 h-6 mt-0.5 mr-3 flex-shrink-0">
+                        {isEnrolled ? (
+                          <CheckCircle className="h-6 w-6 text-green-500" />
+                        ) : (
+                          <Lock className="h-6 w-6 text-muted" />
+                        )}
+                      </div>
+                      <div>
+                        <h4 className="font-medium">{section.title}</h4>
+                        <p className="text-muted text-sm mt-1">{section.content}</p>
+                      </div>
+                    </div>
+                    <div className="text-xs text-muted whitespace-nowrap ml-4">
+                      {section.duration} min
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="py-4 text-center text-muted">
+                No hay secciones disponibles para este módulo.
+              </div>
+            )}
+
+            {!isEnrolled && (
+              <div className="mt-6 p-4 bg-secondary-900 rounded-lg border border-secondary-800">
+                <div className="flex items-center">
+                  <Lock className="h-5 w-5 text-accent-red mr-2" />
+                  <p className="text-sm font-medium">
+                    Inscríbete en este curso para acceder a todo el contenido.
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </motion.div>
+  );
+}
+
+// Helper to display difficulty in Spanish
+function getDifficultyLabel(difficulty: string): string {
+  const difficultyMap: { [key: string]: string } = {
+    'Easy': 'Fácil',
+    'Medium': 'Intermedio',
+    'Hard': 'Difícil',
+    'Very Hard': 'Muy Difícil'
+  };
+  
+  return difficultyMap[difficulty] || difficulty;
+}
