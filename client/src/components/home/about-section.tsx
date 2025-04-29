@@ -34,7 +34,7 @@ export default function AboutSection() {
             
             <div className="mb-8">
               <h3 className="text-xl font-heading font-semibold mb-4">Objetivos de Desarrollo Sostenible</h3>
-              <p className="text-muted mb-4">Nos alineamos con los siguientes ODS de la ONU:</p>
+              <p className="text-muted mb-4">Nos alineamos con los siguientes ODS de la Agenda 2030 de la ONU:</p>
               
               <div className="flex flex-wrap gap-4">
                 <div className="px-3 py-2 bg-primary-800 rounded-lg text-sm flex items-center">

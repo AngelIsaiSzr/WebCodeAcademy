@@ -5,6 +5,7 @@ import { useLocation } from "wouter";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { PasswordInput } from "@/components/ui/password-input";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -150,7 +151,7 @@ export default function AuthPage() {
                           <FormItem>
                             <FormLabel>Contraseña</FormLabel>
                             <FormControl>
-                              <Input type="password" placeholder="••••••••" {...field} />
+                              <PasswordInput placeholder="••••••••" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -242,7 +243,7 @@ export default function AuthPage() {
                           <FormItem>
                             <FormLabel>Contraseña</FormLabel>
                             <FormControl>
-                              <Input type="password" placeholder="••••••••" {...field} />
+                              <PasswordInput placeholder="••••••••" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -255,7 +256,7 @@ export default function AuthPage() {
                           <FormItem>
                             <FormLabel>Confirmar contraseña</FormLabel>
                             <FormControl>
-                              <Input type="password" placeholder="••••••••" {...field} />
+                              <PasswordInput placeholder="••••••••" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>

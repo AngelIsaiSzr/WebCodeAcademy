@@ -48,7 +48,7 @@ export default function AboutPage() {
                     Objetivos de Desarrollo Sostenible
                   </h3>
                   <p className="text-muted mb-4">
-                    Nos alineamos con los siguientes ODS de la ONU:
+                    Nos alineamos con los siguientes ODS de la Agenda 2030 de la ONU:
                   </p>
                   
                   <div className="flex flex-wrap gap-4">
