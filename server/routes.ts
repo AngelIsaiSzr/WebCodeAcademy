@@ -631,6 +631,41 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Delete user account
+  app.delete("/api/user", async (req, res) => {
+    try {
+      if (!req.isAuthenticated()) {
+        return res.status(401).json({ message: "Debes iniciar sesión para eliminar tu cuenta" });
+      }
+
+      // Eliminar inscripciones del usuario
+      const enrollments = await storage.getEnrollmentsByUserId(req.user.id);
+      for (const enrollment of enrollments) {
+        await storage.deleteEnrollment(enrollment.id);
+      }
+
+      // Eliminar el usuario
+      const success = await storage.deleteUser(req.user.id);
+      
+      if (!success) {
+        return res.status(404).json({ message: "Usuario no encontrado" });
+      }
+
+      // Cerrar la sesión
+      req.logout((err) => {
+        if (err) {
+          console.error("Error al cerrar sesión:", err);
+        }
+        req.session.destroy(() => {
+          res.sendStatus(200);
+        });
+      });
+    } catch (error) {
+      console.error("Error al eliminar la cuenta:", error);
+      res.status(500).json({ message: "Error al eliminar la cuenta" });
+    }
+  });
+
   // Seed data route (for development purposes)
   app.post("/api/seed", async (req, res) => {
     try {
