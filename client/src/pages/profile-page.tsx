@@ -166,10 +166,11 @@ export default function ProfilePage() {
     mutationFn: async () => {
       const response = await apiRequest("DELETE", "/api/user");
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => ({ message: "Error al eliminar la cuenta" }));
         throw new Error(errorData.message || "Error al eliminar la cuenta");
       }
-      return response.json();
+      // No intentamos parsear la respuesta como JSON si es exitosa
+      return null;
     },
     onSuccess: () => {
       toast({
