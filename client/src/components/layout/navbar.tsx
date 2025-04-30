@@ -168,7 +168,6 @@ export default function Navbar() {
                       <div className="accent-blue mr-2">
                         <i className="fas fa-code text-2xl"></i>
                       </div>
-                      <span className="font-heading font-bold text-xl">Web Code Academy</span>
                     </div>
                   </Link>
                   <div className="flex items-center space-x-2">
