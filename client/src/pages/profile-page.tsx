@@ -391,7 +391,6 @@ export default function ProfilePage() {
           <h1 className="text-3xl font-bold">Tu Perfil</h1>
           <Button 
             variant="outline" 
-            asChild
             className="flex items-center gap-2"
             onClick={() => handleNavigationAttempt("/")}
           >
