@@ -239,7 +239,7 @@ document.addEventListener('DOMContentLoaded', function() {
                   <iframe
                     srcDoc={outputContent}
                     title="Output"
-                    className="w-full h-[502px] border-0"
+                    className="w-full h-[496px] border-0"
                     sandbox="allow-scripts"
                   />
                 ) : (
