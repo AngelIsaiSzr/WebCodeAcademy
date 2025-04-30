@@ -162,65 +162,6 @@ export default function ProfilePage() {
     return true;
   };
 
-  // Handle image upload
-  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    
-    // Verificar el tamaño de la imagen (máximo 5MB)
-    const maxSize = 5 * 1024 * 1024; // 5MB
-    if (file.size > maxSize) {
-      toast({
-        title: "Error",
-        description: "La imagen no debe superar los 5MB",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // Verificar el tipo de archivo
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-    if (!allowedTypes.includes(file.type)) {
-      toast({
-        title: "Error",
-        description: "Solo se permiten imágenes en formato JPG, PNG o GIF",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // Crear un canvas para recortar la imagen
-    const img = new Image();
-    const reader = new FileReader();
-
-    reader.onload = (e) => {
-      img.src = e.target?.result as string;
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const size = Math.min(img.width, img.height);
-        canvas.width = size;
-        canvas.height = size;
-        
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-
-        // Calcular las coordenadas para recortar desde el centro
-        const offsetX = (img.width - size) / 2;
-        const offsetY = (img.height - size) / 2;
-        
-        // Dibujar la imagen recortada en el canvas
-        ctx.drawImage(img, offsetX, offsetY, size, size, 0, 0, size, size);
-        
-        // Convertir el canvas a una URL de datos
-        const base64String = canvas.toDataURL('image/jpeg', 0.8);
-        setImagePreview(base64String);
-        setHasUnsavedChanges(true);
-      };
-    };
-
-    reader.readAsDataURL(file);
-  };
-
   const profileForm = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
@@ -231,6 +172,24 @@ export default function ProfilePage() {
       profileImage: user?.profileImage || "",
     },
   });
+
+  // Observar cambios en el formulario
+  useEffect(() => {
+    const subscription = profileForm.watch((value, { name, type }) => {
+      // Si hay algún cambio en cualquier campo, marcar como no guardado
+      const formValues = profileForm.getValues();
+      const hasChanges = 
+        formValues.name !== user?.name ||
+        formValues.email !== user?.email ||
+        formValues.username !== user?.username ||
+        formValues.bio !== user?.bio ||
+        imagePreview !== null;  // También considerar cambios en la imagen
+
+      setHasUnsavedChanges(hasChanges);
+    });
+    
+    return () => subscription.unsubscribe();
+  }, [profileForm.watch, user, imagePreview]);
 
   const passwordForm = useForm<PasswordFormValues>({
     resolver: zodResolver(passwordSchema),
@@ -359,6 +318,65 @@ export default function ProfilePage() {
     };
   }, [showUnsavedDialog]);
 
+  // Handle image upload
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    
+    // Verificar el tamaño de la imagen (máximo 5MB)
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    if (file.size > maxSize) {
+      toast({
+        title: "Error",
+        description: "La imagen no debe superar los 5MB",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Verificar el tipo de archivo
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!allowedTypes.includes(file.type)) {
+      toast({
+        title: "Error",
+        description: "Solo se permiten imágenes en formato JPG, PNG o GIF",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Crear un canvas para recortar la imagen
+    const img = new Image();
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      img.src = e.target?.result as string;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const size = Math.min(img.width, img.height);
+        canvas.width = size;
+        canvas.height = size;
+        
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        // Calcular las coordenadas para recortar desde el centro
+        const offsetX = (img.width - size) / 2;
+        const offsetY = (img.height - size) / 2;
+        
+        // Dibujar la imagen recortada en el canvas
+        ctx.drawImage(img, offsetX, offsetY, size, size, 0, 0, size, size);
+        
+        // Convertir el canvas a una URL de datos
+        const base64String = canvas.toDataURL('image/jpeg', 0.8);
+        setImagePreview(base64String);
+        setHasUnsavedChanges(true);
+      };
+    };
+
+    reader.readAsDataURL(file);
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -372,13 +390,14 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="relative">
+    <>
       <AlertDialog 
         open={showUnsavedDialog} 
         onOpenChange={setShowUnsavedDialog}
       >
         <AlertDialogContent 
-          className="fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] w-[90vw] max-w-[500px] p-6 z-50 m-0 shadow-lg"
+          className="fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] w-[90vw] max-w-[500px] p-6 z-50"
+          style={{ margin: 0 }}
         >
           <AlertDialogHeader>
             <AlertDialogTitle>Cambios sin guardar</AlertDialogTitle>
@@ -386,7 +405,7 @@ export default function ProfilePage() {
               Tienes cambios sin guardar. ¿Estás seguro de que quieres salir sin guardar?
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter className="gap-2">
+          <AlertDialogFooter>
             <AlertDialogCancel 
               onClick={() => setShowUnsavedDialog(false)}
               className="mt-0"
@@ -811,6 +830,6 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
