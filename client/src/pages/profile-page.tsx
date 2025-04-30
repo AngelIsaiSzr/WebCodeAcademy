@@ -178,6 +178,17 @@ export default function ProfilePage() {
       return;
     }
 
+    // Verificar el tipo de archivo
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!allowedTypes.includes(file.type)) {
+      toast({
+        title: "Error",
+        description: "Solo se permiten imágenes en formato JPG, PNG o GIF",
+        variant: "destructive",
+      });
+      return;
+    }
+
     // Crear un canvas para recortar la imagen
     const img = new Image();
     const reader = new FileReader();
@@ -278,23 +289,32 @@ export default function ProfilePage() {
         formData.append('file', pendingImageFile);
         
         try {
-          // Subir la imagen primero
-          const imageResponse = await fetch('/api/upload', {
+          // Subir la imagen primero usando apiRequest
+          const imageResponse = await fetch('/api/user/upload-image', {
             method: 'POST',
             body: formData,
             credentials: 'include'
           });
           
           if (!imageResponse.ok) {
-            const errorData = await imageResponse.json();
-            throw new Error(errorData.message || "Error al subir la imagen");
+            let errorMessage = "Error al subir la imagen";
+            try {
+              const errorData = await imageResponse.json();
+              errorMessage = errorData.message || errorMessage;
+            } catch (e) {
+              console.error('Error al parsear respuesta:', e);
+            }
+            throw new Error(errorMessage);
           }
           
           const imageData = await imageResponse.json();
+          if (!imageData.url) {
+            throw new Error("No se recibió la URL de la imagen");
+          }
           updatedData.profileImage = imageData.url;
         } catch (error) {
           console.error('Error al subir imagen:', error);
-          throw new Error("Error al subir la imagen. Por favor, inténtalo de nuevo.");
+          throw new Error("Error al subir la imagen. Por favor, verifica el tamaño y formato de la imagen.");
         }
       }
 
@@ -314,6 +334,7 @@ export default function ProfilePage() {
       queryClient.setQueryData(["/api/user"], updatedUser);
       setHasUnsavedChanges(false);
       setPendingImageFile(null);
+      setImagePreview(null); // Limpiar la vista previa
       toast({
         title: "Perfil actualizado",
         description: "Tu perfil ha sido actualizado exitosamente.",
@@ -356,6 +377,25 @@ export default function ProfilePage() {
     },
   });
 
+  // Efecto para manejar el scroll cuando el diálogo está abierto
+  useEffect(() => {
+    if (showUnsavedDialog) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = '0px'; // Prevenir el salto
+      document.body.classList.add('dialog-open');
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+      document.body.classList.remove('dialog-open');
+    }
+    
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+      document.body.classList.remove('dialog-open');
+    };
+  }, [showUnsavedDialog]);
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -370,23 +410,33 @@ export default function ProfilePage() {
 
   return (
     <div className="relative">
-      <AlertDialog open={showUnsavedDialog} onOpenChange={setShowUnsavedDialog}>
-        <AlertDialogContent className="fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] w-[90vw] max-w-[500px] p-6">
+      <AlertDialog 
+        open={showUnsavedDialog} 
+        onOpenChange={setShowUnsavedDialog}
+      >
+        <AlertDialogContent 
+          className="fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] w-[90vw] max-w-[500px] p-6 z-50 m-0 shadow-lg"
+        >
           <AlertDialogHeader>
             <AlertDialogTitle>Cambios sin guardar</AlertDialogTitle>
             <AlertDialogDescription>
               Tienes cambios sin guardar. ¿Estás seguro de que quieres salir sin guardar?
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setShowUnsavedDialog(false)}>
+          <AlertDialogFooter className="gap-2">
+            <AlertDialogCancel 
+              onClick={() => setShowUnsavedDialog(false)}
+              className="mt-0"
+            >
               Cancelar
             </AlertDialogCancel>
-            <AlertDialogAction onClick={() => {
-              setHasUnsavedChanges(false);
-              setShowUnsavedDialog(false);
-              window.history.back();
-            }}>
+            <AlertDialogAction 
+              onClick={() => {
+                setHasUnsavedChanges(false);
+                setShowUnsavedDialog(false);
+                window.history.back();
+              }}
+            >
               Salir sin guardar
             </AlertDialogAction>
           </AlertDialogFooter>
