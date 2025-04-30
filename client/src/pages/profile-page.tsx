@@ -185,7 +185,12 @@ export default function ProfilePage() {
         formValues.bio !== user?.bio ||
         imagePreview !== null;  // También considerar cambios en la imagen
 
-      setHasUnsavedChanges(hasChanges);
+      // Si hay cambios, actualizar el estado
+      if (hasChanges) {
+        setHasUnsavedChanges(true);
+      } else {
+        setHasUnsavedChanges(false);
+      }
     });
     
     return () => subscription.unsubscribe();
@@ -205,7 +210,12 @@ export default function ProfilePage() {
     if (imagePreview) {
       data.profileImage = imagePreview;
     }
-    updateProfileMutation.mutate(data);
+    updateProfileMutation.mutate(data, {
+      onSuccess: () => {
+        setHasUnsavedChanges(false);
+        setImagePreview(null);
+      }
+    });
   };
 
   const onPasswordSubmit = async (data: PasswordFormValues) => {
@@ -425,8 +435,8 @@ export default function ProfilePage() {
         </AlertDialogContent>
       </AlertDialog>
 
-      <div className="container p-8">
-        <div className="flex justify-between mb-6">
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold">Tu Perfil</h1>
           <Button 
             variant="outline" 
