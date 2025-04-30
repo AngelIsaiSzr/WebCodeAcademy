@@ -214,11 +214,6 @@ export default function ProfilePage() {
         // Convertir el canvas a una URL de datos
         const base64String = canvas.toDataURL('image/jpeg', 0.8);
         setImagePreview(base64String);
-        
-        // Actualizar el formulario y guardar
-        profileForm.setValue("profileImage", base64String);
-        const formData = profileForm.getValues();
-        formData.profileImage = base64String;
         setHasUnsavedChanges(true);
       };
     };
@@ -247,6 +242,10 @@ export default function ProfilePage() {
   });
 
   const onProfileSubmit = (data: ProfileFormValues) => {
+    // Asegurarnos de que los datos incluyan la imagen si hay una pendiente
+    if (imagePreview) {
+      data.profileImage = imagePreview;
+    }
     updateProfileMutation.mutate(data);
   };
 
@@ -290,14 +289,23 @@ export default function ProfilePage() {
       queryClient.setQueryData(["/api/user"], updatedUser);
       setHasUnsavedChanges(false);
       setPendingImageFile(null);
+      // Actualizar el formulario con los nuevos valores
+      profileForm.reset({
+        name: updatedUser.name,
+        email: updatedUser.email,
+        username: updatedUser.username,
+        bio: updatedUser.bio,
+        profileImage: updatedUser.profileImage,
+      });
       toast({
-        title: "Perfil actualizado",
-        description: "Tu perfil ha sido actualizado exitosamente.",
+        title: "¡Perfil actualizado!",
+        description: "Los cambios han sido guardados exitosamente.",
+        variant: "default",
       });
     },
     onError: (error: Error) => {
       toast({
-        title: "Error",
+        title: "Error al guardar",
         description: error.message,
         variant: "destructive",
       });
@@ -423,8 +431,6 @@ export default function ProfilePage() {
               <form onSubmit={profileForm.handleSubmit(onProfileSubmit)}>
                 <div className="flex flex-col items-center space-y-6">
                   <div className="relative group">
-                    {/* Mostrar esta imagen personalizada solo en la página de perfil,
-                        pero UserAvatar se usa en todas las demás partes de la aplicación */}
                     <Avatar className="h-32 w-32">
                       <AvatarImage 
                         src={imagePreview || user.profileImage || undefined} 
@@ -482,9 +488,9 @@ export default function ProfilePage() {
                   <Button 
                     type="submit" 
                     className="gap-2 w-full"
-                    disabled={profileForm.formState.isSubmitting}
+                    disabled={updateProfileMutation.isPending}
                   >
-                    {profileForm.formState.isSubmitting ? (
+                    {updateProfileMutation.isPending ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         Guardando...
