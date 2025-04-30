@@ -275,7 +275,7 @@ export default function ProfilePage() {
       
       if (pendingImageFile) {
         const formData = new FormData();
-        formData.append('image', pendingImageFile);
+        formData.append('file', pendingImageFile);
         
         try {
           // Subir la imagen primero
@@ -286,22 +286,29 @@ export default function ProfilePage() {
           });
           
           if (!imageResponse.ok) {
-            throw new Error("Error al subir la imagen");
+            const errorData = await imageResponse.json();
+            throw new Error(errorData.message || "Error al subir la imagen");
           }
           
           const imageData = await imageResponse.json();
-          updatedData.profileImage = imageData.imageUrl;
+          updatedData.profileImage = imageData.url;
         } catch (error) {
-          throw new Error("Error al procesar la imagen");
+          console.error('Error al subir imagen:', error);
+          throw new Error("Error al subir la imagen. Por favor, inténtalo de nuevo.");
         }
       }
 
-      const response = await apiRequest("PATCH", "/api/user/profile", updatedData);
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Error al actualizar el perfil");
+      try {
+        const response = await apiRequest("PATCH", "/api/user/profile", updatedData);
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Error al actualizar el perfil");
+        }
+        return response.json();
+      } catch (error) {
+        console.error('Error al actualizar perfil:', error);
+        throw new Error("Error al actualizar el perfil. Por favor, inténtalo de nuevo.");
       }
-      return response.json();
     },
     onSuccess: (updatedUser) => {
       queryClient.setQueryData(["/api/user"], updatedUser);
@@ -362,9 +369,9 @@ export default function ProfilePage() {
   }
 
   return (
-    <>
+    <div className="relative">
       <AlertDialog open={showUnsavedDialog} onOpenChange={setShowUnsavedDialog}>
-        <AlertDialogContent>
+        <AlertDialogContent className="fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] w-[90vw] max-w-[500px] p-6">
           <AlertDialogHeader>
             <AlertDialogTitle>Cambios sin guardar</AlertDialogTitle>
             <AlertDialogDescription>
@@ -793,6 +800,6 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
