@@ -277,13 +277,23 @@ export default function ProfilePage() {
         const formData = new FormData();
         formData.append('image', pendingImageFile);
         
-        // Subir la imagen primero
-        const imageResponse = await apiRequest("POST", "/api/upload", formData);
-        if (!imageResponse.ok) {
-          throw new Error("Error al subir la imagen");
+        try {
+          // Subir la imagen primero
+          const imageResponse = await fetch('/api/upload', {
+            method: 'POST',
+            body: formData,
+            credentials: 'include'
+          });
+          
+          if (!imageResponse.ok) {
+            throw new Error("Error al subir la imagen");
+          }
+          
+          const imageData = await imageResponse.json();
+          updatedData.profileImage = imageData.imageUrl;
+        } catch (error) {
+          throw new Error("Error al procesar la imagen");
         }
-        const { imageUrl } = await imageResponse.json();
-        updatedData.profileImage = imageUrl;
       }
 
       const response = await apiRequest("PATCH", "/api/user/profile", updatedData);
@@ -379,11 +389,14 @@ export default function ProfilePage() {
       <div className="container p-8">
         <div className="flex justify-between mb-6">
           <h1 className="text-3xl font-bold">Tu Perfil</h1>
-          <Button variant="outline" asChild className="flex items-center gap-2">
-            <Link href="/">
-              <ArrowLeft className="h-4 w-4" />
-              Regresar al inicio
-            </Link>
+          <Button 
+            variant="outline" 
+            asChild
+            className="flex items-center gap-2"
+            onClick={() => handleNavigationAttempt("/")}
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Regresar al inicio
           </Button>
         </div>
         
