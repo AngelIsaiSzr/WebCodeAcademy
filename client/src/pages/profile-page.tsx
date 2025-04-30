@@ -255,10 +255,10 @@ export default function ProfilePage() {
       return response.json();
     },
     onSuccess: (updatedUser) => {
+      // Actualizar el estado del usuario
       queryClient.setQueryData(["/api/user"], updatedUser);
-      setHasUnsavedChanges(false);
-      setPendingImageFile(null);
-      // Actualizar el formulario con los nuevos valores
+      
+      // Actualizar el estado del formulario
       profileForm.reset({
         name: updatedUser.name,
         email: updatedUser.email,
@@ -266,6 +266,12 @@ export default function ProfilePage() {
         bio: updatedUser.bio,
         profileImage: updatedUser.profileImage,
       });
+      
+      // Limpiar estados
+      setHasUnsavedChanges(false);
+      setImagePreview(null);
+      setPendingImageFile(null);
+      
       toast({
         title: "¡Perfil actualizado!",
         description: "Los cambios han sido guardados exitosamente.",
