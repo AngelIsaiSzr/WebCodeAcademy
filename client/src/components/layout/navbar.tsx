@@ -214,9 +214,9 @@ export default function Navbar() {
                     <>
                       <div className="flex items-center mb-4">
                         <UserAvatar size="md" className="mr-3" />
-                        <div>
-                          <p className="font-medium">{user.name}</p>
-                          <p className="text-sm text-muted">{user.email}</p>
+                        <div className="min-w-0 flex-1">
+                          <p className="font-medium truncate">{user.name}</p>
+                          <p className="text-sm text-muted truncate">{user.email}</p>
                         </div>
                       </div>
                       <div className="space-y-3">

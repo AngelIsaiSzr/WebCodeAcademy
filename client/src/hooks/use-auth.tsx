@@ -39,6 +39,23 @@ type RegisterData = z.infer<typeof registerSchema>;
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 
+// Función auxiliar para obtener mensajes de error amigables
+const getErrorMessage = (error: Error) => {
+  const message = error.message.toLowerCase();
+  
+  if (message.includes("invalid email or password")) {
+    return "Correo electrónico o contraseña incorrectos";
+  }
+  if (message.includes("email already exists") || message.includes("duplicate key value")) {
+    return "Este correo electrónico ya está registrado";
+  }
+  if (message.includes("username already exists")) {
+    return "Este nombre de usuario ya está en uso";
+  }
+  
+  return "Ha ocurrido un error. Por favor, inténtalo de nuevo.";
+};
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
   const {
@@ -59,13 +76,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       queryClient.setQueryData(["/api/user"], user);
       toast({
         title: "Inicio de Sesión Exitoso",
-        description: `Bienvenid@ de vuelta ${user.name}!`,
+        description: `¡Bienvenid@ de vuelta ${user.name}!`,
       });
     },
     onError: (error: Error) => {
       toast({
         title: "Inicio de Sesión Fallido",
-        description: error.message,
+        description: getErrorMessage(error),
         variant: "destructive",
       });
     },
@@ -83,13 +100,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       queryClient.setQueryData(["/api/user"], user);
       toast({
         title: "Registro Exitoso",
-        description: `Bienvenid@ a Web Code Academy, ${user.name}!`,
+        description: `¡Bienvenid@ a Web Code Academy, ${user.name}!`,
       });
     },
     onError: (error: Error) => {
       toast({
         title: "Registro Fallido",
-        description: error.message,
+        description: getErrorMessage(error),
         variant: "destructive",
       });
     },
@@ -109,7 +126,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     onError: (error: Error) => {
       toast({
         title: "Cierre de Sesión Fallido",
-        description: error.message,
+        description: getErrorMessage(error),
         variant: "destructive",
       });
     },
