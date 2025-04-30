@@ -95,7 +95,7 @@ export default function AboutPage() {
                     Nuestra Historia
                   </h2>
                   <p className="text-muted mb-6">
-                    Web Code Academy nació en 2020 como una respuesta a la creciente necesidad de educación tecnológica accesible. Fundada por Angel Salazar, quien experimentó de primera mano las barreras de acceso a la educación en tecnología, nuestra academia comenzó como un pequeño grupo de estudio y ha crecido hasta convertirse en una comunidad con miles de estudiantes en toda Latinoamérica.
+                    Web Code Academy nació en 2022 como una respuesta a la creciente necesidad de educación tecnológica accesible. Fundada por Angel Salazar, quien experimentó de primera mano las barreras de acceso a la educación en tecnología, nuestra academia comenzó como un pequeño grupo de estudio y ha crecido hasta convertirse en una comunidad con miles de estudiantes en toda Latinoamérica.
                   </p>
                   
                   <h3 className="text-xl font-heading font-semibold mb-4">
