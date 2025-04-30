@@ -212,17 +212,14 @@ export default function ProfilePage() {
         ctx.drawImage(img, offsetX, offsetY, size, size, 0, 0, size, size);
         
         // Convertir el canvas a una URL de datos
-        const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
-        setImagePreview(dataUrl);
+        const base64String = canvas.toDataURL('image/jpeg', 0.8);
+        setImagePreview(base64String);
         
-        // Convertir la URL de datos de vuelta a un archivo
-        canvas.toBlob((blob) => {
-          if (blob) {
-            const croppedFile = new File([blob], file.name, { type: 'image/jpeg' });
-            setPendingImageFile(croppedFile);
-            setHasUnsavedChanges(true);
-          }
-        }, 'image/jpeg', 0.8);
+        // Actualizar el formulario y guardar
+        profileForm.setValue("profileImage", base64String);
+        const formData = profileForm.getValues();
+        formData.profileImage = base64String;
+        setHasUnsavedChanges(true);
       };
     };
 
@@ -282,59 +279,17 @@ export default function ProfilePage() {
   // Mutation to update profile
   const updateProfileMutation = useMutation({
     mutationFn: async (profileData: ProfileFormValues) => {
-      let updatedData = { ...profileData };
-      
-      if (pendingImageFile) {
-        const formData = new FormData();
-        formData.append('file', pendingImageFile);
-        
-        try {
-          // Subir la imagen primero usando apiRequest
-          const imageResponse = await fetch('/api/user/upload-image', {
-            method: 'POST',
-            body: formData,
-            credentials: 'include'
-          });
-          
-          if (!imageResponse.ok) {
-            let errorMessage = "Error al subir la imagen";
-            try {
-              const errorData = await imageResponse.json();
-              errorMessage = errorData.message || errorMessage;
-            } catch (e) {
-              console.error('Error al parsear respuesta:', e);
-            }
-            throw new Error(errorMessage);
-          }
-          
-          const imageData = await imageResponse.json();
-          if (!imageData.url) {
-            throw new Error("No se recibió la URL de la imagen");
-          }
-          updatedData.profileImage = imageData.url;
-        } catch (error) {
-          console.error('Error al subir imagen:', error);
-          throw new Error("Error al subir la imagen. Por favor, verifica el tamaño y formato de la imagen.");
-        }
+      const response = await apiRequest("PATCH", "/api/user/profile", profileData);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Error al actualizar el perfil");
       }
-
-      try {
-        const response = await apiRequest("PATCH", "/api/user/profile", updatedData);
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || "Error al actualizar el perfil");
-        }
-        return response.json();
-      } catch (error) {
-        console.error('Error al actualizar perfil:', error);
-        throw new Error("Error al actualizar el perfil. Por favor, inténtalo de nuevo.");
-      }
+      return response.json();
     },
     onSuccess: (updatedUser) => {
       queryClient.setQueryData(["/api/user"], updatedUser);
       setHasUnsavedChanges(false);
       setPendingImageFile(null);
-      setImagePreview(null); // Limpiar la vista previa
       toast({
         title: "Perfil actualizado",
         description: "Tu perfil ha sido actualizado exitosamente.",
