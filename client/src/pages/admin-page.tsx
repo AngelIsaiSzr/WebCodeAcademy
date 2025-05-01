@@ -535,7 +535,7 @@ export default function AdminPage() {
     courseId: 0,
     title: "",
     description: "",
-    duration: 60,
+    duration: 2,
     order: 1,
     difficulty: "Principiante",
     instructor: "",
@@ -1529,18 +1529,14 @@ export default function AdminPage() {
                                   name="duration"
                                   render={({ field }) => (
                                     <FormItem>
-                                      <FormLabel>Duración (minutos)</FormLabel>
+                                      <FormLabel>Duración (horas)</FormLabel>
                                       <FormControl>
                                         <Input 
                                           type="number" 
-                                          placeholder="Ej: 120 (2 horas)"
                                           {...field}
                                           onChange={e => field.onChange(Number(e.target.value))}
                                         />
                                       </FormControl>
-                                      <FormDescription>
-                                        La duración se mostrará en horas en la interfaz de usuario
-                                      </FormDescription>
                                       <FormMessage />
                                     </FormItem>
                                   )}
@@ -1647,7 +1643,7 @@ export default function AdminPage() {
                                       <circle cx="12" cy="12" r="10"></circle>
                                       <polyline points="12 6 12 12 16 14"></polyline>
                                     </svg>
-                                    {module.duration} min
+                                    {module.duration} horas
                                   </span>
                                   <span className="flex items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1">
