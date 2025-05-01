@@ -10,19 +10,26 @@ interface EmailData {
 
 // Configuración del transportador de correo
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: parseInt(process.env.SMTP_PORT || '587'),
-  secure: process.env.SMTP_SECURE === 'true',
+  service: 'gmail',
   auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
+    user: process.env.SMTP_USER || 'webcodeacademy0@gmail.com',
+    pass: process.env.SMTP_PASS, // Contraseña de aplicación de Google
   },
+});
+
+// Verificar la conexión
+transporter.verify(function (error, success) {
+  if (error) {
+    console.error('Error al verificar el transportador de correo:', error);
+  } else {
+    console.log('Servidor listo para enviar correos');
+  }
 });
 
 export async function sendEmail(data: EmailData): Promise<void> {
   try {
     const mailOptions = {
-      from: `"Web Code Academy" <${process.env.SMTP_USER}>`,
+      from: `"Web Code Academy" <${process.env.SMTP_USER || 'webcodeacademy0@gmail.com'}>`,
       to: data.to,
       replyTo: data.from,
       subject: data.subject,
@@ -45,7 +52,8 @@ ${data.text}
       `,
     };
 
-    await transporter.sendMail(mailOptions);
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Correo enviado:', info.response);
   } catch (error) {
     console.error('Error al enviar el correo:', error);
     throw new Error('No se pudo enviar el correo electrónico');
