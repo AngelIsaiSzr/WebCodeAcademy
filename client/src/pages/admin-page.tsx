@@ -76,11 +76,40 @@ import {
 } from "@/components/ui/dialog";
 
 const courseFormSchema = insertCourseSchema.extend({
+  title: z.string().min(3, "El título es requerido"),
+  slug: z.string().min(3, "El slug es requerido"),
+  description: z.string().min(10, "La descripción es requerida"),
+  shortDescription: z.string().min(10, "La descripción corta es requerida"),
+  level: z.string().min(3, "El nivel es requerido"),
+  category: z.string().min(3, "La categoría es requerida"),
+  duration: z.number({
+    required_error: "La duración es requerida",
+    invalid_type_error: "La duración debe ser un número"
+  }).min(1, "La duración debe ser mayor a 0"),
+  modules: z.number({
+    required_error: "El número de módulos es requerido",
+    invalid_type_error: "El número de módulos debe ser un número"
+  }).min(1, "El número de módulos debe ser mayor a 0"),
   image: z.string().min(5, "La URL de la imagen es requerida"),
+  instructor: z.string().min(3, "El instructor es requerido"),
+  featured: z.boolean().optional(),
+  popular: z.boolean().optional(),
+  new: z.boolean().optional(),
 });
 
 const teamFormSchema = insertTeamSchema.extend({
+  name: z.string().min(3, "El nombre es requerido"),
+  role: z.string().min(3, "El cargo es requerido"),
+  bio: z.string().min(10, "La biografía es requerida"),
   image: z.string().min(5, "La URL de la imagen es requerida"),
+  order: z.number({
+    required_error: "El orden es requerido",
+    invalid_type_error: "El orden debe ser un número"
+  }).min(1, "El orden debe ser mayor a 0"),
+  linkedIn: z.string().optional(),
+  github: z.string().optional(),
+  twitter: z.string().optional(),
+  instagram: z.string().optional(),
 });
 
 const testimonialFormSchema = insertTestimonialSchema.extend({
@@ -90,15 +119,27 @@ const testimonialFormSchema = insertTestimonialSchema.extend({
 const moduleFormSchema = insertModuleSchema.extend({
   title: z.string().min(3, "El título es requerido"),
   description: z.string().min(10, "La descripción es requerida"),
-  duration: z.number().min(1, "La duración debe ser mayor a 0"),
-  order: z.number().min(1, "El orden debe ser mayor a 0"),
+  duration: z.number({
+    required_error: "La duración es requerida",
+    invalid_type_error: "La duración debe ser un número"
+  }).min(1, "La duración debe ser mayor a 0"),
+  order: z.number({
+    required_error: "El orden es requerido",
+    invalid_type_error: "El orden debe ser un número"
+  }).min(1, "El orden debe ser mayor a 0"),
 });
 
 const sectionFormSchema = insertSectionSchema.extend({
   title: z.string().min(3, "El título es requerido"),
   content: z.string().min(10, "El contenido es requerido"),
-  duration: z.number().min(1, "La duración debe ser mayor a 0"),
-  order: z.number().min(1, "El orden debe ser mayor a 0"),
+  duration: z.number({
+    required_error: "La duración es requerida",
+    invalid_type_error: "La duración debe ser un número"
+  }).min(1, "La duración debe ser mayor a 0"),
+  order: z.number({
+    required_error: "El orden es requerido",
+    invalid_type_error: "El orden debe ser un número"
+  }).min(1, "El orden debe ser mayor a 0"),
 });
 
 type CourseFormValues = z.infer<typeof courseFormSchema>;
@@ -600,9 +641,6 @@ export default function AdminPage() {
       });
       setEditingModule(null);
       refetchModules();
-      
-      // Removed automatic course update to prevent the error
-      // The module count will be updated when fetching the course list
     },
     onError: (error: Error) => {
       toast({
@@ -1193,7 +1231,12 @@ export default function AdminPage() {
                                     type="number" 
                                     placeholder="Ej: 30" 
                                     {...field}
-                                    onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                                    value={field.value || ''}
+                                    onChange={(e) => {
+                                      const value = e.target.value;
+                                      const numValue = value === '' ? null : Number(value);
+                                      field.onChange(numValue);
+                                    }}
                                   />
                                 </FormControl>
                                 <FormMessage />
@@ -1210,9 +1253,14 @@ export default function AdminPage() {
                                 <FormControl>
                                   <Input 
                                     type="number" 
-                                    placeholder="Ej: 6" 
+                                    placeholder="Ej: 5" 
                                     {...field}
-                                    onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                                    value={field.value || ''}
+                                    onChange={(e) => {
+                                      const value = e.target.value;
+                                      const numValue = value === '' ? null : Number(value);
+                                      field.onChange(numValue);
+                                    }}
                                   />
                                 </FormControl>
                                 <FormMessage />
@@ -2016,9 +2064,14 @@ export default function AdminPage() {
                               <FormControl>
                                 <Input 
                                   type="number" 
-                                  placeholder="1" 
+                                  placeholder="Ej: 1" 
                                   {...field}
-                                  onChange={(e) => field.onChange(parseInt(e.target.value) || 1)}
+                                  value={field.value || ''}
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    const numValue = value === '' ? null : Number(value);
+                                    field.onChange(numValue);
+                                  }}
                                 />
                               </FormControl>
                               <FormDescription>

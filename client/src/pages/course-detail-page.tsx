@@ -24,29 +24,29 @@ export default function CourseDetailPage() {
   const [quote] = useState(getRandomQuote());
 
   // Fetch course data
-  const { 
-    data: course, 
-    isLoading: isLoadingCourse, 
-    error: courseError 
+  const {
+    data: course,
+    isLoading: isLoadingCourse,
+    error: courseError
   } = useQuery<Course>({
     queryKey: [`/api/courses/${slug}`],
     enabled: !!slug,
   });
 
   // Fetch course modules
-  const { 
-    data: modules, 
-    isLoading: isLoadingModules, 
-    error: modulesError 
+  const {
+    data: modules,
+    isLoading: isLoadingModules,
+    error: modulesError
   } = useQuery<Module[]>({
     queryKey: [`/api/courses/${course?.id}/modules`],
     enabled: !!course?.id,
   });
 
   // Fetch user enrollments
-  const { 
-    data: enrollments = [], 
-    isLoading: isLoadingEnrollments 
+  const {
+    data: enrollments = [],
+    isLoading: isLoadingEnrollments
   } = useQuery<any[]>({
     queryKey: ['/api/enrollments'],
     enabled: !!user,
@@ -87,12 +87,12 @@ export default function CourseDetailPage() {
       });
       return;
     }
-    
+
     enrollMutation.mutate();
   };
 
   const { setLoading } = usePageLoading();
-  
+
   // Set global loading state based on data loading
   useEffect(() => {
     setLoading(isLoadingCourse || isLoadingModules);
@@ -140,15 +140,15 @@ export default function CourseDetailPage() {
     <>
       <Helmet>
         <title>{course.title} - Web Code Academy</title>
-        <meta 
-          name="description" 
+        <meta
+          name="description"
           content={course.description}
         />
       </Helmet>
-      
+
       <div className="flex flex-col min-h-screen">
         <Navbar />
-        
+
         <main className="flex-grow">
           {/* Hero Section */}
           <AnimateInView animation="fadeIn">
@@ -178,19 +178,19 @@ export default function CourseDetailPage() {
                         </span>
                       )}
                     </div>
-                    
+
                     <AnimateInView animation="slideRight" delay={0.2}>
                       <h1 className="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-6">
                         {course.title}
                       </h1>
                     </AnimateInView>
-                    
+
                     <AnimateInView animation="fadeIn" delay={0.3}>
                       <p className="text-muted text-lg mb-8">
                         {course.description}
                       </p>
                     </AnimateInView>
-                    
+
                     <AnimateInView animation="fadeIn" delay={0.4}>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
                         <div className="flex items-center">
@@ -211,14 +211,22 @@ export default function CourseDetailPage() {
                         </div>
                       </div>
                     </AnimateInView>
-                    
+
                     <AnimateInView animation="fadeIn" delay={0.5}>
                       <div>
                         {isEnrolled ? (
-                          <div className="flex items-center mb-4">
-                            <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
-                            <span>Ya estás inscrito en este curso</span>
-                          </div>
+                          <>
+                            <div className="mb-6 p-4 bg-primary-700 rounded-lg">
+                              <blockquote className="italic text-muted">
+                                "{quote.text}"
+                              </blockquote>
+                              <p className="text-sm text-muted mt-2">- {quote.author}</p>
+                            </div>
+                            <div className="flex items-center mb-4">
+                              <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
+                              <span>Ya estás inscrito en este curso</span>
+                            </div>
+                          </>
                         ) : (
                           <>
                             <div className="mb-6 p-4 bg-primary-700 rounded-lg">
@@ -227,15 +235,14 @@ export default function CourseDetailPage() {
                               </blockquote>
                               <p className="text-sm text-muted mt-2">- {quote.author}</p>
                             </div>
-                            <Button 
+                            <Button
                               onClick={handleEnroll}
-                              className={`px-6 py-3 ${
-                                course.popular 
-                                  ? 'bg-accent-blue hover:bg-accent-blue hover:opacity-90' 
-                                  : course.new 
-                                    ? 'bg-accent-yellow hover:bg-accent-yellow hover:opacity-90 text-primary-900' 
+                              className={`px-6 py-3 ${course.popular
+                                  ? 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
+                                  : course.new
+                                    ? 'bg-accent-yellow hover:bg-accent-yellow hover:opacity-90 text-primary-900'
                                     : 'bg-accent-red hover:bg-accent-red hover:opacity-90'
-                              }`}
+                                }`}
                               disabled={enrollMutation.isPending || isLoadingEnrollments}
                             >
                               {enrollMutation.isPending ? (
@@ -248,13 +255,13 @@ export default function CourseDetailPage() {
                       </div>
                     </AnimateInView>
                   </div>
-                  
+
                   <AnimateInView animation="slideLeft" delay={0.3}>
                     <div className="w-full md:w-auto">
                       <div className="bg-primary-800 rounded-xl overflow-hidden shadow-lg">
-                        <img 
-                          src={course.image} 
-                          alt={course.title} 
+                        <img
+                          src={course.image}
+                          alt={course.title}
                           className="w-full h-48 md:h-56 object-cover"
                         />
                         <div className="p-6">
@@ -265,22 +272,21 @@ export default function CourseDetailPage() {
                             {course.shortDescription}
                           </p>
                           {isEnrolled ? (
-                            <Button 
+                            <Button
                               className="w-full bg-accent-blue hover:bg-accent-blue hover:opacity-90"
                               asChild
                             >
                               <a href="#modules">Comenzar a Aprender</a>
                             </Button>
                           ) : (
-                            <Button 
+                            <Button
                               onClick={handleEnroll}
-                              className={`w-full ${
-                                course.popular 
-                                  ? 'bg-accent-blue hover:bg-accent-blue hover:opacity-90' 
-                                  : course.new 
-                                    ? 'bg-accent-yellow hover:bg-accent-yellow hover:opacity-90 text-primary-900' 
+                              className={`w-full ${course.popular
+                                  ? 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
+                                  : course.new
+                                    ? 'bg-accent-yellow hover:bg-accent-yellow hover:opacity-90 text-primary-900'
                                     : 'bg-accent-red hover:bg-accent-red hover:opacity-90'
-                              }`}
+                                }`}
                               disabled={enrollMutation.isPending || isLoadingEnrollments}
                             >
                               {enrollMutation.isPending ? (
@@ -297,7 +303,7 @@ export default function CourseDetailPage() {
               </div>
             </section>
           </AnimateInView>
-          
+
           {/* Course Modules */}
           <AnimateInView animation="fadeIn" delay={0.2}>
             <section id="modules" className="bg-primary-800 py-16">
@@ -307,7 +313,7 @@ export default function CourseDetailPage() {
                     Temario del curso
                   </h2>
                 </AnimateInView>
-                
+
                 {modulesError ? (
                   <div className="text-center py-12">
                     <AlertCircle className="h-12 w-12 text-destructive mx-auto mb-4" />
@@ -336,7 +342,7 @@ export default function CourseDetailPage() {
             </section>
           </AnimateInView>
         </main>
-        
+
         <Footer />
       </div>
     </>

@@ -449,14 +449,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       const moduleId = parseInt(req.params.id);
+      
+      // Primero obtener las secciones del módulo
+      const sections = await storage.getSectionsByModuleId(moduleId);
+      
+      // Eliminar todas las secciones del módulo
+      for (const section of sections) {
+        await storage.deleteSection(section.id);
+      }
+      
+      // Ahora sí eliminar el módulo
       const success = await storage.deleteModule(moduleId);
       
       if (!success) {
         return res.status(404).json({ message: "Module not found" });
       }
       
-      res.status(200).json({ message: "Module deleted successfully" });
+      res.status(200).json({ message: "Module and its sections deleted successfully" });
     } catch (error) {
+      console.error("Error deleting module:", error);
       res.status(500).json({ message: "Failed to delete module" });
     }
   });
