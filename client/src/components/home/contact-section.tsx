@@ -30,20 +30,24 @@ export default function ContactSection() {
   const contactMutation = useMutation({
     mutationFn: async (data: ContactFormValues) => {
       const res = await apiRequest("POST", "/api/contact", data);
-      return res.json();
+      const jsonResponse = await res.json();
+      if (!res.ok) {
+        throw new Error(jsonResponse.message || "Error al enviar el mensaje");
+      }
+      return jsonResponse;
     },
     onSuccess: () => {
       toast({
-        title: "Mensaje enviado",
-        description: "Hemos recibido tu mensaje. Te responderemos a la brevedad.",
+        title: "¡Mensaje enviado!",
+        description: "Gracias por contactarnos. Te responderemos a la brevedad.",
       });
       form.reset();
       setIsSubmitting(false);
     },
     onError: (error: Error) => {
       toast({
-        title: "Error al enviar el mensaje",
-        description: error.message,
+        title: "Error",
+        description: "Hubo un error al enviar el mensaje. Por favor intenta de nuevo.",
         variant: "destructive",
       });
       setIsSubmitting(false);

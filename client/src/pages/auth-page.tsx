@@ -100,6 +100,28 @@ export default function AuthPage() {
       <div className="flex min-h-screen">
         {/* Left Section: Auth Forms */}
         <div className="flex flex-col w-full md:w-1/2 items-center justify-center p-4 md:p-10">
+          {/* Back Arrow */}
+          <a 
+            href="/" 
+            className="absolute top-4 left-4 p-2 rounded-full hover:bg-secondary-800 transition-colors duration-200"
+            aria-label="Volver al inicio"
+          >
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              width="24" 
+              height="24" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+              className="text-foreground"
+            >
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+          </a>
+
           <div className="mb-8 text-center">
             <a href="/" className="flex items-center justify-center mb-6">
               <div className="accent-blue mr-2">
@@ -120,8 +142,8 @@ export default function AuthPage() {
             </TabsList>
 
             {/* Login Form */}
-            <TabsContent value="login">
-              <Card>
+            <TabsContent value="login" className="transition-all duration-300 ease-in-out">
+              <Card className="animate-fade-in">
                 <CardHeader>
                   <CardTitle>Iniciar Sesión</CardTitle>
                   <CardDescription>
@@ -186,8 +208,8 @@ export default function AuthPage() {
             </TabsContent>
 
             {/* Register Form */}
-            <TabsContent value="register">
-              <Card>
+            <TabsContent value="register" className="transition-all duration-300 ease-in-out">
+              <Card className="animate-fade-in">
                 <CardHeader>
                   <CardTitle>Crear Cuenta</CardTitle>
                   <CardDescription>
@@ -293,9 +315,9 @@ export default function AuthPage() {
         </div>
 
         {/* Right Section: Hero */}
-        <div className="hidden md:flex md:w-1/2 bg-secondary-900 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1587620962725-abab7fe55159?ixlib=rb-4.0.3&auto=format&fit=crop&w=1489&q=80')] opacity-10 bg-center bg-cover"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-secondary-900 to-secondary-800 opacity-90"></div>
+        <div className="hidden md:flex md:w-1/2 bg-secondary-900 relative overflow-hidden transition-all duration-300 ease-in-out">
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1587620962725-abab7fe55159?ixlib=rb-4.0.3&auto=format&fit=crop&w=1489&q=80')] opacity-10 bg-center bg-cover transition-all duration-300 ease-in-out"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-secondary-900 to-secondary-800 opacity-90 transition-all duration-300 ease-in-out"></div>
           
           <div className="relative z-10 flex flex-col justify-center px-12 w-full">
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">

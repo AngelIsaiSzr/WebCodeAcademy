@@ -123,9 +123,16 @@ export const insertTestimonialSchema = createInsertSchema(testimonials).omit({
   id: true,
 });
 
-export const insertContactSchema = createInsertSchema(contacts).omit({
-  id: true,
-  createdAt: true,
+export const insertContactSchema = z.object({
+  name: z.string().min(1, {
+    message: "El nombre es requerido"
+  }),
+  email: z.string().email({
+    message: "Por favor ingresa un correo electrónico válido"
+  }),
+  message: z.string().min(1, {
+    message: "El mensaje es requerido"
+  })
 });
 
 // Types for insertion

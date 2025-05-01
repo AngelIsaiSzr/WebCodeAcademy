@@ -306,12 +306,25 @@
     }
   }
 
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
   .animate-typing {
     animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
   }
 
   .animate-fadeInUp {
     animation: fadeInUp 0.5s forwards;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out forwards;
   }
 
   .code-line:nth-child(2) { animation-delay: 0.2s; }

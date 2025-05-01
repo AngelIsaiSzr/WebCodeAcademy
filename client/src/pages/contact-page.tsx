@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet";
+import { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { insertContactSchema } from "@shared/schema";
@@ -28,42 +29,53 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
+// Define form schema using existing schema from shared/schema.ts
 type ContactFormValues = z.infer<typeof insertContactSchema>;
 
-export default function ContactPage() {
+export default function ContactSection() {
   const { toast } = useToast();
-  
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Set up form with validation
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(insertContactSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      message: "",
-    },
+      name: '',
+      email: '',
+      message: ''
+    }
   });
 
+  // Contact form mutation
   const contactMutation = useMutation({
     mutationFn: async (data: ContactFormValues) => {
       const res = await apiRequest("POST", "/api/contact", data);
-      return await res.json();
+      const jsonResponse = await res.json();
+      if (!res.ok) {
+        throw new Error(jsonResponse.message || "Error al enviar el mensaje");
+      }
+      return jsonResponse;
     },
     onSuccess: () => {
       toast({
-        title: "Mensaje enviado",
-        description: "Hemos recibido tu mensaje. Te responderemos a la brevedad.",
+        title: "¡Mensaje enviado!",
+        description: "Gracias por contactarnos. Te responderemos a la brevedad.",
       });
       form.reset();
+      setIsSubmitting(false);
     },
     onError: (error: Error) => {
       toast({
-        title: "Error al enviar el mensaje",
-        description: error.message,
+        title: "Error",
+        description: "Hubo un error al enviar el mensaje. Por favor intenta de nuevo.",
         variant: "destructive",
       });
-    },
+      setIsSubmitting(false);
+    }
   });
 
   const onSubmit = (data: ContactFormValues) => {
+    setIsSubmitting(true);
     contactMutation.mutate(data);
   };
 
@@ -71,15 +83,15 @@ export default function ContactPage() {
     <>
       <Helmet>
         <title>Web Code Academy</title>
-        <meta 
-          name="description" 
+        <meta
+          name="description"
           content="Contáctanos para obtener más información sobre nuestros cursos gratuitos de programación o para cualquier consulta que tengas."
         />
       </Helmet>
-      
+
       <div className="flex flex-col min-h-screen">
         <Navbar />
-        
+
         <main className="flex-grow">
           {/* Header */}
           <section className="bg-secondary-900 py-20 pb-10 md:pb-20">
@@ -94,7 +106,7 @@ export default function ContactPage() {
               </div>
             </div>
           </section>
-          
+
           {/* Contact Section */}
           <section className="bg-primary-800 py-16">
             <div className="container mx-auto px-10">
@@ -106,7 +118,7 @@ export default function ContactPage() {
                   <p className="text-muted mb-6">
                     Si tienes alguna pregunta, sugerencia o simplemente quieres saludarnos, completa el formulario y te responderemos lo antes posible. ¡Estamos ansiosos por escucharte!
                   </p>
-                  
+
                   <div className="space-y-6 mb-10">
                     <div className="flex items-start">
                       <div className="accent-red mr-4 mt-1">
@@ -117,7 +129,7 @@ export default function ContactPage() {
                         <p className="text-muted">Papantla de Olarte, Ver, MX</p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-start">
                       <div className="accent-blue mr-4 mt-1">
                         <i className="fas fa-envelope text-xl"></i>
@@ -127,7 +139,7 @@ export default function ContactPage() {
                         <p className="text-muted">info@webcodeacademy.com.mx</p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-start">
                       <div className="accent-yellow mr-4 mt-1">
                         <i className="fas fa-phone-alt text-xl"></i>
@@ -138,7 +150,7 @@ export default function ContactPage() {
                       </div>
                     </div>
                   </div>
-                  
+
                   <div>
                     <h3 className="font-medium text-lg mb-3">Síguenos</h3>
                     <div className="flex space-x-4">
@@ -160,76 +172,73 @@ export default function ContactPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="w-full md:w-1/2">
                   <div className="bg-primary-700 rounded-xl p-6 md:p-8">
-                    <Form {...form}>
-                      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                        <FormField
-                          control={form.control}
-                          name="name"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Nombre</FormLabel>
-                              <FormControl>
-                                <Input placeholder="Tu nombre" className="bg-primary-800" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                      <div>
+                        <label htmlFor="name" className="block mb-2 text-sm font-medium">Nombre</label>
+                        <input
+                          type="text"
+                          id="name"
+                          {...form.register('name')}
+                          className="w-full p-3 bg-primary-800 border border-secondary-700 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-blue text-light"
+                          placeholder="Tu nombre"
                         />
-                        
-                        <FormField
-                          control={form.control}
-                          name="email"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Correo electrónico</FormLabel>
-                              <FormControl>
-                                <Input placeholder="tu@email.com" className="bg-primary-800" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
+                        {form.formState.errors.name && (
+                          <p className="mt-1 text-sm text-red-500">{form.formState.errors.name.message}</p>
+                        )}
+                      </div>
+
+                      <div>
+                        <label htmlFor="email" className="block mb-2 text-sm font-medium">Correo electrónico</label>
+                        <input
+                          type="email"
+                          id="email"
+                          {...form.register('email')}
+                          className="w-full p-3 bg-primary-800 border border-secondary-700 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-blue text-light"
+                          placeholder="tu@email.com"
                         />
-                        
-                        <FormField
-                          control={form.control}
-                          name="message"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Mensaje</FormLabel>
-                              <FormControl>
-                                <Textarea 
-                                  placeholder="¿En qué podemos ayudarte?" 
-                                  className="bg-primary-800" 
-                                  rows={5}
-                                  {...field} 
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        
-                        <Button 
-                          type="submit" 
-                          className="w-full bg-accent-blue hover:bg-accent-blue hover:opacity-90"
-                          disabled={contactMutation.isPending}
-                        >
-                          {contactMutation.isPending ? (
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          ) : null}
-                          Enviar mensaje
-                        </Button>
-                      </form>
-                    </Form>
+                        {form.formState.errors.email && (
+                          <p className="mt-1 text-sm text-red-500">{form.formState.errors.email.message}</p>
+                        )}
+                      </div>
+
+                      <div>
+                        <label htmlFor="message" className="block mb-2 text-sm font-medium">Mensaje</label>
+                        <textarea
+                          id="message"
+                          {...form.register('message')}
+                          rows={3}
+                          className="w-full p-3 bg-primary-800 border border-secondary-700 rounded-md focus:outline-none focus:ring-2 focus:ring-accent-blue text-light"
+                          placeholder="¿En qué podemos ayudarte?"
+                        ></textarea>
+                        {form.formState.errors.message && (
+                          <p className="mt-1 text-sm text-red-500">{form.formState.errors.message.message}</p>
+                        )}
+                      </div>
+
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="w-full py-3 bg-accent-blue text-white font-medium rounded-md hover:bg-opacity-90 transition-colors flex justify-center items-center"
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <Loader2 className="animate-spin mr-2 h-4 w-4" />
+                            Enviando...
+                          </>
+                        ) : (
+                          'Enviar mensaje'
+                        )}
+                      </button>
+                    </form>
                   </div>
                 </div>
               </div>
             </div>
           </section>
-          
+
           {/* FAQ Section */}
           <section className="bg-secondary-900 py-16">
             <div className="container mx-auto px-4">
@@ -237,7 +246,7 @@ export default function ContactPage() {
                 <h2 className="text-3xl font-heading font-bold mb-10 text-center">
                   Preguntas Frecuentes
                 </h2>
-                
+
                 <Accordion type="single" collapsible className="w-full">
                   <AccordionItem value="item-1" className="border-b border-primary-700">
                     <AccordionTrigger className="text-xl font-heading font-semibold px-6 py-4 bg-primary-700 rounded-t-xl hover:no-underline">
@@ -247,7 +256,7 @@ export default function ContactPage() {
                       Sí, todos nuestros cursos son 100% gratuitos. Nuestro objetivo es combatir el analfabetismo digital y hacer que la educación tecnológica sea accesible para todos, independientemente de su situación económica.
                     </AccordionContent>
                   </AccordionItem>
-                  
+
                   <AccordionItem value="item-2" className="border-b border-primary-700 mt-4">
                     <AccordionTrigger className="text-xl font-heading font-semibold px-6 py-4 bg-primary-700 rounded-t-xl hover:no-underline">
                       ¿Cómo funcionan las clases mixtas?
@@ -256,7 +265,7 @@ export default function ContactPage() {
                       Ofrecemos clases tanto presenciales como virtuales. Las clases virtuales se transmiten en vivo y también quedan grabadas para que puedas revisarlas en cualquier momento. Las clases presenciales se realizan en nuestra sede en la Ciudad de México.
                     </AccordionContent>
                   </AccordionItem>
-                  
+
                   <AccordionItem value="item-3" className="border-b border-primary-700 mt-4">
                     <AccordionTrigger className="text-xl font-heading font-semibold px-6 py-4 bg-primary-700 rounded-t-xl hover:no-underline">
                       ¿Recibo algún certificado al completar un curso?
@@ -265,7 +274,7 @@ export default function ContactPage() {
                       Sí, al completar satisfactoriamente un curso, recibirás un certificado digital que acredita tus habilidades y conocimientos adquiridos. Este certificado puede ser añadido a tu currículum y perfil de LinkedIn.
                     </AccordionContent>
                   </AccordionItem>
-                  
+
                   <AccordionItem value="item-4" className="border-b border-primary-700 mt-4">
                     <AccordionTrigger className="text-xl font-heading font-semibold px-6 py-4 bg-primary-700 rounded-t-xl hover:no-underline">
                       ¿Necesito conocimientos previos para tomar los cursos?
@@ -274,7 +283,7 @@ export default function ContactPage() {
                       No necesariamente. Tenemos cursos diseñados para todos los niveles, desde principiantes absolutos hasta programadores con experiencia. Cada curso indica claramente el nivel de conocimientos previos recomendado.
                     </AccordionContent>
                   </AccordionItem>
-                  
+
                   <AccordionItem value="item-5" className="border-b border-primary-700 mt-4">
                     <AccordionTrigger className="text-xl font-heading font-semibold px-6 py-4 bg-primary-700 rounded-t-xl hover:no-underline">
                       ¿Cómo puedo apoyar a Web Code Academy?
@@ -288,7 +297,7 @@ export default function ContactPage() {
             </div>
           </section>
         </main>
-        
+
         <Footer />
       </div>
     </>

@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, hashPassword } from "./auth";
 import { insertContactSchema } from "@shared/schema";
+import { sendEmail } from "./services/email";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Setup authentication routes
@@ -200,15 +201,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       if (!validation.success) {
         return res.status(400).json({ 
-          message: "Invalid contact form data", 
-          errors: validation.error.errors 
+          message: "Por favor completa todos los campos correctamente", 
+          errors: validation.error.format()
         });
       }
 
+      // Preparar los datos del correo
+      const emailData = {
+        to: "webcodeacademy0@gmail.com",
+        from: validation.data.email,
+        subject: `Nuevo mensaje de contacto de ${validation.data.name}`,
+        text: validation.data.message,
+      };
+
+      // Guardar en la base de datos
       const contact = await storage.createContact(validation.data);
-      res.status(201).json(contact);
+
+      // Enviar el correo
+      try {
+        await sendEmail(emailData);
+      } catch (emailError) {
+        console.error("Error al enviar el correo:", emailError);
+        // No devolvemos el error al cliente, pero lo registramos
+      }
+
+      res.status(201).json({ 
+        message: "Mensaje enviado correctamente",
+        contact 
+      });
     } catch (error) {
-      res.status(500).json({ message: "Failed to submit contact form" });
+      console.error("Error en el formulario de contacto:", error);
+      res.status(500).json({ 
+        message: "Hubo un error al enviar tu mensaje. Por favor intenta de nuevo más tarde." 
+      });
     }
   });
 
