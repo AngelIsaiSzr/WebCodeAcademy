@@ -1,7 +1,22 @@
 import { InsertCourse } from '@shared/schema';
 
-// Initial courses data for seeding the application
+// Datos iniciales de los cursos para la aplicación
 export const initialCourses: InsertCourse[] = [
+  {
+    title: "Desarrollo Web",
+    slug: "desarrollo-web",
+    description: "En este curso aprenderás todo sobre el Desarrollo Web. Desde la estructura básica de una página web en HTML, hasta la aplicación de estilos en CSS y la implementación de interactividad con JavaScript, desarrollarás las habilidades necesarias para construir interfaces de usuario claras y funcionales.",
+    shortDescription: "Aprende a crear sitios web con HTML, CSS y JavaScript. Inicia tu camino en la programación y el desarrollo web.",
+    level: "Principiante",
+    category: "Desarrollo Web",
+    duration: 24,
+    modules: 11,
+    image: "https://res.cloudinary.com/dw6igi7fc/image/upload/v1746131183/back1_xmgluf.png",
+    featured: false,
+    popular: true,
+    new: false,
+    instructor: "Angel Salazar"
+  },
   {
     title: "Desarrollo Web Frontend",
     slug: "desarrollo-web-frontend",
@@ -169,71 +184,130 @@ export const initialCourses: InsertCourse[] = [
   }
 ];
 
-// Sample module and section data for Python course
-export const pythonModules = [
+// Módulos para el curso de Desarrollo Web
+export const webDevModules = [
   {
-    courseId: 2, // Python Fullstack course
-    title: "Introducción a Python",
-    description: "En este módulo aprenderás los conceptos básicos de Python, su historia, instalación y primeros pasos en la programación con este lenguaje.",
-    duration: 5,
+    courseId: 1, // Desarrollo Web course
+    title: "Introducción a la Computación",
+    description: "Aprende los conceptos básicos de la computación. Incluye historia de la computación, hardware y software.",
+    duration: 2,
     order: 1,
     difficulty: "Easy",
     instructor: "Angel Salazar"
   },
   {
-    courseId: 2, // Python Fullstack course
-    title: "Estructuras de Datos",
-    description: "Aprenderás las principales estructuras de datos en Python como listas, tuplas, diccionarios y conjuntos, así como las operaciones que puedes realizar con ellas.",
-    duration: 6,
+    courseId: 1, // Desarrollo Web course
+    title: "HTML Básico",
+    description: "Descubre el mundo del código: tu primer paso hacia HTML. Aprende a crear tu primera página web con HTML.",
+    duration: 2,
     order: 2,
+    difficulty: "Easy",
+    instructor: "Angel Salazar"
+  },
+  {
+    courseId: 1, // Desarrollo Web course
+    title: "HTML Intermedio",
+    description: "Maneja el uso de enlaces y multimedia para enriquecer tu contenido. Aprende a crear enlaces, imágenes y videos en HTML.",
+    duration: 2,
+    order: 3,
+    difficulty: "Easy",
+    instructor: "Angel Salazar"
+  },
+  {
+    courseId: 1, // Desarrollo Web course
+    title: "HTML Avanzado",
+    description: "Conoce como crear formularios y mejores prácticas. Aprende a crear formularios y validar datos en HTML.",
+    duration: 2,
+    order: 4,
+    difficulty: "Easy",
+    instructor: "Angel Salazar"
+  },
+  {
+    courseId: 1, // Desarrollo Web course
+    title: "CSS Básico",
+    description: "Embellece la web con CSS, definiendo estilo y diseño visual. Aplica estilos básicos a tus páginas web.",
+    duration: 2,
+    order: 5,
+    difficulty: "Easy",
+    instructor: "Angel Salazar"
+  },
+  {
+    courseId: 1, // Desarrollo Web course
+    title: "CSS Intermedio",
+    description: "Diseña sitios web de forma visualmente agradable y coherente. Aprende a usar selectores y propiedades CSS.",
+    duration: 2,
+    order: 6,
+    difficulty: "Easy",
+    instructor: "Angel Salazar"
+  },
+  {
+    courseId: 1, // Desarrollo Web course
+    title: "CSS Avanzado",
+    description: "Domina transiciones, animaciones, y flexbox. Aprende a crear diseños responsivos y atractivos.",
+    duration: 2,
+    order: 7,
+    difficulty: "Easy",
+    instructor: "Angel Salazar"
+  },
+  {
+    courseId: 1, // Desarrollo Web course
+    title: "JavaScript Básico",
+    description: "Descubre la magia de la programación con JavaScript. Crea páginas dinámicas e interactivas.",
+    duration: 2,
+    order: 8,
     difficulty: "Medium",
     instructor: "Angel Salazar"
   },
   {
-    courseId: 2, // Python Fullstack course
-    title: "Funciones y Módulos",
-    description: "Aprenderás a crear y usar funciones, a importar módulos existentes y a crear tus propios módulos para organizar mejor tu código.",
-    duration: 5,
-    order: 3,
+    courseId: 1, // Desarrollo Web course
+    title: "JavaScript Intermedio",
+    description: "Logra que tus sitios web respondan de manera más intuitiva. Aprende a manipular el DOM y eventos.",
+    duration: 2,
+    order: 9,
+    difficulty: "Medium",
+    instructor: "Angel Salazar"
+  },
+  {
+    courseId: 1, // Desarrollo Web course
+    title: "JavaScript Avanzado",
+    description: "Profundiza en funciones, arrays y objetos para gestionar datos. Descubre como trabajar con funciones avanzadas.",
+    duration: 2,
+    order: 10,
+    difficulty: "Medium",
+    instructor: "Angel Salazar"
+  },
+  {
+    courseId: 1, // Desarrollo Web course
+    title: "Publicación de tu Página Web",
+    description: "Sube tu página web a internet y comparte el link a tus amigos. Aprende a usar Git, GitHub y Github Pages.",
+    duration: 2,
+    order: 11,
     difficulty: "Medium",
     instructor: "Angel Salazar"
   }
 ];
 
-export const pythonSections = [
+// Secciones para el curso de Desarrollo Web
+export const webDevSections = [
   {
-    moduleId: 1, // Introduction to Python module
-    title: "Historia de Python y su filosofía",
-    content: "Aprenderás sobre la historia de Python, quién lo creó y por qué, así como los principios de diseño del lenguaje.",
+    moduleId: 1, // Introducción a la Computación module
+    title: "Historia de la Computación",
+    content: "Aprenderás sobre la historia de la computación, desde los primeros dispositivos hasta las computadoras modernas.",
     duration: 30,
     order: 1
   },
   {
-    moduleId: 1, // Introduction to Python module
-    title: "Instalación y configuración del entorno",
-    content: "Aprenderás a instalar Python en diferentes sistemas operativos, a configurar entornos virtuales y a usar diferentes IDEs.",
+    moduleId: 1, // Introducción a la Computación module
+    title: "Hardware y Software",
+    content: "Aprenderás sobre los componentes físicos de una computadora y el software que los controla.",
     duration: 45,
     order: 2
   },
   {
-    moduleId: 1, // Introduction to Python module
-    title: "Variables y tipos de datos básicos",
-    content: "Aprenderás sobre los tipos de datos básicos en Python como números, cadenas y booleanos, y cómo trabajar con variables.",
+    moduleId: 1, // Introducción a la Computación module
+    title: "Sistemas Operativos",
+    content: "Aprenderás sobre los diferentes sistemas operativos y su función en la computación moderna.",
     duration: 60,
     order: 3
-  },
-  {
-    moduleId: 2, // Data Structures module
-    title: "Listas y sus operaciones",
-    content: "Aprenderás qué son las listas, cómo crearlas, acceder a sus elementos y realizar operaciones comunes como añadir, eliminar y modificar elementos.",
-    duration: 60,
-    order: 1
-  },
-  {
-    moduleId: 2, // Data Structures module
-    title: "Tuplas, diccionarios y conjuntos",
-    content: "Aprenderás sobre otras estructuras de datos importantes en Python: tuplas (inmutables), diccionarios (pares clave-valor) y conjuntos (colecciones desordenadas sin duplicados).",
-    duration: 75,
-    order: 2
   }
 ];

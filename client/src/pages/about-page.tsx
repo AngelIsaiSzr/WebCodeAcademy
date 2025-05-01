@@ -41,7 +41,7 @@ export default function AboutPage() {
                     Nuestra Misión
                   </h2>
                   <p className="text-muted mb-6">
-                    En <span className="accent-blue font-medium">Web Code Academy</span>, creemos que la educación tecnológica de calidad debe ser accesible para todos. Nuestra misión es combatir el analfabetismo digital ofreciendo cursos de programación gratuitos que permitan a nuestros estudiantes desarrollar habilidades relevantes para el mercado laboral actual.
+                    En <span className="accent-blue font-medium">Web Code Academy</span>, creemos que la educación tecnológica de calidad debe ser accesible para todos. Nuestra misión es combatir el analfabetismo digital ofreciendo cursos de programación y tecnología gratuitos que permitan a nuestros estudiantes desarrollar habilidades relevantes para el mercado laboral actual.
                   </p>
                   
                   <h3 className="text-xl font-heading font-semibold mb-4">
@@ -69,7 +69,7 @@ export default function AboutPage() {
                 
                 <div className="w-full md:w-1/2 order-1 md:order-2">
                   <img 
-                    src="https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=1489&q=80" 
+                    src="https://res.cloudinary.com/dw6igi7fc/image/upload/v1746129856/about1_cy3qzm.jpg" 
                     alt="Misión de Web Code Academy" 
                     className="rounded-xl shadow-lg"
                   />
@@ -84,7 +84,7 @@ export default function AboutPage() {
               <div className="flex flex-col md:flex-row items-center gap-12">
                 <div className="w-full md:w-1/2">
                   <img 
-                    src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1489&q=80" 
+                    src="https://res.cloudinary.com/dw6igi7fc/image/upload/v1746129856/about2_rxuu0v.jpg" 
                     alt="Valores de Web Code Academy" 
                     className="rounded-xl shadow-lg"
                   />
@@ -95,7 +95,7 @@ export default function AboutPage() {
                     Nuestra Historia
                   </h2>
                   <p className="text-muted mb-6">
-                    Web Code Academy nació en 2022 como una respuesta a la creciente necesidad de educación tecnológica accesible. Fundada por Angel Salazar, quien experimentó de primera mano las barreras de acceso a la educación en tecnología, nuestra academia comenzó como un pequeño grupo de estudio y ha crecido hasta convertirse en una comunidad con miles de estudiantes en toda Latinoamérica.
+                    Web Code Academy nació en 2022 como una respuesta a la creciente necesidad de educación tecnológica accesible. Fundada por Angel Salazar, quien experimentó de primera mano las barreras de acceso a la educación en tecnología, nuestra academia comenzó como un pequeño grupo de estudio y ha crecido hasta convertirse en una comunidad con decenas de estudiantes en toda Latinoamérica.
                   </p>
                   
                   <h3 className="text-xl font-heading font-semibold mb-4">
@@ -124,7 +124,7 @@ export default function AboutPage() {
                     </div>
                     
                     <div className="flex items-start">
-                      <div className="accent-yellow mr-4 mt-1">
+                      <div className="accent-yellow ml-1 mr-5 mt-1">
                         <i className="fas fa-lightbulb"></i>
                       </div>
                       <div>
@@ -134,7 +134,7 @@ export default function AboutPage() {
                     </div>
                     
                     <div className="flex items-start">
-                      <div className="accent-red mr-4 mt-1">
+                      <div className="accent-red ml-1 mr-4 mt-1">
                         <i className="fas fa-certificate"></i>
                       </div>
                       <div>

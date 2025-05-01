@@ -6,7 +6,7 @@ import * as bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import { users, courses, teams, testimonials, modules, sections, contacts } from '../shared/schema';
 import { initialUsers } from '../client/src/data/users';
-import { initialCourses, pythonModules, pythonSections } from '../client/src/data/courses';
+import { initialCourses, webDevModules, webDevSections } from '../client/src/data/courses';
 import { initialTeam } from '../client/src/data/team';
 import { initialTestimonials } from '../client/src/data/testimonials';
 
@@ -91,16 +91,16 @@ async function seed() {
     }
 
     // Inserta módulos
-    if (pythonModules.length > 0) {
-      console.log(`Insertando ${pythonModules.length} módulos...`);
-      await db.insert(modules).values(pythonModules);
+    if (webDevModules.length > 0) {
+      console.log(`Insertando ${webDevModules.length} módulos...`);
+      await db.insert(modules).values(webDevModules);
       console.log('✅ Módulos insertados correctamente');
     }
 
     // Inserta secciones
-    if (pythonSections.length > 0) {
-      console.log(`Insertando ${pythonSections.length} secciones...`);
-      await db.insert(sections).values(pythonSections);
+    if (webDevSections.length > 0) {
+      console.log(`Insertando ${webDevSections.length} secciones...`);
+      await db.insert(sections).values(webDevSections);
       console.log('✅ Secciones insertadas correctamente');
     }
     

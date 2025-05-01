@@ -324,7 +324,7 @@ export default function AuthPage() {
               Aprende a <span className="accent-blue">programar</span> gratis y transforma tu futuro
             </h2>
             <p className="text-muted mb-8">
-              Web Code Academy te ofrece cursos de programación totalmente gratuitos para combatir el analfabetismo digital y brindarte las herramientas para un futuro brillante en tecnología.
+              Web Code Academy te ofrece cursos de programación y tecnología totalmente gratuitos para combatir el analfabetismo digital y brindarte las herramientas para un futuro brillante en el mundo digital.
             </p>
             
             <div className="space-y-6">

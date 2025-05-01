@@ -237,7 +237,7 @@ export default function AdminPage() {
     description: "",
     shortDescription: "",
     level: "Principiante",
-    category: "Frontend",
+    category: "Desarrollo Web",
     duration: 0,
     modules: 0,
     image: "",
@@ -1068,7 +1068,7 @@ export default function AdminPage() {
                               <FormLabel>Título del curso</FormLabel>
                               <FormControl>
                                 <Input 
-                                  placeholder="Ej: Desarrollo Web Frontend" 
+                                  placeholder="Ej: Desarrollo Web" 
                                   {...field} 
                                   onChange={handleTitleChange}
                                 />
@@ -1086,7 +1086,7 @@ export default function AdminPage() {
                               <FormLabel>Slug</FormLabel>
                               <FormControl>
                                 <Input 
-                                  placeholder="Ej: desarrollo-web-frontend" 
+                                  placeholder="Ej: desarrollo-web" 
                                   {...field} 
                                 />
                               </FormControl>
@@ -1142,9 +1142,10 @@ export default function AdminPage() {
                                     </SelectTrigger>
                                   </FormControl>
                                   <SelectContent>
+                                    <SelectItem value="Desarrollo Web">Desarrollo Web</SelectItem>
                                     <SelectItem value="Frontend">Frontend</SelectItem>
                                     <SelectItem value="Backend">Backend</SelectItem>
-                                    <SelectItem value="Fullstack">Fullstack</SelectItem>
+                                    <SelectItem value="FullStack">FullStack</SelectItem>
                                     <SelectItem value="Mobile">Mobile</SelectItem>
                                     <SelectItem value="Data Science">Data Science</SelectItem>
                                     <SelectItem value="DevOps">DevOps</SelectItem>
@@ -1532,10 +1533,14 @@ export default function AdminPage() {
                                       <FormControl>
                                         <Input 
                                           type="number" 
+                                          placeholder="Ej: 120 (2 horas)"
                                           {...field}
                                           onChange={e => field.onChange(Number(e.target.value))}
                                         />
                                       </FormControl>
+                                      <FormDescription>
+                                        La duración se mostrará en horas en la interfaz de usuario
+                                      </FormDescription>
                                       <FormMessage />
                                     </FormItem>
                                   )}
@@ -2186,7 +2191,7 @@ export default function AdminPage() {
                               <FormLabel>Nombre del curso</FormLabel>
                               <FormControl>
                                 <Input 
-                                  placeholder="Ej: Desarrollo Web Frontend" 
+                                  placeholder="Ej: Desarrollo Web" 
                                   {...field} 
                                 />
                               </FormControl>

@@ -14,7 +14,7 @@ export default function AboutSection() {
             transition={{ duration: 0.5 }}
           >
             <img 
-              src="https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=1489&q=80" 
+              src="https://res.cloudinary.com/dw6igi7fc/image/upload/v1746129856/about1_cy3qzm.jpg" 
               alt="Misión de Web Code Academy" 
               className="rounded-xl shadow-lg"
             />
@@ -29,7 +29,7 @@ export default function AboutSection() {
           >
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">Nuestra Misión</h2>
             <p className="text-muted mb-6">
-              En <span className="accent-blue font-medium">Web Code Academy</span>, creemos que la educación tecnológica de calidad debe ser accesible para todos. Nuestra misión es combatir el analfabetismo digital ofreciendo cursos de programación gratuitos que permitan a nuestros estudiantes desarrollar habilidades relevantes para el mercado laboral actual.
+              En <span className="accent-blue font-medium">Web Code Academy</span>, creemos que la educación tecnológica de calidad debe ser accesible para todos. Nuestra misión es combatir el analfabetismo digital ofreciendo cursos de programación y tecnología gratuitos que permitan a nuestros estudiantes desarrollar habilidades relevantes para el mercado laboral actual.
             </p>
             
             <div className="mb-8">

@@ -69,7 +69,7 @@ function ModuleAccordion({ module, isExpanded, toggleExpanded, isEnrolled, index
               Módulo {index + 1}: {module.title}
             </h3>
             <span className="px-3 py-1 text-xs rounded-full bg-secondary-800 text-muted">
-              {module.duration} horas
+              {Math.round(module.duration / 60)} horas
             </span>
             <span className="ml-3 px-3 py-1 text-xs rounded-full bg-secondary-800 text-muted">
               {getDifficultyLabel(module.difficulty)}
