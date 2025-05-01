@@ -59,6 +59,7 @@ export default function TeamSection() {
                         target="_blank" 
                         rel="noopener noreferrer" 
                         className="text-muted hover:text-accent-blue transition-colors"
+                        aria-label="Sigueme en LinkedIn"
                       >
                         <i className="fab fa-linkedin-in"></i>
                       </a>
@@ -69,6 +70,7 @@ export default function TeamSection() {
                         target="_blank" 
                         rel="noopener noreferrer" 
                         className="text-muted hover:text-accent-blue transition-colors"
+                        aria-label="Sigueme en GitHub"
                       >
                         <i className="fab fa-github"></i>
                       </a>
@@ -79,6 +81,7 @@ export default function TeamSection() {
                         target="_blank" 
                         rel="noopener noreferrer" 
                         className="text-muted hover:text-accent-blue transition-colors"
+                        aria-label="Sigueme en Twitter"
                       >
                         <i className="fab fa-twitter"></i>
                       </a>
@@ -89,6 +92,7 @@ export default function TeamSection() {
                         target="_blank" 
                         rel="noopener noreferrer" 
                         className="text-muted hover:text-accent-red transition-colors"
+                        aria-label="Sigueme en Instagram"
                       >
                         <i className="fab fa-instagram"></i>
                       </a>
