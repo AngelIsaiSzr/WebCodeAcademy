@@ -6,6 +6,7 @@ interface EmailData {
   subject: string;
   text: string;
   html?: string;
+  name: string;
 }
 
 // Configuración del transportador de correo
@@ -45,14 +46,14 @@ export async function sendEmail(data: EmailData): Promise<void> {
       subject: data.subject,
       text: `
 Nuevo mensaje de contacto:
-Nombre: ${data.to}
+Nombre: ${data.name}
 Email: ${data.from}
 Mensaje:
 ${data.text}
       `,
       html: data.html || `
         <h2>Nuevo mensaje de contacto</h2>
-        <p><strong>Nombre:</strong> ${data.to}</p>
+        <p><strong>Nombre:</strong> ${data.name}</p>
         <p><strong>Email:</strong> ${data.from}</p>
         <p><strong>Mensaje:</strong></p>
         <p>${data.text.replace(/\n/g, '<br>')}</p>

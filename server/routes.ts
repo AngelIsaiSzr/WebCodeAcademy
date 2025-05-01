@@ -210,6 +210,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const emailData = {
         to: "webcodeacademy0@gmail.com",
         from: validation.data.email,
+        name: validation.data.name,
         subject: `Nuevo mensaje de contacto de ${validation.data.name}`,
         text: validation.data.message,
       };
