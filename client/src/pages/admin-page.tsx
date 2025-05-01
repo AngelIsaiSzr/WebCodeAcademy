@@ -1277,7 +1277,7 @@ export default function AdminPage() {
                               <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                                 <FormControl>
                                   <Checkbox
-                                    checked={field.value}
+                                    checked={field.value || false}
                                     onCheckedChange={field.onChange}
                                   />
                                 </FormControl>
@@ -1298,7 +1298,7 @@ export default function AdminPage() {
                               <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                                 <FormControl>
                                   <Checkbox
-                                    checked={field.value}
+                                    checked={field.value || false}
                                     onCheckedChange={field.onChange}
                                   />
                                 </FormControl>
@@ -1319,7 +1319,7 @@ export default function AdminPage() {
                               <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                                 <FormControl>
                                   <Checkbox
-                                    checked={field.value}
+                                    checked={field.value || false}
                                     onCheckedChange={field.onChange}
                                   />
                                 </FormControl>
@@ -1997,7 +1997,8 @@ export default function AdminPage() {
                                 <FormControl>
                                   <Input 
                                     placeholder="URL de LinkedIn" 
-                                    {...field} 
+                                    {...field}
+                                    value={field.value || ''}
                                   />
                                 </FormControl>
                                 <FormMessage />
@@ -2014,7 +2015,8 @@ export default function AdminPage() {
                                 <FormControl>
                                   <Input 
                                     placeholder="URL de GitHub" 
-                                    {...field} 
+                                    {...field}
+                                    value={field.value || ''}
                                   />
                                 </FormControl>
                                 <FormMessage />
@@ -2033,7 +2035,8 @@ export default function AdminPage() {
                                 <FormControl>
                                   <Input 
                                     placeholder="URL de Twitter" 
-                                    {...field} 
+                                    {...field}
+                                    value={field.value || ''}
                                   />
                                 </FormControl>
                                 <FormMessage />
@@ -2050,7 +2053,8 @@ export default function AdminPage() {
                                 <FormControl>
                                   <Input 
                                     placeholder="URL de Instagram" 
-                                    {...field} 
+                                    {...field}
+                                    value={field.value || ''}
                                   />
                                 </FormControl>
                                 <FormMessage />

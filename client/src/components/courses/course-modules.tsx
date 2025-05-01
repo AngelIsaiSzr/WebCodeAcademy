@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Module } from '@shared/schema';
+import { Module, Section } from '@shared/schema';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { ChevronDown, ChevronUp, Lock, CheckCircle } from 'lucide-react';
@@ -44,7 +44,7 @@ type ModuleAccordionProps = {
 
 function ModuleAccordion({ module, isExpanded, toggleExpanded, isEnrolled, index }: ModuleAccordionProps) {
   // Fetch sections for this module
-  const { data: sections, isLoading } = useQuery({
+  const { data: sections = [], isLoading } = useQuery<Section[]>({
     queryKey: [`/api/modules/${module.id}/sections`],
     enabled: isExpanded,
   });
@@ -102,9 +102,9 @@ function ModuleAccordion({ module, isExpanded, toggleExpanded, isEnrolled, index
               <div className="py-4 text-center text-muted">
                 Cargando secciones...
               </div>
-            ) : sections && sections.length > 0 ? (
+            ) : sections.length > 0 ? (
               <div className="space-y-3">
-                {sections.map((section, sectionIndex) => (
+                {sections.map((section: Section, sectionIndex: number) => (
                   <div 
                     key={section.id} 
                     className={`p-4 rounded-lg flex justify-between items-center ${

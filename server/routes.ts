@@ -533,48 +533,44 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  // Special route to fix Python course modules (temporary)
-  app.post("/api/fix-python-modules", async (req, res) => {
+  // Special route to fix Web Dev course modules (temporary)
+  app.post("/api/fix-web-dev", async (req, res) => {
     try {
       if (!req.isAuthenticated() || req.user.role !== "admin") {
         return res.status(403).json({ message: "Unauthorized: Admin access required" });
       }
       
       // Import Python modules data
-      const { pythonModules } = await import("../client/src/data/courses");
+      const { webDevModules } = await import("../client/src/data/courses");
       
       // Get Python course
-      const pythonCourse = await storage.getCourseBySlug("python-fullstack");
-      if (!pythonCourse) {
-        return res.status(404).json({ message: "Python course not found" });
+      const webDevCourse = await storage.getCourseBySlug("desarrollo-web");
+      if (!webDevCourse) {
+        return res.status(404).json({ message: "Web Dev course not found" });
       }
-      
-      // Get all current modules for Python course
-      const existingModules = await storage.getModulesByCourseId(pythonCourse.id);
-      
+      // Get all current modules for Web Dev course
+      const existingModules = await storage.getModulesByCourseId(webDevCourse.id);
       // Delete all existing modules
       for (const module of existingModules) {
         await storage.deleteModule(module.id);
       }
-      
       // Add the three basic modules
       const newModules = [];
-      for (const moduleData of pythonModules) {
+      for (const moduleData of webDevModules) {
         const module = await storage.createModule({
           ...moduleData,
-          courseId: pythonCourse.id
+          courseId: webDevCourse.id
         });
         newModules.push(module);
       }
-      
-      res.status(200).json({ 
-        message: "Python course modules fixed successfully",
+      res.status(200).json({
+        message: "Web Dev course modules fixed successfully",
         deleted: existingModules.length,
         added: newModules.length
       });
     } catch (error) {
-      console.error("Error fixing Python modules:", error);
-      res.status(500).json({ message: "Failed to fix Python modules" });
+      console.error("Error fixing Web Dev modules:", error);
+      res.status(500).json({ message: "Failed to fix Web Dev modules" });
     }
   });
 
@@ -710,7 +706,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Import course data
-      const { initialCourses, pythonModules, pythonSections } = await import("../client/src/data/courses");
+      const { initialCourses, webDevModules, webDevSections } = await import("../client/src/data/courses");
       
       // Seed courses
       for (const courseData of initialCourses) {
