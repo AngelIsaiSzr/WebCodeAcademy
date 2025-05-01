@@ -45,18 +45,15 @@ export async function sendEmail(data: EmailData): Promise<void> {
       subject: data.subject,
       text: `
 Nuevo mensaje de contacto:
-
-Nombre: ${data.from}
+Nombre: ${data.to}
 Email: ${data.from}
-
 Mensaje:
 ${data.text}
       `,
       html: data.html || `
         <h2>Nuevo mensaje de contacto</h2>
-        <p><strong>Nombre:</strong> ${data.from}</p>
+        <p><strong>Nombre:</strong> ${data.to}</p>
         <p><strong>Email:</strong> ${data.from}</p>
-        <br>
         <p><strong>Mensaje:</strong></p>
         <p>${data.text.replace(/\n/g, '<br>')}</p>
       `,
