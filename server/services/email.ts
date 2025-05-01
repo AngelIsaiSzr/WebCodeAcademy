@@ -9,18 +9,28 @@ interface EmailData {
 }
 
 // Configuración del transportador de correo
+if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+  console.error('Error: Las credenciales de correo no están configuradas correctamente');
+  console.error('SMTP_USER:', process.env.SMTP_USER ? 'Configurado' : 'No configurado');
+  console.error('SMTP_PASS:', process.env.SMTP_PASS ? 'Configurado' : 'No configurado');
+}
+
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: process.env.SMTP_USER || 'webcodeacademy0@gmail.com',
-    pass: process.env.SMTP_PASS, // Contraseña de aplicación de Google
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
   },
 });
 
 // Verificar la conexión
-transporter.verify(function (error, success) {
-  if (error) {
-    console.error('Error al verificar el transportador de correo:', error);
+transporter.verify(function (err: Error | null, success: true) {
+  if (err) {
+    console.error('Error al verificar el transportador de correo:', err);
+    const error = err as Error & { code?: string };
+    if (error.code === 'EAUTH') {
+      console.error('Error de autenticación. Verifica que las credenciales SMTP_USER y SMTP_PASS estén configuradas correctamente en las variables de entorno.');
+    }
   } else {
     console.log('Servidor listo para enviar correos');
   }
