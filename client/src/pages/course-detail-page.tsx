@@ -154,7 +154,7 @@ export default function CourseDetailPage() {
           <AnimateInView animation="fadeIn">
             <section className="bg-secondary-900 py-20">
               <div className="container mx-auto px-4">
-                <div className="flex flex-col md:flex-row items-start gap-10">
+                <div className="flex flex-col md:flex-row items-center gap-10">
                   <div className="w-full md:w-2/3">
                     <div className="flex flex-wrap gap-2 mb-4">
                       {course.category && (
