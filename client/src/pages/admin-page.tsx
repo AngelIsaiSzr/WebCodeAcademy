@@ -90,11 +90,15 @@ const testimonialFormSchema = insertTestimonialSchema.extend({
 const moduleFormSchema = insertModuleSchema.extend({
   title: z.string().min(3, "El título es requerido"),
   description: z.string().min(10, "La descripción es requerida"),
+  duration: z.number().min(1, "La duración debe ser mayor a 0"),
+  order: z.number().min(1, "El orden debe ser mayor a 0"),
 });
 
 const sectionFormSchema = insertSectionSchema.extend({
   title: z.string().min(3, "El título es requerido"),
   content: z.string().min(10, "El contenido es requerido"),
+  duration: z.number().min(1, "La duración debe ser mayor a 0"),
+  order: z.number().min(1, "El orden debe ser mayor a 0"),
 });
 
 type CourseFormValues = z.infer<typeof courseFormSchema>;
@@ -597,16 +601,8 @@ export default function AdminPage() {
       setEditingModule(null);
       refetchModules();
       
-      // Update course module count
-      if (selectedCourse) {
-        updateCourseMutation.mutate({ 
-          id: selectedCourse.id, 
-          data: { 
-            ...selectedCourse,
-            modules: modules ? modules.length + 1 : 1
-          } 
-        });
-      }
+      // Removed automatic course update to prevent the error
+      // The module count will be updated when fetching the course list
     },
     onError: (error: Error) => {
       toast({
@@ -634,8 +630,6 @@ export default function AdminPage() {
       });
       refetchModules();
       
-      // Removed automatic course update to fix the 500 error
-      // when deleting modules
       setModuleToDelete(null);
     },
     onError: (error: Error) => {
@@ -672,6 +666,20 @@ export default function AdminPage() {
   });
 
   const onModuleSubmit = (data: ModuleFormValues) => {
+    // Check if order already exists
+    const orderExists = modules?.some(m => 
+      m.order === data.order && (!editingModule || m.id !== editingModule.id)
+    );
+
+    if (orderExists) {
+      toast({
+        title: "Error de orden",
+        description: "Ya existe un módulo con ese número de orden. Por favor, elige otro número.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (editingModule) {
       updateModuleMutation.mutate({ id: editingModule.id, data });
     } else {
@@ -812,6 +820,20 @@ export default function AdminPage() {
   });
 
   const onSectionSubmit = (data: SectionFormValues) => {
+    // Check if order already exists
+    const orderExists = sections?.some(s => 
+      s.order === data.order && (!editingSection || s.id !== editingSection.id)
+    );
+
+    if (orderExists) {
+      toast({
+        title: "Error de orden",
+        description: "Ya existe una sección con ese número de orden. Por favor, elige otro número.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (editingSection) {
       updateSectionMutation.mutate({ id: editingSection.id, data });
     } else {
@@ -1533,8 +1555,14 @@ export default function AdminPage() {
                                       <FormControl>
                                         <Input 
                                           type="number" 
+                                          placeholder="Ej: 1" 
                                           {...field}
-                                          onChange={e => field.onChange(Number(e.target.value))}
+                                          value={field.value || ''}
+                                          onChange={(e) => {
+                                            const value = e.target.value;
+                                            const numValue = parseInt(value);
+                                            field.onChange(numValue || null);
+                                          }}
                                         />
                                       </FormControl>
                                       <FormMessage />
@@ -1551,8 +1579,14 @@ export default function AdminPage() {
                                       <FormControl>
                                         <Input 
                                           type="number" 
+                                          placeholder="Ej: 1" 
                                           {...field}
-                                          onChange={e => field.onChange(Number(e.target.value))}
+                                          value={field.value || ''}
+                                          onChange={(e) => {
+                                            const value = e.target.value;
+                                            const numValue = parseInt(value);
+                                            field.onChange(numValue || null);
+                                          }}
                                         />
                                       </FormControl>
                                       <FormMessage />
@@ -1761,12 +1795,18 @@ export default function AdminPage() {
                                                 name="duration"
                                                 render={({ field }) => (
                                                   <FormItem>
-                                                    <FormLabel>Duración (min)</FormLabel>
+                                                    <FormLabel>Duración (minutos)</FormLabel>
                                                     <FormControl>
                                                       <Input 
                                                         type="number" 
+                                                        placeholder="Ej: 30" 
                                                         {...field}
-                                                        onChange={e => field.onChange(Number(e.target.value))}
+                                                        value={field.value || ''}
+                                                        onChange={(e) => {
+                                                          const value = e.target.value;
+                                                          const numValue = parseInt(value);
+                                                          field.onChange(numValue || null);
+                                                        }}
                                                       />
                                                     </FormControl>
                                                     <FormMessage />
@@ -1783,8 +1823,14 @@ export default function AdminPage() {
                                                     <FormControl>
                                                       <Input 
                                                         type="number" 
+                                                        placeholder="Ej: 1" 
                                                         {...field}
-                                                        onChange={e => field.onChange(Number(e.target.value))}
+                                                        value={field.value || ''}
+                                                        onChange={(e) => {
+                                                          const value = e.target.value;
+                                                          const numValue = parseInt(value);
+                                                          field.onChange(numValue || null);
+                                                        }}
                                                       />
                                                     </FormControl>
                                                     <FormMessage />

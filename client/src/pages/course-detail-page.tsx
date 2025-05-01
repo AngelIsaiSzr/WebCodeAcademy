@@ -110,7 +110,7 @@ export default function CourseDetailPage() {
     );
   }
 
-  if ((courseError || !course) && !isLoadingCourse) {
+  if (courseError) {
     return (
       <div className="flex flex-col min-h-screen">
         <Navbar />
