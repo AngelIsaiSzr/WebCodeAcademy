@@ -306,7 +306,7 @@ export default function CourseDetailPage() {
 
           {/* Course Modules */}
           <AnimateInView animation="fadeIn" delay={0.2}>
-            <section id="modules" className="bg-primary-800 py-16">
+            <section id="modules" className="bg-primary-800 py-12">
               <div className="container mx-auto px-4">
                 <AnimateInView animation="slideUp" delay={0.3}>
                   <h2 className="text-3xl font-heading font-bold mb-12">
