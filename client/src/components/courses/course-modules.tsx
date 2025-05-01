@@ -104,7 +104,7 @@ function ModuleAccordion({ module, isExpanded, toggleExpanded, isEnrolled, index
               </div>
             ) : sections.length > 0 ? (
               <div className="space-y-3">
-                {sections.map((section: Section, sectionIndex: number) => (
+                {(isEnrolled ? sections : sections.slice(0, 3)).map((section: Section, sectionIndex: number) => (
                   <div 
                     key={section.id} 
                     className={`p-4 rounded-lg flex justify-between items-center ${

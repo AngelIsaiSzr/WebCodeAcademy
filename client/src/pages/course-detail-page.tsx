@@ -12,14 +12,16 @@ import { CheckCircle, Clock, Book, Award, AlertCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { AnimateInView } from "@/components/ui/animate-in-view";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePageLoading } from "@/hooks/use-page-loading";
+import { getRandomQuote } from "@/utils/quotes";
 
 export default function CourseDetailPage() {
   const [, params] = useRoute("/courses/:slug");
   const slug = params?.slug;
   const { toast } = useToast();
   const { user } = useAuth();
+  const [quote] = useState(getRandomQuote());
 
   // Fetch course data
   const { 
@@ -108,7 +110,7 @@ export default function CourseDetailPage() {
     );
   }
 
-  if (courseError || !course) {
+  if ((courseError || !course) && !isLoadingCourse) {
     return (
       <div className="flex flex-col min-h-screen">
         <Navbar />
@@ -127,6 +129,11 @@ export default function CourseDetailPage() {
         <Footer />
       </div>
     );
+  }
+
+  // Asegurarnos de que course existe antes de renderizar
+  if (!course) {
+    return null;
   }
 
   return (
@@ -213,22 +220,30 @@ export default function CourseDetailPage() {
                             <span>Ya estás inscrito en este curso</span>
                           </div>
                         ) : (
-                          <Button 
-                            onClick={handleEnroll}
-                            className={`px-6 py-3 ${
-                              course.popular 
-                                ? 'bg-accent-blue hover:bg-accent-blue hover:opacity-90' 
-                                : course.new 
-                                  ? 'bg-accent-yellow hover:bg-accent-yellow hover:opacity-90 text-primary-900' 
-                                  : 'bg-accent-red hover:bg-accent-red hover:opacity-90'
-                            }`}
-                            disabled={enrollMutation.isPending || isLoadingEnrollments}
-                          >
-                            {enrollMutation.isPending ? (
-                              <span className="mr-2 inline-block h-4 w-4 animate-spin">⟳</span>
-                            ) : null}
-                            Inscribirme Gratis
-                          </Button>
+                          <>
+                            <div className="mb-6 p-4 bg-primary-700 rounded-lg">
+                              <blockquote className="italic text-muted">
+                                "{quote.text}"
+                              </blockquote>
+                              <p className="text-sm text-muted mt-2">- {quote.author}</p>
+                            </div>
+                            <Button 
+                              onClick={handleEnroll}
+                              className={`px-6 py-3 ${
+                                course.popular 
+                                  ? 'bg-accent-blue hover:bg-accent-blue hover:opacity-90' 
+                                  : course.new 
+                                    ? 'bg-accent-yellow hover:bg-accent-yellow hover:opacity-90 text-primary-900' 
+                                    : 'bg-accent-red hover:bg-accent-red hover:opacity-90'
+                              }`}
+                              disabled={enrollMutation.isPending || isLoadingEnrollments}
+                            >
+                              {enrollMutation.isPending ? (
+                                <span className="mr-2 inline-block h-4 w-4 animate-spin">⟳</span>
+                              ) : null}
+                              Inscribirme Gratis
+                            </Button>
+                          </>
                         )}
                       </div>
                     </AnimateInView>

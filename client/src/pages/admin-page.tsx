@@ -535,7 +535,7 @@ export default function AdminPage() {
     courseId: 0,
     title: "",
     description: "",
-    duration: 2,
+    duration: 1,
     order: 1,
     difficulty: "Principiante",
     instructor: "",
