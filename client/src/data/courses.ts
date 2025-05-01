@@ -11,7 +11,7 @@ export const initialCourses: InsertCourse[] = [
     category: "Desarrollo Web",
     duration: 24,
     modules: 11,
-    image: "https://res.cloudinary.com/dw6igi7fc/image/upload/v1746131183/back1_xmgluf.png",
+    image: "https://res.cloudinary.com/dw6igi7fc/image/upload/v1746134148/back1_sngqjn.jpg",
     featured: false,
     popular: true,
     new: false,
