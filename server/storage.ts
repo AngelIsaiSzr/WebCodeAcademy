@@ -146,7 +146,10 @@ export class MemStorage implements IStorage {
     const user: User = { 
       ...insertUser, 
       id,
-      createdAt: new Date()
+      createdAt: new Date(),
+      role: insertUser.role || 'student',
+      profileImage: insertUser.profileImage || null,
+      bio: insertUser.bio || null
     };
     this.users.set(id, user);
     return user;
@@ -194,7 +197,10 @@ export class MemStorage implements IStorage {
     const course: Course = { 
       ...insertCourse, 
       id,
-      createdAt: new Date()
+      createdAt: new Date(),
+      featured: insertCourse.featured || null,
+      popular: insertCourse.popular || null,
+      new: insertCourse.new || null
     };
     this.courses.set(id, course);
     return course;
@@ -238,7 +244,9 @@ export class MemStorage implements IStorage {
     const enrollment: Enrollment = { 
       ...insertEnrollment, 
       id,
-      createdAt: new Date()
+      createdAt: new Date(),
+      progress: insertEnrollment.progress || 0,
+      completed: insertEnrollment.completed || false
     };
     this.enrollments.set(id, enrollment);
     return enrollment;
@@ -362,7 +370,14 @@ export class MemStorage implements IStorage {
 
   async createTeamMember(insertTeam: InsertTeam): Promise<Team> {
     const id = this.currentTeamIds++;
-    const team: Team = { ...insertTeam, id };
+    const team: Team = { 
+      ...insertTeam, 
+      id,
+      linkedIn: insertTeam.linkedIn || null,
+      github: insertTeam.github || null,
+      twitter: insertTeam.twitter || null,
+      instagram: insertTeam.instagram || null
+    };
     this.teams.set(id, team);
     return team;
   }
@@ -467,8 +482,8 @@ export class DatabaseStorage implements IStorage {
     return result[0];
   }
 
-  async createUser(user: InsertUser): Promise<User> {
-    const result = await db.insert(users).values(user).returning();
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const result = await db.insert(users).values(insertUser).returning();
     return result[0];
   }
 

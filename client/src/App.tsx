@@ -20,6 +20,7 @@ import { ProtectedRoute } from "@/lib/protected-route";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { AuthProvider } from "./hooks/use-auth";
+import CourseLearningPage from "@/pages/course-learning-page";
 
 function Router() {
   const [location] = useLocation();
@@ -31,6 +32,7 @@ function Router() {
         <Route path="/auth" component={AuthPage} />
         <Route path="/courses" component={CoursesPage} />
         <Route path="/courses/:slug" component={CourseDetailPage} />
+        <ProtectedRoute path="/courses/:courseId/learn" component={CourseLearningPage} />
         <Route path="/about" component={AboutPage} />
         <Route path="/contact" component={ContactPage} />
         <ProtectedRoute path="/editor" component={EditorPage} />
