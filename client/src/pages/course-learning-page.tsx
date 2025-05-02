@@ -303,7 +303,19 @@ export default function CourseLearningPage() {
         {/* Header fijo */}
         <div className="p-4 border-b border-primary-700">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold">{course.title}</h2>
+            <div className="flex items-center gap-3">
+              <Button 
+                variant="ghost" 
+                size="icon"
+                asChild
+                className="hover:bg-primary-700"
+              >
+                <a href={`/courses/${course.slug}`}>
+                  <ChevronLeft className="h-5 w-5" />
+                </a>
+              </Button>
+              <h2 className="text-xl font-bold">{course.title}</h2>
+            </div>
             <Button 
               variant="ghost" 
               size="icon"
@@ -498,11 +510,12 @@ export default function CourseLearningPage() {
                       <video
                         className="w-full h-full"
                         controls
-                        src="https://res.cloudinary.com/dw6igi7fc/video/upload/v1746151518/Back_animado_Lab_FFF_akn4mf.mp4" // Ejemplo - reemplazar con URL real
-                        poster="https://res.cloudinary.com/demo/video/upload/c_scale,w_1280/dog.jpg" // Thumbnail opcional
+                        src="https://res.cloudinary.com/dw6igi7fc/video/upload/v1746151518/Back_animado_Lab_FFF_akn4mf.mp4"
+                        poster="https://res.cloudinary.com/dw6igi7fc/image/upload/v1746134148/back1_sngqjn.jpg"
                         onTimeUpdate={(e) => handleVideoProgress(Math.floor(e.currentTarget.currentTime))}
                         onEnded={() => handleVideoProgress(100)}
                         autoPlay={false}
+                        loop={false}
                       >
                         Tu navegador no soporta el elemento de video.
                       </video>
