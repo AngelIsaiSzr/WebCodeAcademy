@@ -198,7 +198,9 @@ export default function CourseDetailPage() {
                             ? 'accent-blue'
                             : course.new
                               ? 'accent-yellow'
-                              : 'accent-red'
+                              : course.featured
+                                ? 'accent-red'
+                                : 'accent-blue'
                             }`} />
                           <span>{course.duration} horas</span>
                         </div>
@@ -207,7 +209,9 @@ export default function CourseDetailPage() {
                             ? 'accent-blue'
                             : course.new
                               ? 'accent-yellow'
-                              : 'accent-red'
+                              : course.featured
+                                ? 'accent-red'
+                                : 'accent-blue'
                             }`} />
                           <span>{course.modules} módulos</span>
                         </div>
@@ -216,7 +220,9 @@ export default function CourseDetailPage() {
                             ? 'accent-blue'
                             : course.new
                               ? 'accent-yellow'
-                              : 'accent-red'
+                              : course.featured
+                                ? 'accent-red'
+                                : 'accent-blue'
                             }`} />
                           <span>Certificado</span>
                         </div>
@@ -225,7 +231,9 @@ export default function CourseDetailPage() {
                             ? 'text-accent-blue'
                             : course.new
                               ? 'text-accent-yellow'
-                              : 'text-accent-red'
+                              : course.featured
+                                ? 'text-accent-red'
+                                : 'text-accent-blue'
                             }`}></i>
                           <span>{course.instructor}</span>
                         </div>
@@ -261,7 +269,9 @@ export default function CourseDetailPage() {
                                 ? 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
                                 : course.new
                                   ? 'bg-accent-yellow hover:bg-accent-yellow hover:opacity-90 text-primary-900'
-                                  : 'bg-accent-red hover:bg-accent-red hover:opacity-90'
+                                  : course.featured
+                                    ? 'bg-accent-red hover:bg-accent-red hover:opacity-90'
+                                    : 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
                                 }`}
                               disabled={enrollMutation.isPending || isLoadingEnrollments}
                             >
@@ -305,7 +315,9 @@ export default function CourseDetailPage() {
                                 ? 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
                                 : course.new
                                   ? 'bg-accent-yellow hover:bg-accent-yellow hover:opacity-90 text-primary-900'
-                                  : 'bg-accent-red hover:bg-accent-red hover:opacity-90'
+                                  : course.featured
+                                    ? 'bg-accent-red hover:bg-accent-red hover:opacity-90'
+                                    : 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
                                 }`}
                               disabled={enrollMutation.isPending || isLoadingEnrollments}
                             >
