@@ -264,105 +264,107 @@ export default function CourseLearningPage() {
       <div 
         className={`bg-primary-800 w-80 flex-shrink-0 transition-all duration-300 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } fixed md:relative h-screen z-20`}
+        } fixed md:relative h-screen z-20 flex flex-col`}
       >
-        <ScrollArea className="h-full">
-          <div className="p-4">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold">{course.title}</h2>
-              <Button 
-                variant="ghost" 
-                size="icon"
-                onClick={() => setSidebarOpen(false)}
-                className="md:hidden"
+        {/* Header fijo */}
+        <div className="p-4 border-b border-primary-700">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-bold">{course.title}</h2>
+            <Button 
+              variant="ghost" 
+              size="icon"
+              onClick={() => setSidebarOpen(false)}
+              className="md:hidden"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+          </div>
+
+          {/* Course Progress */}
+          <div>
+            <div className="flex justify-between text-sm mb-2">
+              <span>Progreso del curso</span>
+              <span>{calculateProgress()}%</span>
+            </div>
+            <Progress value={calculateProgress()} className="h-2" />
+          </div>
+        </div>
+
+        {/* Contenido scrolleable */}
+        <ScrollArea className="flex-1">
+          <div className="p-4 space-y-4">
+            {modulesWithSections.data?.map((module, moduleIndex) => (
+              <div 
+                key={module.id} 
+                className={cn(
+                  "rounded-lg overflow-hidden transition-colors",
+                  activeModuleId === module.id ? "bg-primary-700" : "bg-primary-800 hover:bg-primary-700/50"
+                )}
               >
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-            </div>
-
-            {/* Course Progress */}
-            <div className="mb-6">
-              <div className="flex justify-between text-sm mb-2">
-                <span>Progreso del curso</span>
-                <span>{calculateProgress()}%</span>
-              </div>
-              <Progress value={calculateProgress()} className="h-2" />
-            </div>
-            
-            <div className="space-y-4">
-              {modulesWithSections.data?.map((module, moduleIndex) => (
                 <div 
-                  key={module.id} 
-                  className={cn(
-                    "rounded-lg overflow-hidden transition-colors",
-                    activeModuleId === module.id ? "bg-primary-700" : "bg-primary-800 hover:bg-primary-700/50"
-                  )}
+                  className="p-4 cursor-pointer"
+                  onClick={() => setActiveModuleId(module.id)}
                 >
-                  <div 
-                    className="p-4 cursor-pointer"
-                    onClick={() => setActiveModuleId(module.id)}
-                  >
-                    <h3 className="font-medium flex items-center gap-2">
-                      <span className="bg-primary-600 rounded-full px-2 py-0.5 text-sm">
-                        {moduleIndex + 1}
-                      </span>
-                      {module.title}
-                    </h3>
-                    <div className="flex items-center gap-2 text-sm text-muted mt-1">
-                      <span>{module.duration}h</span>
-                      <span>•</span>
-                      <span>{module.sections.length} secciones</span>
-                    </div>
-                  </div>
-
-                  <div className="border-t border-primary-600">
-                    {module.sections.map((section, sectionIndex) => {
-                      const isCompleted = completedSections.some(s => s.sectionId === section.id);
-                      const isActive = activeSectionId === section.id;
-                      return (
-                        <button
-                          key={section.id}
-                          onClick={() => handleSectionClick(module.id, section.id)}
-                          className={cn(
-                            "w-full text-left p-3 flex items-start gap-3 transition-colors relative",
-                            isActive ? "bg-accent-blue text-white" : "hover:bg-primary-600/50",
-                            isActive && "after:absolute after:left-0 after:top-0 after:h-full after:w-1 after:bg-accent-yellow"
-                          )}
-                        >
-                          <div className="mt-0.5">
-                            {isCompleted ? (
-                              <CheckCircle className={cn("h-5 w-5", isActive ? "text-white" : "text-green-500")} />
-                            ) : (
-                              <PlayCircle className={cn("h-5 w-5", isActive ? "text-white" : "text-muted")} />
-                            )}
-                          </div>
-                          <div>
-                            <p className={cn(
-                              "text-sm font-medium",
-                              isActive ? "text-white" : isCompleted ? "text-green-500" : ""
-                            )}>
-                              {sectionIndex + 1}. {section.title}
-                            </p>
-                            <p className={cn(
-                              "text-xs mt-0.5",
-                              isActive ? "text-white/80" : "text-muted"
-                            )}>
-                              {section.duration} min
-                            </p>
-                          </div>
-                        </button>
-                      );
-                    })}
+                  <h3 className="font-medium flex items-center gap-2">
+                    <span className="bg-primary-600 rounded-full px-2 py-0.5 text-sm">
+                      {moduleIndex + 1}
+                    </span>
+                    {module.title}
+                  </h3>
+                  <div className="flex items-center gap-2 text-sm text-muted mt-1">
+                    <span>{module.duration}h</span>
+                    <span>•</span>
+                    <span>{module.sections.length} secciones</span>
                   </div>
                 </div>
-              ))}
-            </div>
+
+                <div className="border-t border-primary-600">
+                  {module.sections.map((section, sectionIndex) => {
+                    const isCompleted = completedSections.some(s => s.sectionId === section.id);
+                    const isActive = activeSectionId === section.id;
+                    return (
+                      <button
+                        key={section.id}
+                        onClick={() => handleSectionClick(module.id, section.id)}
+                        className={cn(
+                          "w-full text-left p-3 flex items-start gap-3 transition-colors relative",
+                          isActive ? "bg-accent-blue text-white" : "hover:bg-primary-600/50",
+                          isActive && "after:absolute after:left-0 after:top-0 after:h-full after:w-1 after:bg-primary-900"
+                        )}
+                      >
+                        <div className="mt-0.5">
+                          {isCompleted ? (
+                            <CheckCircle className={cn("h-5 w-5", isActive ? "text-white" : "text-green-500")} />
+                          ) : (
+                            <PlayCircle className={cn("h-5 w-5", isActive ? "text-white" : "text-muted")} />
+                          )}
+                        </div>
+                        <div>
+                          <p className={cn(
+                            "text-sm font-medium",
+                            isActive ? "text-white" : isCompleted ? "text-green-500" : ""
+                          )}>
+                            {sectionIndex + 1}. {section.title}
+                          </p>
+                          <p className={cn(
+                            "text-xs mt-0.5",
+                            isActive ? "text-white/80" : "text-muted"
+                          )}>
+                            {section.duration} min
+                          </p>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </div>
         </ScrollArea>
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col h-screen">
         {/* Top Bar */}
         <div className="bg-primary-800 border-b border-primary-700 h-16 flex items-center px-4 sticky top-0 z-10">
           <Button 
@@ -426,99 +428,103 @@ export default function CourseLearningPage() {
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 p-6">
-          <div className="max-w-4xl mx-auto space-y-6">
-            {/* Video Player Area */}
-            <div className="bg-primary-800 rounded-xl overflow-hidden">
-              <div className="aspect-video bg-black flex items-center justify-center">
-                {activeSectionId ? (
-                  <iframe
-                    src="https://www.youtube.com/embed/dQw4w9WgXcQ" // Reemplazar con URL real del video
-                    className="w-full h-full"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
-                ) : (
-                  <div className="text-muted">
-                    Selecciona una sección para comenzar
-                  </div>
-                )}
+        <div className="flex-1 overflow-y-auto">
+          <div className="p-6 h-full">
+            <div className="max-w-4xl mx-auto space-y-6 h-full">
+              {/* Video Player Area */}
+              <div className="bg-primary-800 rounded-xl overflow-hidden">
+                <div className="aspect-video bg-black flex items-center justify-center">
+                  {activeSectionId ? (
+                    <iframe
+                      src="https://www.youtube.com/embed/dQw4w9WgXcQ" // Reemplazar con URL real del video
+                      className="w-full h-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      title="Video Player"
+                    ></iframe>
+                  ) : (
+                    <div className="text-muted">
+                      Selecciona una sección para comenzar
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
 
-            {/* Section Content */}
-            <div className="bg-primary-800 rounded-xl p-6">
-              <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as TabType)}>
-                <TabsList className="border-b border-primary-700">
-                  <TabsTrigger value="description" className="gap-2">
-                    <FileText className="h-4 w-4" />
-                    Descripción
-                  </TabsTrigger>
-                  <TabsTrigger value="resources" className="gap-2">
-                    <Download className="h-4 w-4" />
-                    Recursos
-                  </TabsTrigger>
-                  <TabsTrigger value="comments" className="gap-2">
-                    <MessageSquare className="h-4 w-4" />
-                    Comentarios
-                  </TabsTrigger>
-                </TabsList>
+              {/* Section Content */}
+              <div className="bg-primary-800 rounded-xl p-6 flex-1">
+                <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as TabType)} className="h-full flex flex-col">
+                  <TabsList className="border-b border-primary-700">
+                    <TabsTrigger value="description" className="gap-2">
+                      <FileText className="h-4 w-4" />
+                      Descripción
+                    </TabsTrigger>
+                    <TabsTrigger value="resources" className="gap-2">
+                      <Download className="h-4 w-4" />
+                      Recursos
+                    </TabsTrigger>
+                    <TabsTrigger value="comments" className="gap-2">
+                      <MessageSquare className="h-4 w-4" />
+                      Comentarios
+                    </TabsTrigger>
+                  </TabsList>
 
-                <TabsContent value="description" className="pt-4">
-                  <div className="prose prose-invert max-w-none">
-                    <h2 className="text-xl font-bold mb-4">
-                      {modulesWithSections.data?.find(m => m.id === activeModuleId)
-                        ?.sections.find(s => s.id === activeSectionId)?.title}
-                    </h2>
-                    <p className="text-muted">
-                      {modulesWithSections.data?.find(m => m.id === activeModuleId)
-                        ?.sections.find(s => s.id === activeSectionId)?.content || 
-                        "Selecciona una sección para ver su contenido"}
-                    </p>
-                  </div>
-                </TabsContent>
+                  <div className="flex-1 overflow-y-auto">
+                    <TabsContent value="description" className="pt-4 h-full">
+                      <div className="prose prose-invert max-w-none">
+                        <h2 className="text-xl font-bold mb-4">
+                          {modulesWithSections.data?.find(m => m.id === activeModuleId)
+                            ?.sections.find(s => s.id === activeSectionId)?.title}
+                        </h2>
+                        <p className="text-muted">
+                          {modulesWithSections.data?.find(m => m.id === activeModuleId)
+                            ?.sections.find(s => s.id === activeSectionId)?.content || 
+                            "Selecciona una sección para ver su contenido"}
+                        </p>
+                      </div>
+                    </TabsContent>
 
-                <TabsContent value="resources" className="pt-4">
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold mb-4">Recursos de la sección</h3>
-                    <div className="grid gap-4">
-                      {/* Placeholder para recursos */}
-                      <div className="border border-primary-700 rounded-lg p-4 flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <FileText className="h-5 w-5 text-muted" />
-                          <div>
-                            <p className="font-medium">Material de apoyo</p>
-                            <p className="text-sm text-muted">PDF - 2.3MB</p>
+                    <TabsContent value="resources" className="pt-4 h-full">
+                      <div className="space-y-4">
+                        <h3 className="text-lg font-semibold mb-4">Recursos de la sección</h3>
+                        <div className="grid gap-4">
+                          {/* Placeholder para recursos */}
+                          <div className="border border-primary-700 rounded-lg p-4 flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <FileText className="h-5 w-5 text-muted" />
+                              <div>
+                                <p className="font-medium">Material de apoyo</p>
+                                <p className="text-sm text-muted">PDF - 2.3MB</p>
+                              </div>
+                            </div>
+                            <Button variant="outline" size="sm">
+                              <Download className="h-4 w-4 mr-2" />
+                              Descargar
+                            </Button>
                           </div>
                         </div>
-                        <Button variant="outline" size="sm">
-                          <Download className="h-4 w-4 mr-2" />
-                          Descargar
-                        </Button>
                       </div>
-                    </div>
-                  </div>
-                </TabsContent>
+                    </TabsContent>
 
-                <TabsContent value="comments" className="pt-4">
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold mb-4">Comentarios y dudas</h3>
-                    <div className="space-y-4">
-                      {/* Área de comentarios - Por implementar */}
-                      <textarea
-                        className="w-full h-24 bg-primary-900 rounded-lg p-3 resize-none"
-                        placeholder="Escribe tu comentario o duda..."
-                      />
-                      <div className="flex justify-end">
-                        <Button>
-                          <MessageSquare className="h-4 w-4 mr-2" />
-                          Comentar
-                        </Button>
+                    <TabsContent value="comments" className="pt-4 h-full">
+                      <div className="space-y-4">
+                        <h3 className="text-lg font-semibold mb-4">Comentarios y dudas</h3>
+                        <div className="space-y-4">
+                          <textarea
+                            className="w-full h-24 bg-primary-900 rounded-lg p-3 resize-none"
+                            placeholder="Escribe tu comentario o duda..."
+                          />
+                          <div className="flex justify-end">
+                            <Button>
+                              <MessageSquare className="h-4 w-4 mr-2" />
+                              Comentar
+                            </Button>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    </TabsContent>
                   </div>
-                </TabsContent>
-              </Tabs>
+                </Tabs>
+              </div>
             </div>
           </div>
         </div>
