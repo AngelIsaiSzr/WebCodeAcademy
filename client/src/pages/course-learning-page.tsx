@@ -7,9 +7,18 @@ import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Menu } from "lucide-react";
 
+interface Enrollment {
+  id: number;
+  userId: number;
+  courseId: number;
+  progress: number;
+  completed: boolean;
+  createdAt: string | null;
+}
+
 export default function CourseLearningPage() {
   const [, params] = useRoute("/courses/:courseId/learn");
-  const courseId = params?.courseId;
+  const courseId = params?.courseId ? parseInt(params.courseId) : null;
   const { user } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
@@ -35,12 +44,19 @@ export default function CourseLearningPage() {
   const {
     data: enrollments = [],
     isLoading: isLoadingEnrollments
-  } = useQuery<any[]>({
+  } = useQuery<Enrollment[]>({
     queryKey: ['/api/enrollments'],
     enabled: !!user,
   });
 
-  const isEnrolled = enrollments.some((enrollment: any) => enrollment.courseId === course?.id);
+  const isEnrolled = enrollments.some(enrollment => enrollment.courseId === courseId);
+
+  console.log('Debug info:', {
+    courseId: courseId,
+    courseIdFromData: course?.id,
+    enrollments: enrollments,
+    isEnrolled: isEnrolled
+  });
 
   if (isLoadingCourse || isLoadingModules || isLoadingEnrollments) {
     return (
@@ -50,14 +66,28 @@ export default function CourseLearningPage() {
     );
   }
 
-  if (!course || !isEnrolled) {
+  if (!course) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">Curso no encontrado</h1>
+          <p className="text-muted mb-4">Lo sentimos, el curso que buscas no existe o no está disponible.</p>
+          <Button asChild>
+            <a href="/courses">Ver todos los cursos</a>
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isEnrolled) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">Acceso Denegado</h1>
           <p className="text-muted mb-4">Debes estar inscrito en este curso para acceder al contenido.</p>
           <Button asChild>
-            <a href={`/courses/${course?.slug || ''}`}>Volver al curso</a>
+            <a href={`/courses/${course.slug}`}>Volver al curso</a>
           </Button>
         </div>
       </div>
