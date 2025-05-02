@@ -228,7 +228,7 @@ export default function CourseLearningPage() {
   };
 
   const handleMarkAsCompleted = () => {
-    if (activeSectionId) {
+    if (activeSectionId && !isCurrentSectionCompleted()) {
       updateProgressMutation.mutate({ 
         sectionId: activeSectionId,
         videoProgress: videoProgress 
@@ -239,6 +239,7 @@ export default function CourseLearningPage() {
   // Manejador de progreso del video
   const handleVideoProgress = (progress: number) => {
     setVideoProgress(progress);
+    
     // Guardamos el progreso cada 5 segundos
     if (activeSectionId && progress % 5 === 0) {
       updateProgressMutation.mutate({ 
@@ -247,12 +248,9 @@ export default function CourseLearningPage() {
       });
     }
     
-    // Auto-completar cuando se llega al 95% del video
+    // Auto-completar cuando se llega al 95% del video y la sección no está completada
     if (progress >= 95 && !isCurrentSectionCompleted() && activeSectionId) {
-      updateProgressMutation.mutate({ 
-        sectionId: activeSectionId,
-        videoProgress: progress 
-      });
+      handleMarkAsCompleted();
     }
   };
 
@@ -310,8 +308,8 @@ export default function CourseLearningPage() {
                 asChild
                 className="hover:bg-primary-700"
               >
-                <a href={`/courses/${course.slug}`}>
-                  <ChevronLeft className="h-5 w-5" />
+                <a href={`/courses/${course.slug}`} aria-label="Volver al curso">
+                  <i className="fa-solid fa-arrow-left h-5 w-5" />
                 </a>
               </Button>
               <h2 className="text-xl font-bold">{course.title}</h2>
