@@ -431,6 +431,31 @@ export default function CourseLearningPage() {
         <div className="flex-1 overflow-y-auto">
           <div className="p-6 h-full">
             <div className="max-w-4xl mx-auto space-y-6 h-full">
+              {/* Current Section Title */}
+              {activeSectionId && (
+                <div className="space-y-2">
+                  <h1 className="text-2xl font-bold">
+                    {modulesWithSections.data?.find(m => m.id === activeModuleId)
+                      ?.sections.find(s => s.id === activeSectionId)?.title}
+                  </h1>
+                  <div className="flex items-center gap-3 text-sm text-muted">
+                    <div className="flex items-center gap-2">
+                      <PlayCircle className="h-4 w-4" />
+                      <span>
+                        {modulesWithSections.data?.find(m => m.id === activeModuleId)
+                          ?.sections.find(s => s.id === activeSectionId)?.duration} min
+                      </span>
+                    </div>
+                    {isCurrentSectionCompleted() && (
+                      <div className="flex items-center gap-2 text-green-500">
+                        <CheckCircle className="h-4 w-4" />
+                        <span>Completado</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
               {/* Video Player Area */}
               <div className="bg-primary-800 rounded-xl overflow-hidden">
                 <div className="aspect-video bg-black flex items-center justify-center">
