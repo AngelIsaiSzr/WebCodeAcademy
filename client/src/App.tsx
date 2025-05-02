@@ -32,7 +32,7 @@ function Router() {
         <Route path="/auth" component={AuthPage} />
         <Route path="/courses" component={CoursesPage} />
         <Route path="/courses/:slug" component={CourseDetailPage} />
-        <ProtectedRoute path="/courses/:courseId/learn" component={CourseLearningPage} />
+        <ProtectedRoute path="/courses/:slug/learn" component={CourseLearningPage} />
         <Route path="/about" component={AboutPage} />
         <Route path="/contact" component={ContactPage} />
         <ProtectedRoute path="/editor" component={EditorPage} />

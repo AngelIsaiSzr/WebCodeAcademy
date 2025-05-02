@@ -781,7 +781,7 @@ export default function ProfilePage() {
                           )}
                           
                           <Button variant="outline" size="sm" asChild>
-                            <Link href={`/courses/${enrollment.courseId}/learn`}>
+                            <Link href={`/courses/${enrollment.course.slug}/learn`}>
                               {enrollment.progress > 0 ? "Continuar" : "Iniciar"} curso
                             </Link>
                           </Button>

@@ -276,7 +276,7 @@ export default function CourseDetailPage() {
                               className="w-full bg-accent-blue hover:bg-accent-blue hover:opacity-90"
                               asChild
                             >
-                              <a href={`/courses/${course.id}/learn`}>Comenzar a Aprender</a>
+                              <a href={`/courses/${course.slug}/learn`}>Comenzar a Aprender</a>
                             </Button>
                           ) : (
                             <Button

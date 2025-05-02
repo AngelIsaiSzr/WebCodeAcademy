@@ -17,8 +17,8 @@ interface Enrollment {
 }
 
 export default function CourseLearningPage() {
-  const [, params] = useRoute("/courses/:courseId/learn");
-  const courseId = params?.courseId ? parseInt(params.courseId) : null;
+  const [, params] = useRoute("/courses/:slug/learn");
+  const slug = params?.slug;
   const { user } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
@@ -27,8 +27,8 @@ export default function CourseLearningPage() {
     data: course,
     isLoading: isLoadingCourse,
   } = useQuery<Course>({
-    queryKey: [`/api/courses/${courseId}`],
-    enabled: !!courseId,
+    queryKey: [`/api/courses/${slug}`],
+    enabled: !!slug,
   });
 
   // Fetch course modules
@@ -36,8 +36,8 @@ export default function CourseLearningPage() {
     data: modules,
     isLoading: isLoadingModules,
   } = useQuery<Module[]>({
-    queryKey: [`/api/courses/${courseId}/modules`],
-    enabled: !!courseId,
+    queryKey: [`/api/courses/${course?.id}/modules`],
+    enabled: !!course?.id,
   });
 
   // Verificar si el usuario está inscrito
@@ -49,11 +49,11 @@ export default function CourseLearningPage() {
     enabled: !!user,
   });
 
-  const isEnrolled = enrollments.some(enrollment => enrollment.courseId === courseId);
+  const isEnrolled = enrollments.some(enrollment => enrollment.courseId === course?.id);
 
   console.log('Debug info:', {
-    courseId: courseId,
-    courseIdFromData: course?.id,
+    slug,
+    courseId: course?.id,
     enrollments: enrollments,
     isEnrolled: isEnrolled
   });
