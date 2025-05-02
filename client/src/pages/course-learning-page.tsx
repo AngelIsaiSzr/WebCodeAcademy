@@ -28,6 +28,7 @@ interface SectionProgress {
   sectionId: number;
   completed: boolean;
   timestamp: string;
+  videoProgress?: number;
 }
 
 type TabType = "description" | "resources" | "comments";
@@ -41,6 +42,7 @@ export default function CourseLearningPage() {
   const [activeSectionId, setActiveSectionId] = useState<number | null>(null);
   const [completedSections, setCompletedSections] = useState<SectionProgress[]>([]);
   const [activeTab, setActiveTab] = useState<TabType>("description");
+  const [videoProgress, setVideoProgress] = useState<number>(0);
 
   // Fetch course data
   const {
@@ -101,23 +103,31 @@ export default function CourseLearningPage() {
   // Cargar el progreso existente
   useEffect(() => {
     const loadProgress = async () => {
-      if (!course?.id) return;
+      if (!course?.id || !activeSectionId) return;
       
       try {
         const response = await fetch(`/api/courses/${course.id}/progress`);
         const data = await response.json();
         setCompletedSections(data.completedSections || []);
+        
+        // Cargar progreso del video si existe
+        const sectionProgress = data.completedSections?.find(
+          (s: SectionProgress) => s.sectionId === activeSectionId
+        );
+        if (sectionProgress?.videoProgress) {
+          setVideoProgress(sectionProgress.videoProgress);
+        }
       } catch (error) {
         console.error("Error loading progress:", error);
       }
     };
 
     loadProgress();
-  }, [course?.id]);
+  }, [course?.id, activeSectionId]);
 
   // Mutation para actualizar el progreso
   const updateProgressMutation = useMutation({
-    mutationFn: async (sectionId: number) => {
+    mutationFn: async ({ sectionId, videoProgress }: { sectionId: number; videoProgress?: number }) => {
       const enrollment = enrollments.find(e => e.courseId === course?.id);
       if (!enrollment) throw new Error("No enrollment found");
 
@@ -129,24 +139,25 @@ export default function CourseLearningPage() {
         fetch(`/api/enrollments/${enrollment.id}/progress`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ progress, completed: false }) // completed será true cuando se complete todo el curso
+          body: JSON.stringify({ progress, completed: false })
         }),
         // Guardar el progreso de la sección
         fetch(`/api/sections/${sectionId}/progress`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ completed })
+          body: JSON.stringify({ completed, videoProgress })
         })
       ]);
 
-      return { sectionId, completed };
+      return { sectionId, completed, videoProgress };
     },
     onSuccess: (data) => {
       if (data.completed) {
         setCompletedSections(prev => [...prev, {
           sectionId: data.sectionId,
           completed: true,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
+          videoProgress: data.videoProgress
         }]);
       } else {
         setCompletedSections(prev => prev.filter(s => s.sectionId !== data.sectionId));
@@ -218,7 +229,30 @@ export default function CourseLearningPage() {
 
   const handleMarkAsCompleted = () => {
     if (activeSectionId) {
-      updateProgressMutation.mutate(activeSectionId);
+      updateProgressMutation.mutate({ 
+        sectionId: activeSectionId,
+        videoProgress: videoProgress 
+      });
+    }
+  };
+
+  // Manejador de progreso del video
+  const handleVideoProgress = (progress: number) => {
+    setVideoProgress(progress);
+    // Guardamos el progreso cada 5 segundos
+    if (activeSectionId && progress % 5 === 0) {
+      updateProgressMutation.mutate({ 
+        sectionId: activeSectionId,
+        videoProgress: progress 
+      });
+    }
+    
+    // Auto-completar cuando se llega al 95% del video
+    if (progress >= 95 && !isCurrentSectionCompleted() && activeSectionId) {
+      updateProgressMutation.mutate({ 
+        sectionId: activeSectionId,
+        videoProgress: progress 
+      });
     }
   };
 
@@ -460,54 +494,18 @@ export default function CourseLearningPage() {
               <div className="bg-primary-800 rounded-xl overflow-hidden">
                 <div className="relative">
                   {activeSectionId ? (
-                    <div className="relative">
-                      <div className="aspect-video bg-black">
-                        <iframe
-                          src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                          className="w-full h-full"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                          title="Video Player"
-                        />
-                      </div>
-                      {/* Video Controls */}
-                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                        <div className="space-y-2">
-                          {/* Progress Bar */}
-                          <div className="relative h-1 bg-white/20 rounded-full">
-                            <div className="absolute h-full w-1/2 bg-accent-blue rounded-full" />
-                            <div className="absolute h-3 w-3 bg-white rounded-full -top-1 left-1/2 -translate-x-1/2 cursor-pointer" />
-                          </div>
-                          {/* Controls */}
-                          <div className="flex items-center justify-between text-white">
-                            <div className="flex items-center gap-4">
-                              <button className="hover:text-accent-blue" aria-label="Reproducir video">
-                                <PlayCircle className="h-6 w-6" />
-                              </button>
-                              <span className="text-sm">12:34 / 30:00</span>
-                            </div>
-                            <div className="flex items-center gap-4">
-                              <select 
-                                className="bg-transparent text-sm hover:text-accent-blue cursor-pointer"
-                                aria-label="Velocidad de reproducción"
-                              >
-                                <option>1x</option>
-                                <option>1.25x</option>
-                                <option>1.5x</option>
-                                <option>2x</option>
-                              </select>
-                              <select 
-                                className="bg-transparent text-sm hover:text-accent-blue cursor-pointer"
-                                aria-label="Calidad de video"
-                              >
-                                <option>1080p</option>
-                                <option>720p</option>
-                                <option>480p</option>
-                              </select>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                    <div className="aspect-video bg-black">
+                      <video
+                        className="w-full h-full"
+                        controls
+                        src="https://res.cloudinary.com/dw6igi7fc/video/upload/v1746151518/Back_animado_Lab_FFF_akn4mf.mp4" // Ejemplo - reemplazar con URL real
+                        poster="https://res.cloudinary.com/demo/video/upload/c_scale,w_1280/dog.jpg" // Thumbnail opcional
+                        onTimeUpdate={(e) => handleVideoProgress(Math.floor(e.currentTarget.currentTime))}
+                        onEnded={() => handleVideoProgress(100)}
+                        autoPlay={false}
+                      >
+                        Tu navegador no soporta el elemento de video.
+                      </video>
                     </div>
                   ) : (
                     <div className="aspect-video bg-primary-900 flex items-center justify-center flex-col gap-4">
