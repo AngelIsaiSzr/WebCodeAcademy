@@ -178,7 +178,7 @@ export default function CourseDetailPage() {
                         </span>
                       )}
                       {course.featured && (
-                        <span className="px-3 py-1 text-xs font-medium rounded bg-accent-red text-primary-900">
+                        <span className="px-3 py-1 text-xs font-medium rounded bg-accent-red text-white">
                           Destacado
                         </span>
                       )}
