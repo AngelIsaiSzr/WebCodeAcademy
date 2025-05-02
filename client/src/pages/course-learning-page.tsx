@@ -328,7 +328,6 @@ export default function CourseLearningPage() {
               >
                 <a href={`/courses/${course.slug}`} aria-label="Volver al curso">
                   <i className="fa-solid fa-arrow-left text-lg" />
-                  <span className="text-sm">Volver al curso</span>
                 </a>
               </Button>
               <div className="w-px h-6 bg-primary-700" />
