@@ -5,10 +5,11 @@ import { Course, Module, Section } from "@shared/schema";
 import { useAuth } from "@/hooks/use-auth";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Menu, CheckCircle, Lock, PlayCircle } from "lucide-react";
+import { ChevronLeft, ChevronRight, Menu, CheckCircle, Lock, PlayCircle, FileText, Download, MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Progress } from "@/components/ui/progress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface Enrollment {
   id: number;
@@ -29,6 +30,8 @@ interface SectionProgress {
   timestamp: string;
 }
 
+type TabType = "description" | "resources" | "comments";
+
 export default function CourseLearningPage() {
   const [, params] = useRoute("/courses/:slug/learn");
   const slug = params?.slug;
@@ -37,6 +40,7 @@ export default function CourseLearningPage() {
   const [activeModuleId, setActiveModuleId] = useState<number | null>(null);
   const [activeSectionId, setActiveSectionId] = useState<number | null>(null);
   const [completedSections, setCompletedSections] = useState<SectionProgress[]>([]);
+  const [activeTab, setActiveTab] = useState<TabType>("description");
 
   // Fetch course data
   const {
@@ -93,6 +97,23 @@ export default function CourseLearningPage() {
       }
     }
   }, [modulesWithSections.data]);
+
+  // Cargar el progreso existente
+  useEffect(() => {
+    const loadProgress = async () => {
+      if (!course?.id) return;
+      
+      try {
+        const response = await fetch(`/api/courses/${course.id}/progress`);
+        const data = await response.json();
+        setCompletedSections(data.completedSections || []);
+      } catch (error) {
+        console.error("Error loading progress:", error);
+      }
+    };
+
+    loadProgress();
+  }, [course?.id]);
 
   // Mutation para actualizar el progreso
   const updateProgressMutation = useMutation({
@@ -273,11 +294,14 @@ export default function CourseLearningPage() {
                 <div 
                   key={module.id} 
                   className={cn(
-                    "rounded-lg overflow-hidden",
-                    activeModuleId === module.id ? "bg-primary-700" : "bg-primary-800"
+                    "rounded-lg overflow-hidden transition-colors",
+                    activeModuleId === module.id ? "bg-primary-700" : "bg-primary-800 hover:bg-primary-700/50"
                   )}
                 >
-                  <div className="p-4">
+                  <div 
+                    className="p-4 cursor-pointer"
+                    onClick={() => setActiveModuleId(module.id)}
+                  >
                     <h3 className="font-medium flex items-center gap-2">
                       <span className="bg-primary-600 rounded-full px-2 py-0.5 text-sm">
                         {moduleIndex + 1}
@@ -294,27 +318,35 @@ export default function CourseLearningPage() {
                   <div className="border-t border-primary-600">
                     {module.sections.map((section, sectionIndex) => {
                       const isCompleted = completedSections.some(s => s.sectionId === section.id);
+                      const isActive = activeSectionId === section.id;
                       return (
                         <button
                           key={section.id}
                           onClick={() => handleSectionClick(module.id, section.id)}
                           className={cn(
-                            "w-full text-left p-3 flex items-start gap-3 hover:bg-primary-600/50 transition-colors",
-                            activeSectionId === section.id && "bg-primary-600"
+                            "w-full text-left p-3 flex items-start gap-3 transition-colors relative",
+                            isActive ? "bg-accent-blue text-white" : "hover:bg-primary-600/50",
+                            isActive && "after:absolute after:left-0 after:top-0 after:h-full after:w-1 after:bg-accent-yellow"
                           )}
                         >
                           <div className="mt-0.5">
                             {isCompleted ? (
-                              <CheckCircle className="h-5 w-5 text-green-500" />
+                              <CheckCircle className={cn("h-5 w-5", isActive ? "text-white" : "text-green-500")} />
                             ) : (
-                              <PlayCircle className="h-5 w-5 text-muted" />
+                              <PlayCircle className={cn("h-5 w-5", isActive ? "text-white" : "text-muted")} />
                             )}
                           </div>
                           <div>
-                            <p className="text-sm font-medium">
+                            <p className={cn(
+                              "text-sm font-medium",
+                              isActive ? "text-white" : isCompleted ? "text-green-500" : ""
+                            )}>
                               {sectionIndex + 1}. {section.title}
                             </p>
-                            <p className="text-xs text-muted mt-0.5">
+                            <p className={cn(
+                              "text-xs mt-0.5",
+                              isActive ? "text-white/80" : "text-muted"
+                            )}>
                               {section.duration} min
                             </p>
                           </div>
@@ -395,33 +427,98 @@ export default function CourseLearningPage() {
 
         {/* Content Area */}
         <div className="flex-1 p-6">
-          <div className="max-w-4xl mx-auto">
-            {/* Área principal de contenido - En construcción */}
-            <div className="bg-primary-800 rounded-xl p-8 text-center">
-              <h2 className="text-2xl font-bold mb-4">Área de Contenido</h2>
-              <p className="text-muted">
-                Esta sección está en construcción. Aquí se mostrará el video, 
-                diapositivas y recursos de la sección seleccionada.
-              </p>
+          <div className="max-w-4xl mx-auto space-y-6">
+            {/* Video Player Area */}
+            <div className="bg-primary-800 rounded-xl overflow-hidden">
+              <div className="aspect-video bg-black flex items-center justify-center">
+                {activeSectionId ? (
+                  <iframe
+                    src="https://www.youtube.com/embed/dQw4w9WgXcQ" // Reemplazar con URL real del video
+                    className="w-full h-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                ) : (
+                  <div className="text-muted">
+                    Selecciona una sección para comenzar
+                  </div>
+                )}
+              </div>
             </div>
 
-            {/* Tabs de navegación - En construcción */}
-            <div className="mt-8 bg-primary-800 rounded-xl p-6">
-              <div className="flex border-b border-primary-700 mb-4">
-                <button className="px-4 py-2 text-accent-blue border-b-2 border-accent-blue">
-                  Descripción
-                </button>
-                <button className="px-4 py-2 text-muted">
-                  Recursos
-                </button>
-                <button className="px-4 py-2 text-muted">
-                  Comentarios
-                </button>
-              </div>
-              
-              <div className="text-muted">
-                Contenido de las pestañas en construcción...
-              </div>
+            {/* Section Content */}
+            <div className="bg-primary-800 rounded-xl p-6">
+              <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as TabType)}>
+                <TabsList className="border-b border-primary-700">
+                  <TabsTrigger value="description" className="gap-2">
+                    <FileText className="h-4 w-4" />
+                    Descripción
+                  </TabsTrigger>
+                  <TabsTrigger value="resources" className="gap-2">
+                    <Download className="h-4 w-4" />
+                    Recursos
+                  </TabsTrigger>
+                  <TabsTrigger value="comments" className="gap-2">
+                    <MessageSquare className="h-4 w-4" />
+                    Comentarios
+                  </TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="description" className="pt-4">
+                  <div className="prose prose-invert max-w-none">
+                    <h2 className="text-xl font-bold mb-4">
+                      {modulesWithSections.data?.find(m => m.id === activeModuleId)
+                        ?.sections.find(s => s.id === activeSectionId)?.title}
+                    </h2>
+                    <p className="text-muted">
+                      {modulesWithSections.data?.find(m => m.id === activeModuleId)
+                        ?.sections.find(s => s.id === activeSectionId)?.content || 
+                        "Selecciona una sección para ver su contenido"}
+                    </p>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="resources" className="pt-4">
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold mb-4">Recursos de la sección</h3>
+                    <div className="grid gap-4">
+                      {/* Placeholder para recursos */}
+                      <div className="border border-primary-700 rounded-lg p-4 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <FileText className="h-5 w-5 text-muted" />
+                          <div>
+                            <p className="font-medium">Material de apoyo</p>
+                            <p className="text-sm text-muted">PDF - 2.3MB</p>
+                          </div>
+                        </div>
+                        <Button variant="outline" size="sm">
+                          <Download className="h-4 w-4 mr-2" />
+                          Descargar
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="comments" className="pt-4">
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold mb-4">Comentarios y dudas</h3>
+                    <div className="space-y-4">
+                      {/* Área de comentarios - Por implementar */}
+                      <textarea
+                        className="w-full h-24 bg-primary-900 rounded-lg p-3 resize-none"
+                        placeholder="Escribe tu comentario o duda..."
+                      />
+                      <div className="flex justify-end">
+                        <Button>
+                          <MessageSquare className="h-4 w-4 mr-2" />
+                          Comentar
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </TabsContent>
+              </Tabs>
             </div>
           </div>
         </div>
