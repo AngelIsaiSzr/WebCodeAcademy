@@ -177,6 +177,11 @@ export default function CourseDetailPage() {
                           Nuevo
                         </span>
                       )}
+                      {course.featured && (
+                        <span className="px-3 py-1 text-xs font-medium rounded bg-accent-red text-primary-900">
+                          Destacado
+                        </span>
+                      )}
                     </div>
 
                     <AnimateInView animation="slideRight" delay={0.2}>
