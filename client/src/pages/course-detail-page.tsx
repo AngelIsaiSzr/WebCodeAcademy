@@ -194,19 +194,39 @@ export default function CourseDetailPage() {
                     <AnimateInView animation="fadeIn" delay={0.4}>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
                         <div className="flex items-center">
-                          <Clock className="h-5 w-5 accent-blue mr-2" />
+                          <Clock className={`h-5 w-5 mr-2 ${course.popular
+                            ? 'accent-blue'
+                            : course.new
+                              ? 'accent-yellow'
+                              : 'accent-red'
+                            }`} />
                           <span>{course.duration} horas</span>
                         </div>
                         <div className="flex items-center">
-                          <Book className="h-5 w-5 accent-blue mr-2" />
+                          <Book className={`h-5 w-5 mr-2 ${course.popular
+                            ? 'accent-blue'
+                            : course.new
+                              ? 'accent-yellow'
+                              : 'accent-red'
+                            }`} />
                           <span>{course.modules} módulos</span>
                         </div>
                         <div className="flex items-center">
-                          <Award className="h-5 w-5 accent-blue mr-2" />
+                          <Award className={`h-5 w-5 mr-2 ${course.popular
+                            ? 'accent-blue'
+                            : course.new
+                              ? 'accent-yellow'
+                              : 'accent-red'
+                            }`} />
                           <span>Certificado</span>
                         </div>
                         <div className="flex items-center">
-                          <i className="fas fa-user-graduate text-accent-blue mr-2"></i>
+                          <i className={`fas fa-user-graduate mr-2 ${course.popular
+                            ? 'text-accent-blue'
+                            : course.new
+                              ? 'text-accent-yellow'
+                              : 'text-accent-red'
+                            }`}></i>
                           <span>{course.instructor}</span>
                         </div>
                       </div>
@@ -238,10 +258,10 @@ export default function CourseDetailPage() {
                             <Button
                               onClick={handleEnroll}
                               className={`px-6 py-3 ${course.popular
-                                  ? 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
-                                  : course.new
-                                    ? 'bg-accent-yellow hover:bg-accent-yellow hover:opacity-90 text-primary-900'
-                                    : 'bg-accent-red hover:bg-accent-red hover:opacity-90'
+                                ? 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
+                                : course.new
+                                  ? 'bg-accent-yellow hover:bg-accent-yellow hover:opacity-90 text-primary-900'
+                                  : 'bg-accent-red hover:bg-accent-red hover:opacity-90'
                                 }`}
                               disabled={enrollMutation.isPending || isLoadingEnrollments}
                             >
@@ -282,10 +302,10 @@ export default function CourseDetailPage() {
                             <Button
                               onClick={handleEnroll}
                               className={`w-full ${course.popular
-                                  ? 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
-                                  : course.new
-                                    ? 'bg-accent-yellow hover:bg-accent-yellow hover:opacity-90 text-primary-900'
-                                    : 'bg-accent-red hover:bg-accent-red hover:opacity-90'
+                                ? 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
+                                : course.new
+                                  ? 'bg-accent-yellow hover:bg-accent-yellow hover:opacity-90 text-primary-900'
+                                  : 'bg-accent-red hover:bg-accent-red hover:opacity-90'
                                 }`}
                               disabled={enrollMutation.isPending || isLoadingEnrollments}
                             >

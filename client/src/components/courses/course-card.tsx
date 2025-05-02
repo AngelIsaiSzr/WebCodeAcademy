@@ -44,11 +44,11 @@ export default function CourseCard({ course, index = 0 }: CourseCardProps) {
         <div className="flex items-center justify-between">
           <div>
             <div className="flex items-center mb-1">
-              <i className="fas fa-book-open text-accent-blue mr-2 text-sm"></i>
+              <i className={`fas fa-book-open ${getCourseIconStyle(course)} mr-2 text-sm`}></i>
               <span className="text-sm">{course.modules} Módulos</span>
             </div>
             <div className="flex items-center">
-              <i className="fas fa-clock text-accent-blue mr-2 text-sm"></i>
+              <i className={`fas fa-clock ${getCourseIconStyle(course)} mr-2 text-sm`}></i>
               <span className="text-sm">{course.duration} Horas</span>
             </div>
           </div>
@@ -61,7 +61,20 @@ export default function CourseCard({ course, index = 0 }: CourseCardProps) {
   );
 }
 
-// Helper function to determine button style based on course properties
+// Determina el estilo del icono según las propiedades del curso
+function getCourseIconStyle(course: Course): string {
+  if (course.popular) {
+    return 'text-accent-blue';
+  } else if (course.featured) {
+    return 'text-accent-red';
+  } else if (course.new) {
+    return 'text-accent-yellow';
+  } else {
+    return 'text-accent-blue';
+  }
+}
+
+// Determinar el estilo del botón según las propiedades del curso
 function getCourseButtonStyle(course: Course): string {
   if (course.popular) {
     return 'bg-accent-blue text-white hover:bg-opacity-90';

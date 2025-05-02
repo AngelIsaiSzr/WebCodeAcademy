@@ -63,7 +63,7 @@ export default function HeroSection() {
                   </div>
                   <div>
                     <p className="font-medium">4.8/5 valoración</p>
-                    <p className="text-sm text-muted">basada en 1,200 reseñas</p>
+                    <p className="text-sm text-muted">basada en 100 reseñas</p>
                   </div>
                 </div>
               </AnimateInView>
