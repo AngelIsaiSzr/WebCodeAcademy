@@ -40,7 +40,7 @@ export default function CourseLearningPage() {
     enabled: !!user,
   });
 
-  const isEnrolled = enrollments.some((enrollment: any) => enrollment.courseId === Number(courseId));
+  const isEnrolled = enrollments.some((enrollment: any) => enrollment.courseId === course?.id);
 
   if (isLoadingCourse || isLoadingModules || isLoadingEnrollments) {
     return (
