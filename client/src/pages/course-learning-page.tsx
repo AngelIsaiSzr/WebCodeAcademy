@@ -365,10 +365,7 @@ export default function CourseLearningPage() {
                   activeModuleId === module.id ? "bg-primary-700" : "bg-primary-800 hover:bg-primary-700/50"
                 )}
               >
-                <div 
-                  className="p-4 cursor-pointer"
-                  onClick={() => setActiveModuleId(module.id)}
-                >
+                <div className="p-4">
                   <h3 className="font-medium flex items-center gap-2">
                     <span className="bg-primary-600 rounded-full px-2 py-0.5 text-sm">
                       {moduleIndex + 1}
@@ -389,7 +386,10 @@ export default function CourseLearningPage() {
                     return (
                       <button
                         key={section.id}
-                        onClick={() => handleSectionClick(module.id, section.id)}
+                        onClick={() => {
+                          setActiveModuleId(module.id);
+                          setActiveSectionId(section.id);
+                        }}
                         className={cn(
                           "w-full text-left p-3 flex items-start gap-3 transition-colors relative",
                           isActive ? "bg-accent-blue text-white" : "hover:bg-primary-600/50",
