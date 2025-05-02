@@ -125,31 +125,43 @@ export default function CourseLearningPage() {
     loadProgress();
   }, [course?.id, activeSectionId]);
 
-  // Mutation para actualizar el progreso
-  const updateProgressMutation = useMutation({
-    mutationFn: async ({ sectionId, videoProgress }: { sectionId: number; videoProgress?: number }) => {
+  // Mutation para guardar solo el progreso del video
+  const updateVideoProgressMutation = useMutation({
+    mutationFn: async ({ sectionId, videoProgress }: { sectionId: number; videoProgress: number }) => {
+      await fetch(`/api/sections/${sectionId}/video-progress`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ videoProgress })
+      });
+      return { sectionId, videoProgress };
+    }
+  });
+
+  // Mutation para actualizar el estado de completado
+  const updateCompletionMutation = useMutation({
+    mutationFn: async ({ sectionId, completed }: { sectionId: number; completed: boolean }) => {
       const enrollment = enrollments.find(e => e.courseId === course?.id);
       if (!enrollment) throw new Error("No enrollment found");
-
-      const completed = !isCurrentSectionCompleted();
-      const progress = calculateProgress(completed);
 
       await Promise.all([
         // Actualizar el progreso del curso
         fetch(`/api/enrollments/${enrollment.id}/progress`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ progress, completed: false })
+          body: JSON.stringify({ 
+            progress: calculateProgress(completed),
+            completed: false // Se completará cuando todas las secciones estén completadas
+          })
         }),
-        // Guardar el progreso de la sección
+        // Guardar el estado de completado de la sección
         fetch(`/api/sections/${sectionId}/progress`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ completed, videoProgress })
+          body: JSON.stringify({ completed })
         })
       ]);
 
-      return { sectionId, completed, videoProgress };
+      return { sectionId, completed };
     },
     onSuccess: (data) => {
       if (data.completed) {
@@ -157,7 +169,7 @@ export default function CourseLearningPage() {
           sectionId: data.sectionId,
           completed: true,
           timestamp: new Date().toISOString(),
-          videoProgress: data.videoProgress
+          videoProgress: videoProgress
         }]);
       } else {
         setCompletedSections(prev => prev.filter(s => s.sectionId !== data.sectionId));
@@ -168,7 +180,12 @@ export default function CourseLearningPage() {
   // Calcular el progreso total
   const calculateProgress = (includeCurrentSection: boolean = false) => {
     if (!modulesWithSections.data) return 0;
-    const totalSections = modulesWithSections.data.reduce((acc, m) => acc + m.sections.length, 0);
+    
+    const totalSections = modulesWithSections.data.reduce(
+      (acc, m) => acc + m.sections.length, 
+      0
+    );
+    
     const completedCount = completedSections.length + (includeCurrentSection ? 1 : 0);
     return Math.round((completedCount / totalSections) * 100);
   };
@@ -228,10 +245,11 @@ export default function CourseLearningPage() {
   };
 
   const handleMarkAsCompleted = () => {
-    if (activeSectionId && !isCurrentSectionCompleted()) {
-      updateProgressMutation.mutate({ 
+    if (activeSectionId) {
+      const isCompleted = isCurrentSectionCompleted();
+      updateCompletionMutation.mutate({ 
         sectionId: activeSectionId,
-        videoProgress: videoProgress 
+        completed: !isCompleted
       });
     }
   };
@@ -240,11 +258,11 @@ export default function CourseLearningPage() {
   const handleVideoProgress = (progress: number) => {
     setVideoProgress(progress);
     
-    // Guardamos el progreso cada 5 segundos
+    // Guardamos el progreso del video cada 5 segundos
     if (activeSectionId && progress % 5 === 0) {
-      updateProgressMutation.mutate({ 
+      updateVideoProgressMutation.mutate({ 
         sectionId: activeSectionId,
-        videoProgress: progress 
+        videoProgress: progress
       });
     }
     
@@ -304,14 +322,16 @@ export default function CourseLearningPage() {
             <div className="flex items-center gap-3">
               <Button 
                 variant="ghost" 
-                size="icon"
+                size="sm"
                 asChild
-                className="hover:bg-primary-700"
+                className="hover:bg-primary-700 flex items-center gap-2 text-muted-foreground hover:text-white transition-colors"
               >
                 <a href={`/courses/${course.slug}`} aria-label="Volver al curso">
-                  <i className="fa-solid fa-arrow-left h-5 w-5" />
+                  <i className="fa-solid fa-arrow-left text-lg" />
+                  <span className="text-sm">Volver al curso</span>
                 </a>
               </Button>
+              <div className="w-px h-6 bg-primary-700" />
               <h2 className="text-xl font-bold">{course.title}</h2>
             </div>
             <Button 
@@ -451,8 +471,10 @@ export default function CourseLearningPage() {
                 size="sm"
                 onClick={handleMarkAsCompleted}
                 className={cn(
-                  "gap-2",
-                  isCurrentSectionCompleted() && "text-green-500"
+                  "gap-2 transition-colors",
+                  isCurrentSectionCompleted() 
+                    ? "text-green-500 hover:text-red-500 hover:border-red-500" 
+                    : "hover:text-green-500 hover:border-green-500"
                 )}
               >
                 {isCurrentSectionCompleted() ? (
