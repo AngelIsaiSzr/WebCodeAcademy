@@ -458,18 +458,61 @@ export default function CourseLearningPage() {
 
               {/* Video Player Area */}
               <div className="bg-primary-800 rounded-xl overflow-hidden">
-                <div className="aspect-video bg-black flex items-center justify-center">
+                <div className="relative">
                   {activeSectionId ? (
-                    <iframe
-                      src="https://www.youtube.com/embed/dQw4w9WgXcQ" // Reemplazar con URL real del video
-                      className="w-full h-full"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      title="Video Player"
-                    ></iframe>
+                    <div className="relative">
+                      <div className="aspect-video bg-black">
+                        <iframe
+                          src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                          className="w-full h-full"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          title="Video Player"
+                        />
+                      </div>
+                      {/* Video Controls */}
+                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                        <div className="space-y-2">
+                          {/* Progress Bar */}
+                          <div className="relative h-1 bg-white/20 rounded-full">
+                            <div className="absolute h-full w-1/2 bg-accent-blue rounded-full" />
+                            <div className="absolute h-3 w-3 bg-white rounded-full -top-1 left-1/2 -translate-x-1/2 cursor-pointer" />
+                          </div>
+                          {/* Controls */}
+                          <div className="flex items-center justify-between text-white">
+                            <div className="flex items-center gap-4">
+                              <button className="hover:text-accent-blue" aria-label="Reproducir video">
+                                <PlayCircle className="h-6 w-6" />
+                              </button>
+                              <span className="text-sm">12:34 / 30:00</span>
+                            </div>
+                            <div className="flex items-center gap-4">
+                              <select 
+                                className="bg-transparent text-sm hover:text-accent-blue cursor-pointer"
+                                aria-label="Velocidad de reproducción"
+                              >
+                                <option>1x</option>
+                                <option>1.25x</option>
+                                <option>1.5x</option>
+                                <option>2x</option>
+                              </select>
+                              <select 
+                                className="bg-transparent text-sm hover:text-accent-blue cursor-pointer"
+                                aria-label="Calidad de video"
+                              >
+                                <option>1080p</option>
+                                <option>720p</option>
+                                <option>480p</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   ) : (
-                    <div className="text-muted">
-                      Selecciona una sección para comenzar
+                    <div className="aspect-video bg-primary-900 flex items-center justify-center flex-col gap-4">
+                      <PlayCircle className="h-16 w-16 text-muted" />
+                      <p className="text-muted">Selecciona una sección para comenzar</p>
                     </div>
                   )}
                 </div>
@@ -478,20 +521,36 @@ export default function CourseLearningPage() {
               {/* Section Content */}
               <div className="bg-primary-800 rounded-xl p-6 flex-1">
                 <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as TabType)} className="h-full flex flex-col">
-                  <TabsList className="border-b border-primary-700">
-                    <TabsTrigger value="description" className="gap-2">
+                  <TabsList className="w-full border-b border-primary-700 p-1">
+                    <TabsTrigger value="description" className="flex-1 gap-2 py-3">
                       <FileText className="h-4 w-4" />
                       Descripción
                     </TabsTrigger>
-                    <TabsTrigger value="resources" className="gap-2">
+                    <TabsTrigger value="resources" className="flex-1 gap-2 py-3">
                       <Download className="h-4 w-4" />
                       Recursos
+                      <span className="ml-2 bg-primary-700 text-xs px-2 py-0.5 rounded-full">3</span>
                     </TabsTrigger>
-                    <TabsTrigger value="comments" className="gap-2">
+                    <TabsTrigger value="comments" className="flex-1 gap-2 py-3">
                       <MessageSquare className="h-4 w-4" />
                       Comentarios
+                      <span className="ml-2 bg-primary-700 text-xs px-2 py-0.5 rounded-full">12</span>
                     </TabsTrigger>
                   </TabsList>
+
+                  {/* Next Section Indicator */}
+                  {next && (
+                    <div className="bg-primary-900/50 p-4 rounded-lg mt-4 flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-muted">Siguiente</p>
+                        <p className="font-medium">{next.section.title}</p>
+                      </div>
+                      <Button variant="outline" size="sm" onClick={handleNextSection}>
+                        Continuar
+                        <ChevronRight className="h-4 w-4 ml-2" />
+                      </Button>
+                    </div>
+                  )}
 
                   <div className="flex-1 overflow-y-auto">
                     <TabsContent value="description" className="pt-4 h-full">
