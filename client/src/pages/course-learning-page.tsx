@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRoute } from "wouter";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { Course, Module, Section } from "@shared/schema";
 import { useAuth } from "@/hooks/use-auth";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
@@ -23,6 +23,12 @@ interface ModuleWithSections extends Module {
   sections: Section[];
 }
 
+interface SectionProgress {
+  sectionId: number;
+  completed: boolean;
+  timestamp: string;
+}
+
 export default function CourseLearningPage() {
   const [, params] = useRoute("/courses/:slug/learn");
   const slug = params?.slug;
@@ -30,6 +36,7 @@ export default function CourseLearningPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeModuleId, setActiveModuleId] = useState<number | null>(null);
   const [activeSectionId, setActiveSectionId] = useState<number | null>(null);
+  const [completedSections, setCompletedSections] = useState<SectionProgress[]>([]);
 
   // Fetch course data
   const {
@@ -87,6 +94,113 @@ export default function CourseLearningPage() {
     }
   }, [modulesWithSections.data]);
 
+  // Mutation para actualizar el progreso
+  const updateProgressMutation = useMutation({
+    mutationFn: async (sectionId: number) => {
+      const enrollment = enrollments.find(e => e.courseId === course?.id);
+      if (!enrollment) throw new Error("No enrollment found");
+
+      const completed = !isCurrentSectionCompleted();
+      const progress = calculateProgress(completed);
+
+      await Promise.all([
+        // Actualizar el progreso del curso
+        fetch(`/api/enrollments/${enrollment.id}/progress`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ progress, completed: false }) // completed será true cuando se complete todo el curso
+        }),
+        // Guardar el progreso de la sección
+        fetch(`/api/sections/${sectionId}/progress`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ completed })
+        })
+      ]);
+
+      return { sectionId, completed };
+    },
+    onSuccess: (data) => {
+      if (data.completed) {
+        setCompletedSections(prev => [...prev, {
+          sectionId: data.sectionId,
+          completed: true,
+          timestamp: new Date().toISOString()
+        }]);
+      } else {
+        setCompletedSections(prev => prev.filter(s => s.sectionId !== data.sectionId));
+      }
+    }
+  });
+
+  // Calcular el progreso total
+  const calculateProgress = (includeCurrentSection: boolean = false) => {
+    if (!modulesWithSections.data) return 0;
+    const totalSections = modulesWithSections.data.reduce((acc, m) => acc + m.sections.length, 0);
+    const completedCount = completedSections.length + (includeCurrentSection ? 1 : 0);
+    return Math.round((completedCount / totalSections) * 100);
+  };
+
+  // Verificar si la sección actual está completada
+  const isCurrentSectionCompleted = () => {
+    return completedSections.some(s => s.sectionId === activeSectionId);
+  };
+
+  // Navegación entre secciones
+  const findAdjacentSections = () => {
+    if (!modulesWithSections.data || !activeModuleId || !activeSectionId) return { prev: null, next: null };
+    
+    let prevSection = null;
+    let nextSection = null;
+    let foundCurrent = false;
+    
+    for (let i = 0; i < modulesWithSections.data.length; i++) {
+      const module = modulesWithSections.data[i];
+      for (let j = 0; j < module.sections.length; j++) {
+        const section = module.sections[j];
+        
+        if (foundCurrent) {
+          nextSection = { moduleId: module.id, section };
+          break;
+        }
+        
+        if (section.id === activeSectionId) {
+          foundCurrent = true;
+        } else {
+          prevSection = { moduleId: module.id, section };
+        }
+      }
+      if (nextSection) break;
+    }
+    
+    return { prev: prevSection, next: nextSection };
+  };
+
+  const { prev, next } = findAdjacentSections();
+
+  const handleSectionClick = (moduleId: number, sectionId: number) => {
+    setActiveModuleId(moduleId);
+    setActiveSectionId(sectionId);
+  };
+
+  const handlePrevSection = () => {
+    if (prev) {
+      handleSectionClick(prev.moduleId, prev.section.id);
+    }
+  };
+
+  const handleNextSection = () => {
+    if (next) {
+      handleSectionClick(next.moduleId, next.section.id);
+    }
+  };
+
+  const handleMarkAsCompleted = () => {
+    if (activeSectionId) {
+      updateProgressMutation.mutate(activeSectionId);
+    }
+  };
+
   if (isLoadingCourse || isLoadingModules || isLoadingEnrollments) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -123,11 +237,6 @@ export default function CourseLearningPage() {
     );
   }
 
-  const handleSectionClick = (moduleId: number, sectionId: number) => {
-    setActiveModuleId(moduleId);
-    setActiveSectionId(sectionId);
-  };
-
   return (
     <div className="min-h-screen bg-primary-900 flex">
       {/* Sidebar */}
@@ -154,9 +263,9 @@ export default function CourseLearningPage() {
             <div className="mb-6">
               <div className="flex justify-between text-sm mb-2">
                 <span>Progreso del curso</span>
-                <span>0%</span>
+                <span>{calculateProgress()}%</span>
               </div>
-              <Progress value={0} className="h-2" />
+              <Progress value={calculateProgress()} className="h-2" />
             </div>
             
             <div className="space-y-4">
@@ -183,32 +292,35 @@ export default function CourseLearningPage() {
                   </div>
 
                   <div className="border-t border-primary-600">
-                    {module.sections.map((section, sectionIndex) => (
-                      <button
-                        key={section.id}
-                        onClick={() => handleSectionClick(module.id, section.id)}
-                        className={cn(
-                          "w-full text-left p-3 flex items-start gap-3 hover:bg-primary-600/50 transition-colors",
-                          activeSectionId === section.id && "bg-primary-600"
-                        )}
-                      >
-                        <div className="mt-0.5">
-                          {false ? ( // Reemplazar con la lógica real de completado
-                            <CheckCircle className="h-5 w-5 text-green-500" />
-                          ) : (
-                            <PlayCircle className="h-5 w-5 text-muted" />
+                    {module.sections.map((section, sectionIndex) => {
+                      const isCompleted = completedSections.some(s => s.sectionId === section.id);
+                      return (
+                        <button
+                          key={section.id}
+                          onClick={() => handleSectionClick(module.id, section.id)}
+                          className={cn(
+                            "w-full text-left p-3 flex items-start gap-3 hover:bg-primary-600/50 transition-colors",
+                            activeSectionId === section.id && "bg-primary-600"
                           )}
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium">
-                            {sectionIndex + 1}. {section.title}
-                          </p>
-                          <p className="text-xs text-muted mt-0.5">
-                            {section.duration} min
-                          </p>
-                        </div>
-                      </button>
-                    ))}
+                        >
+                          <div className="mt-0.5">
+                            {isCompleted ? (
+                              <CheckCircle className="h-5 w-5 text-green-500" />
+                            ) : (
+                              <PlayCircle className="h-5 w-5 text-muted" />
+                            )}
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium">
+                              {sectionIndex + 1}. {section.title}
+                            </p>
+                            <p className="text-xs text-muted mt-0.5">
+                              {section.duration} min
+                            </p>
+                          </div>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               ))}
@@ -234,11 +346,21 @@ export default function CourseLearningPage() {
             <div>
               {/* Navegación entre secciones */}
               <div className="flex items-center space-x-4">
-                <Button variant="ghost" size="sm" disabled>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={handlePrevSection}
+                  disabled={!prev}
+                >
                   <ChevronLeft className="h-4 w-4 mr-2" />
                   Anterior
                 </Button>
-                <Button variant="ghost" size="sm">
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  onClick={handleNextSection}
+                  disabled={!next}
+                >
                   Siguiente
                   <ChevronRight className="h-4 w-4 ml-2" />
                 </Button>
@@ -246,8 +368,27 @@ export default function CourseLearningPage() {
             </div>
             
             <div className="flex items-center space-x-4">
-              {/* Placeholder para progreso */}
-              <span className="text-sm text-muted">Progreso: 0%</span>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleMarkAsCompleted}
+                className={cn(
+                  "gap-2",
+                  isCurrentSectionCompleted() && "text-green-500"
+                )}
+              >
+                {isCurrentSectionCompleted() ? (
+                  <>
+                    <CheckCircle className="h-4 w-4" />
+                    Completado
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle className="h-4 w-4" />
+                    Marcar como completado
+                  </>
+                )}
+              </Button>
             </div>
           </div>
         </div>
