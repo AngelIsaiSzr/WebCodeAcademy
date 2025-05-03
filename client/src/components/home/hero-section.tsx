@@ -26,7 +26,7 @@ export default function HeroSection() {
                 Aprende a <span className="accent-blue">programar</span> gratis y transforma tu futuro
               </h1>
               <p className="text-lg md:text-xl text-muted mb-8">
-                Web Code Academy te ofrece cursos de programación y tecnología totalmente gratuitos para combatir el analfabetismo digital y brindarte las herramientas para un futuro brillante en el mundo digital.
+                Web Code Academy te ofrece cursos de programación y tecnología totalmente gratuitos para combatir el analfabetismo digital y brindarte las herramientas para un futuro brillante en la era digital.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link href="/courses" className="px-6 py-3 bg-accent-blue text-white font-medium rounded-md hover:bg-opacity-90 transition-colors inline-block">

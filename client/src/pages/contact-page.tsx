@@ -5,21 +5,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { insertContactSchema } from "@shared/schema";
 import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
+import { motion } from 'framer-motion';
 import { apiRequest } from "@/lib/queryClient";
 
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -85,7 +75,7 @@ export default function ContactSection() {
         <title>Web Code Academy</title>
         <meta
           name="description"
-          content="Contáctanos para obtener más información sobre nuestros cursos gratuitos de programación o para cualquier consulta que tengas."
+          content="Contáctanos para obtener más información sobre nuestros cursos o para cualquier consulta que tengas."
         />
       </Helmet>
 
@@ -111,10 +101,14 @@ export default function ContactSection() {
           <section className="bg-primary-800 py-16">
             <div className="container mx-auto px-10">
               <div className="flex flex-col md:flex-row items-start">
-                <div className="w-full md:w-1/2 mb-10 md:mb-0 md:pr-10">
-                  <h2 className="text-3xl font-heading font-bold mb-6">
-                    Envíanos un mensaje
-                  </h2>
+                <motion.div
+                  className="w-full md:w-1/2 mb-10 md:mb-0 md:pr-10"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">Envíanos un mensaje</h2>
                   <p className="text-muted mb-6">
                     Si tienes alguna pregunta, sugerencia o simplemente quieres saludarnos, completa el formulario y te responderemos lo antes posible. ¡Estamos ansiosos por escucharte!
                   </p>
@@ -157,23 +151,29 @@ export default function ContactSection() {
                       <a href="https://facebook.com/webcodeacademy0" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-secondary-800 flex items-center justify-center text-muted hover:bg-accent-blue hover:text-white transition-colors" aria-label="Síguenos en Facebook">
                         <i className="fab fa-facebook-f"></i>
                       </a>
-                      <a href="https://twitter.com/webcodeacademy0" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-secondary-800 flex items-center justify-center text-muted hover:bg-accent-blue hover:text-white transition-colors" aria-label="Síguenos en Twitter">
+                      <a href="https://twitter.com/webcodeacademy0" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-secondary-800 flex items-center justify-center text-muted hover:bg-accent-yellow hover:text-white transition-colors" aria-label="Síguenos en Twitter">
                         <i className="fab fa-twitter"></i>
                       </a>
-                      <a href="https://instagram.com/webcodeacademy0" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-secondary-800 flex items-center justify-center text-muted hover:bg-accent-blue hover:text-white transition-colors" aria-label="Síguenos en Instagram">
+                      <a href="https://instagram.com/webcodeacademy0" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-secondary-800 flex items-center justify-center text-muted hover:bg-accent-red hover:text-white transition-colors" aria-label="Síguenos en Instagram">
                         <i className="fab fa-instagram"></i>
                       </a>
                       <a href="https://linkedin.com/in/webcodeacademy0" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-secondary-800 flex items-center justify-center text-muted hover:bg-accent-blue hover:text-white transition-colors" aria-label="Síguenos en LinkedIn">
                         <i className="fab fa-linkedin-in"></i>
                       </a>
-                      <a href="https://youtube.com/@webcodeacademy0" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-secondary-800 flex items-center justify-center text-muted hover:bg-accent-blue hover:text-white transition-colors" aria-label="Síguenos en YouTube">
+                      <a href="https://youtube.com/@webcodeacademy0" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-secondary-800 flex items-center justify-center text-muted hover:bg-accent-red hover:text-primary-900 transition-colors" aria-label="Síguenos en YouTube">
                         <i className="fab fa-youtube"></i>
                       </a>
                     </div>
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="w-full md:w-1/2">
+                <motion.div
+                  className="w-full md:w-1/2"
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                >
                   <div className="bg-primary-700 rounded-xl p-6 md:p-8">
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                       <div>
@@ -234,7 +234,7 @@ export default function ContactSection() {
                       </button>
                     </form>
                   </div>
-                </div>
+                </motion.div>
               </div>
             </div>
           </section>

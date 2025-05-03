@@ -9,7 +9,6 @@ import AboutSection from "@/components/home/about-section";
 import TeamSection from "@/components/home/team-section";
 import TestimonialsSection from "@/components/home/testimonials-section";
 import CtaSection from "@/components/home/cta-section";
-import ContactSection from "@/components/home/contact-section";
 import { useEffect, useState } from "react";
 import { apiRequest } from "@/lib/queryClient";
 
@@ -20,7 +19,7 @@ export default function HomePage() {
   useEffect(() => {
     // Utilizamos localStorage para evitar ejecutar la semilla múltiples veces
     const hasSeedData = localStorage.getItem('wca-seeded');
-    
+
     const loadData = async () => {
       if (!hasSeedData) {
         try {
@@ -30,11 +29,11 @@ export default function HomePage() {
           console.error("Error seeding data:", error);
         }
       }
-      
+
       // Aseguramos que el componente esté montado antes de continuar
       setIsReady(true);
     };
-    
+
     loadData();
 
     // Cleanup 
@@ -47,15 +46,15 @@ export default function HomePage() {
     <>
       <Helmet>
         <title>Web Code Academy</title>
-        <meta 
-          name="description" 
-          content="Academia de programación y tecnología completamente gratuita, combatiendo el analfabetismo digital con cursos de HTML, CSS, JavaScript, Python, Java y más"
+        <meta
+          name="description"
+          content="Academia de programación y tecnología completamente gratuita, combatiendo el analfabetismo digital con cursos de programación y tecnología de calidad."
         />
       </Helmet>
-      
+
       <div className="flex flex-col min-h-screen overflow-x-hidden">
         <Navbar />
-        
+
         <main className="flex-grow overflow-x-hidden">
           {isReady && (
             <>
@@ -67,11 +66,10 @@ export default function HomePage() {
               <TeamSection />
               <TestimonialsSection />
               <CtaSection />
-              <ContactSection />
             </>
           )}
         </main>
-        
+
         <Footer />
       </div>
     </>

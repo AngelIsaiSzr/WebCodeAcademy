@@ -82,12 +82,12 @@ function ModuleAccordion({ module, isExpanded, toggleExpanded, isEnrolled, index
           animate={{ rotate: isExpanded ? 180 : 0 }}
           transition={{ duration: 0.3 }}
         >
-          <ChevronDown className="h-6 w-6" />
+            <ChevronDown className="h-6 w-6" />
         </motion.div>
       </div>
 
       <AnimatePresence>
-        {isExpanded && (
+      {isExpanded && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
@@ -95,22 +95,22 @@ function ModuleAccordion({ module, isExpanded, toggleExpanded, isEnrolled, index
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="px-6 pb-6">
-              <div className="border-t border-secondary-800 pt-4 mt-2">
-                <div className="flex items-center mb-4">
-                  <div className="w-8 h-8 rounded-full bg-accent-blue flex items-center justify-center text-white mr-3">
-                    <i className="fas fa-user"></i>
-                  </div>
-                  <p className="text-sm">
-                    Instructor: <span className="font-medium">{module.instructor}</span>
-                  </p>
-                </div>
+        <div className="px-6 pb-6">
+          <div className="border-t border-secondary-800 pt-4 mt-2">
+            <div className="flex items-center mb-4">
+              <div className="w-8 h-8 rounded-full bg-accent-blue flex items-center justify-center text-white mr-3">
+                <i className="fas fa-user"></i>
+              </div>
+              <p className="text-sm">
+                Instructor: <span className="font-medium">{module.instructor}</span>
+              </p>
+            </div>
 
-                {isLoading ? (
-                  <div className="py-4 text-center text-muted">
-                    Cargando secciones...
-                  </div>
-                ) : sections.length > 0 ? (
+            {isLoading ? (
+              <div className="py-4 text-center text-muted">
+                Cargando secciones...
+              </div>
+            ) : sections.length > 0 ? (
                   <motion.div 
                     className="space-y-3"
                     initial={{ opacity: 0, y: 20 }}
@@ -119,60 +119,60 @@ function ModuleAccordion({ module, isExpanded, toggleExpanded, isEnrolled, index
                   >
                     {(isEnrolled ? sections : sections.slice(0, 3)).map((section, idx) => (
                       <motion.div 
-                        key={section.id}
+                    key={section.id} 
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.3, delay: 0.1 * idx }}
-                        className={`p-4 rounded-lg flex justify-between items-center ${
-                          isEnrolled 
-                            ? 'bg-primary-800 cursor-pointer hover:bg-opacity-80' 
-                            : 'bg-primary-800 opacity-75'
-                        }`}
-                      >
-                        <div className="flex items-start">
-                          <div className="w-6 h-6 mt-0.5 mr-3 flex-shrink-0">
-                            {isEnrolled ? (
-                              <CheckCircle className="h-6 w-6 text-green-500" />
-                            ) : (
-                              <Lock className="h-6 w-6 text-muted" />
-                            )}
-                          </div>
-                          <div>
-                            <h4 className="font-medium">{section.title}</h4>
-                            <p className="text-muted text-sm mt-1">{section.content}</p>
-                          </div>
-                        </div>
-                        <div className="text-xs text-muted whitespace-nowrap ml-4">
-                          {section.duration} min
-                        </div>
+                    className={`p-4 rounded-lg flex justify-between items-center ${
+                      isEnrolled 
+                        ? 'bg-primary-800 cursor-pointer hover:bg-opacity-80' 
+                        : 'bg-primary-800 opacity-75'
+                    }`}
+                  >
+                    <div className="flex items-start">
+                      <div className="w-6 h-6 mt-0.5 mr-3 flex-shrink-0">
+                        {isEnrolled ? (
+                          <CheckCircle className="h-6 w-6 text-green-500" />
+                        ) : (
+                          <Lock className="h-6 w-6 text-muted" />
+                        )}
+                      </div>
+                      <div>
+                        <h4 className="font-medium">{section.title}</h4>
+                        <p className="text-muted text-sm mt-1">{section.content}</p>
+                      </div>
+                    </div>
+                    <div className="text-xs text-muted whitespace-nowrap ml-4">
+                      {section.duration} min
+                    </div>
                       </motion.div>
-                    ))}
+                ))}
                   </motion.div>
-                ) : (
-                  <div className="py-4 text-center text-muted">
-                    No hay secciones disponibles para este módulo.
-                  </div>
-                )}
+            ) : (
+              <div className="py-4 text-center text-muted">
+                No hay secciones disponibles para este módulo.
+              </div>
+            )}
 
-                {!isEnrolled && (
+            {!isEnrolled && (
                   <motion.div 
                     className="mt-6 p-4 bg-secondary-900 rounded-lg border border-secondary-800"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: 0.4 }}
                   >
-                    <div className="flex items-center">
-                      <Lock className="h-5 w-5 text-accent-red mr-2" />
-                      <p className="text-sm font-medium">
-                        Inscríbete en este curso para acceder a todo el contenido.
-                      </p>
-                    </div>
+                <div className="flex items-center">
+                  <Lock className="h-5 w-5 text-accent-red mr-2" />
+                  <p className="text-sm font-medium">
+                    Inscríbete en este curso para acceder a todo el contenido.
+                  </p>
+                </div>
                   </motion.div>
                 )}
               </div>
-            </div>
+          </div>
           </motion.div>
-        )}
+      )}
       </AnimatePresence>
     </motion.div>
   );

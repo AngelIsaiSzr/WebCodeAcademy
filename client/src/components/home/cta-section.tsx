@@ -14,7 +14,7 @@ export default function CtaSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">¿Listo para comenzar tu viaje en programación?</h2>
+          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">¿Listo para comenzar tu viaje en el mundo digital?</h2>
           <p className="text-muted max-w-2xl mx-auto mb-10">
             Únete a más de 120 estudiantes que ya están transformando su futuro profesional con nuestros cursos gratuitos.
           </p>
