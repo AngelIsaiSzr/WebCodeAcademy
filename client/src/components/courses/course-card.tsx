@@ -77,9 +77,9 @@ function getCourseIconStyle(course: Course): string {
 // Determinar el estilo del botón según las propiedades del curso
 function getCourseButtonStyle(course: Course): string {
   if (course.popular) {
-    return 'bg-accent-blue text-white hover:bg-opacity-90';
+    return 'bg-accent-blue text-white hover:opacity-90';
   } else if (course.featured) {
-    return 'bg-accent-red text-white hover:bg-opacity-90';
+    return 'bg-accent-red text-white hover:opacity-90';
   } else if (course.new) {
     return 'border border-accent-yellow text-accent-yellow hover:bg-accent-yellow hover:text-primary-900';
   } else {

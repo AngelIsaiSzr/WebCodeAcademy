@@ -199,7 +199,7 @@ export default function AuthPage() {
                         const element = document.querySelector("[data-value='register']") as HTMLElement;
                         if (element) element.click();
                       }} 
-                      className="p-0 text-accent-blue underline hover:text-accent-blue bg-transparent border-none cursor-pointer">
+                      className="p-0 text-accent-blue underline-effect hover:text-accent-blue bg-transparent border-none cursor-pointer">
                       Regístrate
                     </button>
                   </p>
@@ -304,7 +304,7 @@ export default function AuthPage() {
                         const element = document.querySelector("[data-value='login']") as HTMLElement;
                         if (element) element.click();
                       }} 
-                      className="p-0 text-accent-blue underline hover:text-accent-blue bg-transparent border-none cursor-pointer">
+                      className="p-0 text-accent-blue underline-effect hover:text-accent-blue bg-transparent border-none cursor-pointer">
                       Iniciar sesión
                     </button>
                   </p>

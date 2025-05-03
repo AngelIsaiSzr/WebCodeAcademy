@@ -183,7 +183,7 @@ export default function ContactSection() {
                 <button 
                   type="submit" 
                   disabled={isSubmitting}
-                  className="w-full py-3 bg-accent-blue text-white font-medium rounded-md hover:bg-opacity-90 transition-colors flex justify-center items-center"
+                  className="w-full py-3 bg-accent-blue text-white font-medium rounded-md hover:opacity-90 transition-colors flex justify-center items-center"
                 >
                   {isSubmitting ? (
                     <>

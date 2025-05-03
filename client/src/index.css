@@ -203,6 +203,18 @@
     @apply w-full;
   }
 
+  .underline-effect {
+    @apply relative;
+  }
+  
+  .underline-effect::after {
+    @apply content-[''] absolute w-0 h-0.5 bottom-[-2px] left-0 bg-[hsl(var(--accent-blue))] transition-all duration-300;
+  }
+  
+  .underline-effect:hover::after {
+    @apply w-full;
+  }
+
   .code-window {
     @apply bg-[#1E1E1E] rounded-xl overflow-hidden;
   }

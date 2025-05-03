@@ -29,7 +29,7 @@ export default function HeroSection() {
                 Web Code Academy te ofrece cursos de programación y tecnología totalmente gratuitos para combatir el analfabetismo digital y brindarte las herramientas para un futuro brillante en la era digital.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Link href="/courses" className="px-6 py-3 bg-accent-blue text-white font-medium rounded-md hover:bg-opacity-90 transition-colors inline-block">
+                <Link href="/courses" className="px-6 py-3 bg-accent-blue text-white font-medium rounded-md hover:opacity-90 transition-colors inline-block">
                   Explorar Cursos
                 </Link>
                 <Link href="/about" className="px-6 py-3 border border-text-muted text-text-light font-medium rounded-md hover:bg-white hover:bg-opacity-5 transition-colors inline-block">
@@ -85,7 +85,7 @@ export default function HeroSection() {
                 <div className="text-sm text-muted">
                   <i className="far fa-file-alt mr-1"></i> Editor en vivo
                 </div>
-                <Link href="/editor" className="text-sm text-accent-blue hover:underline">
+                <Link href="/editor" className="text-sm text-accent-blue underline-effect">
                   Probar editor <i className="fas fa-arrow-right ml-1"></i>
                 </Link>
               </div>

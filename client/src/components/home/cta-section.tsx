@@ -26,7 +26,7 @@ export default function CtaSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <Link href="/courses" className="px-8 py-4 bg-accent-blue text-white font-medium rounded-md hover:bg-opacity-90 transition-colors inline-block">
+            <Link href="/courses" className="px-8 py-4 bg-accent-blue text-white font-medium rounded-md hover:opacity-90 transition-colors inline-block">
               Explorar Cursos
             </Link>
             <Link href="/contact" className="px-8 py-4 border border-accent-blue text-accent-blue font-medium rounded-md hover:bg-accent-blue hover:text-white transition-colors inline-block">

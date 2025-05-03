@@ -18,16 +18,16 @@ export default function Footer() {
               Academia de programación y tecnología completamente gratuita, comprometida con la educación de calidad y la reducción del analfabetismo digital.
             </p>
             <div className="flex space-x-4">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-muted hover-accent-red">
+              <a href="https://facebook.com/webcodeacademy0" target="_blank" rel="noopener noreferrer" className="text-muted hover-accent-blue" aria-label="Síguenos en Facebook">
                 <i className="fab fa-facebook-f"></i>
               </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-muted hover-accent-blue">
-                <i className="fab fa-twitter"></i>
-              </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-muted hover-accent-red">
+              <a href="https://instagram.com/webcodeacademy0" target="_blank" rel="noopener noreferrer" className="text-muted hover-accent-red" aria-label="Síguenos en Instagram">
                 <i className="fab fa-instagram"></i>
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-muted hover-accent-blue">
+              <a href="https://youtube.com/@webcodeacademy0" target="_blank" rel="noopener noreferrer" className="text-muted hover-accent-red" aria-label="Síguenos en YouTube">
+                <i className="fab fa-youtube"></i>
+              </a>
+              <a href="https://linkedin.com/webcodeacademy0" target="_blank" rel="noopener noreferrer" className="text-muted hover-accent-blue" aria-label="Síguenos en LinkedIn">
                 <i className="fab fa-linkedin-in"></i>
               </a>
             </div>
@@ -36,35 +36,35 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-heading font-semibold mb-6">Enlaces Rápidos</h3>
             <ul className="space-y-4">
-              <li><Link href="/" className="text-muted hover-accent-red">Inicio</Link></li>
-              <li><Link href="/courses" className="text-muted hover-accent-red">Cursos</Link></li>
-              <li><Link href="/about" className="text-muted hover-accent-red">Acerca de</Link></li>
-              <li><Link href="/contact" className="text-muted hover-accent-red">Contacto</Link></li>
-              <li><Link href="/editor" className="text-muted hover-accent-red">Editor</Link></li>
+              <li><Link href="/" className="text-muted hover-accent-blue">Inicio</Link></li>
+              <li><Link href="/courses" className="text-muted hover-accent-blue">Cursos</Link></li>
+              <li><Link href="/about" className="text-muted hover-accent-blue">Acerca de</Link></li>
+              <li><Link href="/contact" className="text-muted hover-accent-blue">Contacto</Link></li>
+              <li><Link href="/editor" className="text-muted hover-accent-blue">Editor</Link></li>
             </ul>
           </div>
           
           <div>
             <h3 className="text-lg font-heading font-semibold mb-6">Cursos</h3>
             <ul className="space-y-4">
-              <li><Link href="/courses" className="text-muted hover-accent-red">Desarrollo Web Frontend</Link></li>
-              <li><Link href="/courses" className="text-muted hover-accent-red">Python Fullstack</Link></li>
-              <li><Link href="/courses" className="text-muted hover-accent-red">Java Fullstack</Link></li>
-              <li><Link href="/courses" className="text-muted hover-accent-red">React & Redux</Link></li>
-              <li><Link href="/courses" className="text-muted hover-accent-red">Ciencia de Datos</Link></li>
-              <li><Link href="/courses" className="text-muted hover-accent-red">Node.js & Express</Link></li>
+              <li><Link href="/courses" className="text-muted hover-accent-blue">Desarrollo Web Frontend</Link></li>
+              <li><Link href="/courses" className="text-muted hover-accent-blue">Python Fullstack</Link></li>
+              <li><Link href="/courses" className="text-muted hover-accent-blue">Java Fullstack</Link></li>
+              <li><Link href="/courses" className="text-muted hover-accent-blue">React & Redux</Link></li>
+              <li><Link href="/courses" className="text-muted hover-accent-blue">Ciencia de Datos</Link></li>
+              <li><Link href="/courses" className="text-muted hover-accent-blue">Node.js & Express</Link></li>
             </ul>
           </div>
           
           <div>
             <h3 className="text-lg font-heading font-semibold mb-6">Recursos</h3>
             <ul className="space-y-4">
-              <li><a href="#" className="text-muted hover-accent-red">Blog</a></li>
-              <li><a href="#" className="text-muted hover-accent-red">Tutoriales</a></li>
-              <li><a href="#" className="text-muted hover-accent-red">Proyectos de Ejemplo</a></li>
-              <li><a href="#" className="text-muted hover-accent-red">Documentación</a></li>
-              <li><a href="#" className="text-muted hover-accent-red">Comunidad</a></li>
-              <li><a href="#" className="text-muted hover-accent-red">Preguntas Frecuentes</a></li>
+              <li><a href="#" className="text-muted hover-accent-blue">Blog</a></li>
+              <li><a href="#" className="text-muted hover-accent-blue">Tutoriales</a></li>
+              <li><a href="#" className="text-muted hover-accent-blue">Proyectos de Ejemplo</a></li>
+              <li><a href="#" className="text-muted hover-accent-blue">Documentación</a></li>
+              <li><a href="#" className="text-muted hover-accent-blue">Comunidad</a></li>
+              <li><a href="#" className="text-muted hover-accent-blue">Preguntas Frecuentes</a></li>
             </ul>
           </div>
         </div>
@@ -75,9 +75,9 @@ export default function Footer() {
               © {currentYear} Web Code Academy. Todos los derechos reservados.
             </p>
             <div className="flex space-x-6">
-              <a href="#" className="text-muted hover-accent-red text-sm">Términos y Condiciones</a>
-              <a href="#" className="text-muted hover-accent-red text-sm">Política de Privacidad</a>
-              <a href="#" className="text-muted hover-accent-red text-sm">Cookies</a>
+              <a href="#" className="text-muted hover-accent-blue text-sm">Términos y Condiciones</a>
+              <a href="#" className="text-muted hover-accent-blue text-sm">Política de Privacidad</a>
+              <a href="#" className="text-muted hover-accent-blue text-sm">Cookies</a>
             </div>
           </div>
         </div>

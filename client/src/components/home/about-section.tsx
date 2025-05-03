@@ -58,7 +58,7 @@ export default function AboutSection() {
                 Nos comprometemos a brindar contenido educativo actualizado, práctico y de alta calidad, desarrollado por expertos en la industria. Creemos en el aprendizaje práctico y en crear una comunidad donde estudiantes de diversos orígenes puedan crecer juntos.
               </p>
               
-              <Link href="/about" className="inline-flex items-center text-accent-blue hover:underline">
+              <Link href="/about" className="text-accent-blue underline-effect">
                 Conoce más sobre nosotros
                 <i className="fas fa-arrow-right ml-2"></i>
               </Link>
