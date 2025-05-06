@@ -17,7 +17,7 @@ export const initialTeam: InsertTeam[] = [
     role: "COO",
     bio: "Experta en operaciones, gestión y análisis de proyectos, con amplia experiencia en el sector educativo y en el desarrollo sustentable.",
     image: "https://res.cloudinary.com/dw6igi7fc/image/upload/v1746489175/team2_re6xyz.jpg",
-    github: "https://github.com/",
+    twitter: "https://x.com/LuisaLeoni70262",
     instagram: "https://www.instagram.com/liam_el_sol/",
     order: 2
   }
