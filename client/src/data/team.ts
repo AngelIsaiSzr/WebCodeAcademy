@@ -20,7 +20,26 @@ export const initialTeam: InsertTeam[] = [
     twitter: "https://x.com/LuisaLeoni70262",
     instagram: "https://www.instagram.com/liam_el_sol/",
     order: 2
-  }
+  },
+  {
+    name: "Victoria García",
+    role: "CFO & Diseñadora UX/UI",
+    bio: "Maestra de inglés y experta en gestión financiera. Su enfoque está en asegurar el crecimiento y la sostenibilidad de Web Code Academy.",
+    image: "https://res.cloudinary.com/dw6igi7fc/image/upload/v1746571886/team3_ongwvm.jpg",
+    linkedIn: "https://www.linkedin.com/in/",
+    instagram: "https://www.instagram.com/",
+    order: 3
+  },
+  {
+    name: "Enrique López",
+    role: "Community Manager",
+    bio: "Desarrollador C++ con habilidades en marketing digital, se destaca por su creatividad en redes sociales y su entusiasmo en el equipo.",
+    image: "https://res.cloudinary.com/dw6igi7fc/image/upload/v1746571886/team4_euog8t.jpg",
+    linkedIn: "https://www.linkedin.com/in/",
+    github: "https://github.com/",
+    instagram: "https://www.instagram.com/",
+    order: 4
+  },
 ];
 
 /*
