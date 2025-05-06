@@ -13,13 +13,12 @@ export const initialTeam: InsertTeam[] = [
     order: 1
   },
   {
-    name: "Yamileth Leonides",
+    name: "Yamileth Martínez",
     role: "COO",
-    bio: "Experta en operaciones y gestión de proyectos educativos, con amplia experiencia en el sector tecnológico y de e-learning.",
-    image: "https://res.cloudinary.com/dw6igi7fc/image/upload/v1746130447/team2_dv8vfy.jpg",
-    linkedIn: "https://linkedin.com/in/lauramendez",
-    github: "https://github.com/lauramendez",
-    twitter: "https://twitter.com/lauramendez",
+    bio: "Experta en operaciones, gestión y análisis de proyectos, con amplia experiencia en el sector educativo y en el desarrollo sustentable.",
+    image: "https://res.cloudinary.com/dw6igi7fc/image/upload/v1746489175/team2_re6xyz.jpg",
+    github: "https://github.com/",
+    instagram: "https://www.instagram.com/liam_el_sol/",
     order: 2
   }
 ];

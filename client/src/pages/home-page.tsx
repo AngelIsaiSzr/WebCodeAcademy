@@ -48,7 +48,7 @@ export default function HomePage() {
         <title>Web Code Academy</title>
         <meta
           name="description"
-          content="Academia de programación y tecnología completamente gratuita, combatiendo el analfabetismo digital con cursos de programación y tecnología de calidad."
+          content="Academia de programación y tecnología completamente gratuita, combatiendo el analfabetismo digital con cursos de programación y tecnología"
         />
       </Helmet>
 
