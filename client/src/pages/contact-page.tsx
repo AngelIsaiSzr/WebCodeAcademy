@@ -262,7 +262,7 @@ export default function ContactSection() {
                       ¿Cómo funcionan las clases mixtas?
                     </AccordionTrigger>
                     <AccordionContent className="bg-primary-700 px-6 pb-6 rounded-b-xl text-muted">
-                      Ofrecemos clases tanto presenciales como virtuales. Las clases virtuales se transmiten en vivo y también quedan grabadas para que puedas revisarlas en cualquier momento. Las clases presenciales se realizan en nuestra sede en la Ciudad de México.
+                      Ofrecemos clases tanto presenciales como virtuales. Las clases virtuales se transmiten en vivo y también quedan grabadas para que puedas revisarlas en cualquier momento. Las clases presenciales se realizan en Papantla de Olarte, Veracruz, MX.
                     </AccordionContent>
                   </AccordionItem>
 
@@ -271,7 +271,7 @@ export default function ContactSection() {
                       ¿Recibo algún certificado al completar un curso?
                     </AccordionTrigger>
                     <AccordionContent className="bg-primary-700 px-6 pb-6 rounded-b-xl text-muted">
-                      Sí, al completar satisfactoriamente un curso, recibirás un certificado digital que acredita tus habilidades y conocimientos adquiridos. Este certificado puede ser añadido a tu currículum y perfil de LinkedIn.
+                      Sí, al completar satisfactoriamente un curso, recibirás un certificado digital que acredita tus habilidades y conocimientos adquiridos además de una carta de recomendación. Este certificado puede ser añadido a tu currículum y perfil de LinkedIn.
                     </AccordionContent>
                   </AccordionItem>
 
@@ -289,7 +289,7 @@ export default function ContactSection() {
                       ¿Cómo puedo apoyar a Web Code Academy?
                     </AccordionTrigger>
                     <AccordionContent className="bg-primary-700 px-6 pb-6 rounded-b-xl text-muted">
-                      Puedes apoyarnos compartiendo nuestros cursos con otras personas, participando activamente en nuestra comunidad, o si eres un profesional de la tecnología, considerando unirte como voluntario o mentor. Contáctanos para más información.
+                      Puedes apoyarnos compartiendo nuestros cursos con otras personas, participando activamente en nuestra comunidad, a través de donaciones, o si eres un profesional de la tecnología, considerando unirte como facilitador o instructor. Contáctanos para más información.
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
