@@ -14,7 +14,7 @@ export const initialTeam: InsertTeam[] = [
   },
   {
     name: "Yamileth Martínez",
-    role: "COO",
+    role: "COO & CoFundadora",
     bio: "Experta en operaciones, gestión y análisis de proyectos, con amplia experiencia en el sector educativo y en el desarrollo sustentable.",
     image: "https://res.cloudinary.com/dw6igi7fc/image/upload/v1746489175/team2_re6xyz.jpg",
     twitter: "https://x.com/LuisaLeoni70262",

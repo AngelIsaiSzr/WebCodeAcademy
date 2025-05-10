@@ -117,7 +117,7 @@ export default function TeamSection() {
 function getRoleColor(role: string): string {
   const roleMap: { [key: string]: string } = {
     'CEO & Fundador': 'accent-blue',
-    'COO': 'accent-red',
+    'COO & CoFundadora': 'accent-red',
     'Community Manager': 'accent-yellow',
     'Instructor Principal': 'accent-blue',
     'Instructor': 'accent-red',
