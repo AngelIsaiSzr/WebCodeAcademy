@@ -59,7 +59,7 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-heading font-semibold mb-6">Recursos</h3>
             <ul className="space-y-4">
-              <li><a href="https://drive.google.com/file/d/1S1mso-85u3bV2eSc94dmoPYSALQD5zzr/view?usp=sharing" className="text-muted hover-accent-blue">Historia, Origen y Propósito</a></li>
+              <li><a href="https://drive.google.com/file/d/1S1mso-85u3bV2eSc94dmoPYSALQD5zzr/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="text-muted hover-accent-blue">Historia, Origen y Propósito</a></li>
               <li><a href="#" className="text-muted hover-accent-blue">Tutoriales</a></li>
               <li><a href="#" className="text-muted hover-accent-blue">Merch Oficial</a></li>
               <li><a href="#" className="text-muted hover-accent-blue">Documentación</a></li>
