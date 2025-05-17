@@ -27,7 +27,7 @@ export default function Footer() {
               <a href="https://youtube.com/@webcodeacademy0" target="_blank" rel="noopener noreferrer" className="text-muted hover-accent-red" aria-label="Síguenos en YouTube">
                 <i className="fab fa-youtube"></i>
               </a>
-              <a href="https://linkedin.com/webcodeacademy0" target="_blank" rel="noopener noreferrer" className="text-muted hover-accent-blue" aria-label="Síguenos en LinkedIn">
+              <a href="https://linkedin.com/in/webcodeacademy0/" target="_blank" rel="noopener noreferrer" className="text-muted hover-accent-blue" aria-label="Síguenos en LinkedIn">
                 <i className="fab fa-linkedin-in"></i>
               </a>
             </div>
@@ -59,11 +59,11 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-heading font-semibold mb-6">Recursos</h3>
             <ul className="space-y-4">
-              <li><a href="#" className="text-muted hover-accent-blue">Blog</a></li>
+              <li><a href="https://drive.google.com/file/d/1S1mso-85u3bV2eSc94dmoPYSALQD5zzr/view?usp=sharing" className="text-muted hover-accent-blue">Historia, Origen y Propósito</a></li>
               <li><a href="#" className="text-muted hover-accent-blue">Tutoriales</a></li>
-              <li><a href="#" className="text-muted hover-accent-blue">Proyectos de Ejemplo</a></li>
+              <li><a href="#" className="text-muted hover-accent-blue">Merch Oficial</a></li>
               <li><a href="#" className="text-muted hover-accent-blue">Documentación</a></li>
-              <li><a href="#" className="text-muted hover-accent-blue">Comunidad</a></li>
+              <li><a href="#" className="text-muted hover-accent-blue">Blog y Comunidad</a></li>
               <li><a href="#" className="text-muted hover-accent-blue">Preguntas Frecuentes</a></li>
             </ul>
           </div>
