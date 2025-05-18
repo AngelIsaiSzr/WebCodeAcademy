@@ -8,7 +8,7 @@ Disallow: /admin/
 Disallow: /auth/
 
 # Permitir rastreo de páginas principales
-Allow: /cursos/
+Allow: /courses/
 Allow: /editor/
-Allow: /acerca-de/
-Allow: /contacto/ 
+Allow: /about/
+Allow: /contact/ 
