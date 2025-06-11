@@ -496,7 +496,6 @@ export class DatabaseStorage implements IStorage {
       this.sessionStore = new PgSession({
         pool: pool,
         tableName: "user_sessions",
-        createTableIfMissing: true,
       });
     } else {
       this.sessionStore = new MemoryStore({
