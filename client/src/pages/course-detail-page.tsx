@@ -16,6 +16,21 @@ import { useEffect, useState } from "react";
 import { usePageLoading } from "@/hooks/use-page-loading";
 import { getRandomQuote } from "@/utils/quotes";
 
+interface LiveCourseRegistration {
+  id: number;
+  courseId: number;
+  userId?: number | null;
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  age: number;
+  guardianName?: string | null;
+  guardianPhoneNumber?: string | null;
+  preferredModality: 'Presencial' | 'Virtual';
+  hasLaptop: boolean;
+  registeredAt: string;
+}
+
 export default function CourseDetailPage() {
   const [, params] = useRoute("/courses/:slug");
   const slug = params?.slug;
@@ -54,6 +69,24 @@ export default function CourseDetailPage() {
 
   // Check if user is enrolled in this course
   const isEnrolled = enrollments.some((enrollment: any) => enrollment.courseId === course?.id);
+
+  // Verificar si el usuario ya se ha registrado en este curso en vivo
+  const {
+    data: liveRegistrations = [],
+    isLoading: isLoadingLiveRegistrations,
+  } = useQuery<LiveCourseRegistration[]>({ // Aseguramos que la interfaz sea la correcta aquí
+    queryKey: ['/api/live-course-registrations', user?.id, course?.id],
+    enabled: Boolean(user && course?.id && course.isLive), // Aseguramos que la condición sea un booleano explícito
+    queryFn: async () => {
+      if (!user || !course?.id || !(course.isLive)) return []; // Añadida una verificación más robusta para isLive
+      const response = await apiRequest("GET", `/api/live-course-registrations?userId=${user.id}&courseId=${course.id}`);
+      const data = await response.json() as LiveCourseRegistration[];
+      return data.filter((reg: LiveCourseRegistration) => reg.courseId === course.id);
+    },
+    initialData: [],
+  });
+
+  const hasRegisteredForLiveCourse = liveRegistrations.length > 0;
 
   // Enrollment mutation
   const enrollMutation = useMutation({
@@ -95,10 +128,10 @@ export default function CourseDetailPage() {
 
   // Set global loading state based on data loading
   useEffect(() => {
-    setLoading(isLoadingCourse || isLoadingModules);
-  }, [isLoadingCourse, isLoadingModules, setLoading]);
+    setLoading(isLoadingCourse || isLoadingModules || isLoadingLiveRegistrations);
+  }, [isLoadingCourse, isLoadingModules, isLoadingLiveRegistrations, setLoading]);
 
-  if (isLoadingCourse || isLoadingModules) {
+  if (isLoadingCourse || isLoadingModules || isLoadingLiveRegistrations) {
     return (
       <div className="flex flex-col min-h-screen">
         <Navbar />
@@ -248,7 +281,7 @@ export default function CourseDetailPage() {
                     <AnimateInView animation="fadeIn" delay={0.5}>
                       <div>
                         {isEnrolled ? (
-                          <>
+                          <> 
                             <div className="mb-6 p-4 bg-primary-700 rounded-lg">
                               <blockquote className="italic text-muted">
                                 "{quote.text}"
@@ -279,9 +312,13 @@ export default function CourseDetailPage() {
                                       ? 'bg-accent-red hover:bg-accent-red hover:opacity-90'
                                       : 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
                                   }`}
-                                disabled={enrollMutation.isPending || isLoadingEnrollments}
+                                disabled={enrollMutation.isPending || isLoadingEnrollments || hasRegisteredForLiveCourse} // Deshabilitar si ya se registró en vivo
                               >
-                                <a href={`/courses/${course.slug}/learn`}>Registrate al Curso en Vivo</a>
+                                {hasRegisteredForLiveCourse ? ( // Condición para el texto del botón
+                                  <span>Ya Registrado</span>
+                                ) : (
+                                  <a href={`/courses/${course.slug}/learn`}>Registrate al Curso en Vivo</a>
+                                )}
                               </Button>
                             ) : (
                               <Button
@@ -342,9 +379,13 @@ export default function CourseDetailPage() {
                                       ? 'bg-accent-red hover:bg-accent-red hover:opacity-90'
                                       : 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
                                   }`}
-                                disabled={enrollMutation.isPending || isLoadingEnrollments}
+                                disabled={enrollMutation.isPending || isLoadingEnrollments || hasRegisteredForLiveCourse} // Deshabilitar si ya se registró en vivo
                               >
-                                <a href={`/courses/${course.slug}/learn`}>Formulario de Registro</a>
+                                {hasRegisteredForLiveCourse ? (
+                                  <span>Ya Registrado</span>
+                                ) : (
+                                  <a href={`/courses/${course.slug}/learn`}>Formulario de Registro</a>
+                                )}
                               </Button>
                             ) : (
                               <Button
