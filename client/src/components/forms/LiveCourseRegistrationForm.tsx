@@ -49,10 +49,10 @@ type LiveRegistrationFormValues = z.infer<typeof liveRegistrationFormSchema>;
 
 interface LiveCourseRegistrationFormProps {
   course: Course;
-  onRegistrationSuccess: () => void;
+  onSuccessRegistration: () => void;
 }
 
-export function LiveCourseRegistrationForm({ course, onRegistrationSuccess }: LiveCourseRegistrationFormProps) {
+export function LiveCourseRegistrationForm({ course, onSuccessRegistration }: LiveCourseRegistrationFormProps) {
   const [, navigate] = useLocation();
   const queryClient = useQueryClient();
   const { user } = useAuth();
@@ -103,8 +103,8 @@ export function LiveCourseRegistrationForm({ course, onRegistrationSuccess }: Li
     },
     onSuccess: () => {
       reset();
+      onSuccessRegistration();
       queryClient.invalidateQueries({ queryKey: ['/api/live-course-registrations', user?.id, course.id] });
-      onRegistrationSuccess();
     },
     onError: (error) => {
       alert(error.message);
