@@ -274,10 +274,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
         subject: `Confirmación de registro al curso: ${courseName}`,
         text: `¡Muchas gracias por registrarte en el curso! Días antes de iniciar el curso se te enviará un mensaje confirmando tu asistencia y modalidad. Para dudas o aclaraciones: +52 784 110 0108 - Web Code Academy`,
         html: `
-          <p>¡Muchas gracias por registrarte en el curso!</p>
-          <p>Días antes de iniciar el curso se te enviará un mensaje confirmando tu asistencia y modalidad.</p>
-          <p>Para dudas o aclaraciones: <b>+52 784 110 0108</b></p>
-          <p>- Web Code Academy</p>
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f8f9fa; border-radius: 8px;">
+            <div style="text-align: center; margin-bottom: 30px;">
+              <h1 style="color: #297de0; margin-bottom: 20px;">¡Gracias por registrarte!</h1>
+              <p style="font-size: 18px; color: #333; margin-bottom: 15px;">Tu registro al curso <strong>${courseName}</strong> ha sido confirmado.</p>
+            </div>
+            
+            <div style="background-color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+              <h2 style="color: #297de0; margin-bottom: 15px;">Próximos pasos:</h2>
+              <p style="color: #555; line-height: 1.6;">Días antes de iniciar el curso recibirás un mensaje confirmando tu asistencia y la modalidad del curso.</p>
+            </div>
+
+            <div style="background-color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+              <h2 style="color: #297de0; margin-bottom: 15px;">¿Tienes dudas?</h2>
+              <p style="color: #555; line-height: 1.6;">Estamos aquí para ayudarte. Contáctanos a través de:</p>
+              <p style="color: #555; line-height: 1.6;">📞 Teléfono: <a href="tel:+527841100108" style="color: #297de0; text-decoration: none;">+52 784 110 0108</a></p>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+              <p style="color: #666; margin-bottom: 10px;">Síguenos en nuestras redes sociales:</p>
+              <div style="margin-bottom: 20px;">
+                <a href="https://facebook.com/webcodeacademy0" style="color: #297de0; text-decoration: none; margin: 0 10px;">Facebook</a>
+                <a href="https://instagram.com/webcodeacademy0" style="color: #297de0; text-decoration: none; margin: 0 10px;">Instagram</a>
+                <a href="https://linkedin.com/in/webcodeacademy0" style="color: #297de0; text-decoration: none; margin: 0 10px;">Linkedin</a>
+              </div>
+              <p style="color: #666; font-size: 14px;">© 2025 Web Code Academy. Todos los derechos reservados.</p>
+            </div>
+          </div>
         `
       };
 
@@ -286,20 +309,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
         from: registration.email,
         name: `Registro de ${registration.fullName}`,
         subject: `Nuevo registro a curso en vivo: ${registration.fullName}`,
-        text: `Nuevo registro para curso en vivo:\n          Nombre: ${registration.fullName}\n          Correo: ${registration.email}\n          Teléfono: ${registration.phoneNumber}\n          Edad: ${registration.age}\n          Modalidad preferida: ${registration.preferredModality}\n          Tiene laptop: ${registration.hasLaptop ? 'Sí' : 'No'}\n          ${registration.guardianName ? `Nombre del tutor: ${registration.guardianName}` : ''}\n          ${registration.guardianPhoneNumber ? `Teléfono del tutor: ${registration.guardianPhoneNumber}` : ''}\n          Curso ID: ${registration.courseId}\n        `,
+        text: `Nuevo registro para curso en vivo:\n          Nombre: ${registration.fullName}\n          Correo: ${registration.email}\n          Teléfono: ${registration.phoneNumber}\n          Edad: ${registration.age}\n          Modalidad preferida: ${registration.preferredModality}\n          Tiene laptop: ${registration.hasLaptop ? 'Sí' : 'No'}\n          ${registration.guardianName ? `Nombre del tutor: ${registration.guardianName}` : ''}\n          ${registration.guardianPhoneNumber ? `Teléfono del tutor: ${registration.guardianPhoneNumber}` : ''}\n          Curso: ${courseName}\n        `,
         html: `
-          <p>Nuevo registro para curso en vivo:</p>
-          <ul>
-            <li><b>Nombre:</b> ${registration.fullName}</li>
-            <li><b>Correo:</b> ${registration.email}</li>
-            <li><b>Teléfono:</b> ${registration.phoneNumber}</li>
-            <li><b>Edad:</b> ${registration.age}</li>
-            <li><b>Modalidad preferida:</b> ${registration.preferredModality}</li>
-            <li><b>Tiene laptop:</b> ${registration.hasLaptop ? 'Sí' : 'No'}</li>
-            ${registration.guardianName ? `<li><b>Nombre del tutor:</b> ${registration.guardianName}</li>` : ''}
-            ${registration.guardianPhoneNumber ? `<li><b>Teléfono del tutor:</b> ${registration.guardianPhoneNumber}</li>` : ''}
-            <li><b>Curso ID:</b> ${registration.courseId}</li>
-          </ul>
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f8f9fa; border-radius: 8px;">
+            <div style="text-align: center; margin-bottom: 30px;">
+              <h1 style="color: #297de0; margin-bottom: 20px;">¡Nuevo Registro!</h1>
+              <p style="font-size: 18px; color: #333;">Se ha registrado un nuevo estudiante para el curso <strong>${courseName}</strong></p>
+            </div>
+            
+            <div style="background-color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+              <h2 style="color: #297de0; margin-bottom: 15px;">Información del Registro:</h2>
+              <ul style="list-style: none; padding: 0; margin: 0;">
+                <li style="margin-bottom: 10px; color: #555;"><strong>Nombre:</strong> ${registration.fullName}</li>
+                <li style="margin-bottom: 10px; color: #555;"><strong>Correo:</strong> <a href="mailto:${registration.email}" style="color: #297de0; text-decoration: none;">${registration.email}</a></li>
+                <li style="margin-bottom: 10px; color: #555;"><strong>Teléfono:</strong> <a href="tel:${registration.phoneNumber}" style="color: #297de0; text-decoration: none;">${registration.phoneNumber}</a></li>
+                <li style="margin-bottom: 10px; color: #555;"><strong>Edad:</strong> ${registration.age}</li>
+                <li style="margin-bottom: 10px; color: #555;"><strong>Modalidad preferida:</strong> ${registration.preferredModality}</li>
+                <li style="margin-bottom: 10px; color: #555;"><strong>Tiene laptop:</strong> ${registration.hasLaptop ? 'Sí' : 'No'}</li>
+                ${registration.guardianName ? `<li style="margin-bottom: 10px; color: #555;"><strong>Nombre del tutor:</strong> ${registration.guardianName}</li>` : ''}
+                ${registration.guardianPhoneNumber ? `<li style="margin-bottom: 10px; color: #555;"><strong>Teléfono del tutor:</strong> ${registration.guardianPhoneNumber}</li>` : ''}
+              </ul>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+              <p style="color: #666; font-size: 14px;">© 2024 Web Code Academy. Todos los derechos reservados.</p>
+            </div>
+          </div>
         `
       };
 
