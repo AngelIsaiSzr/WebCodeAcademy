@@ -303,7 +303,7 @@ export default function CourseDetailPage() {
                             </div>
                             {course.isLive ? (
                               <Button
-                                asChild
+                                onClick={() => window.location.href = `/courses/${course.slug}/learn`}
                                 className={`px-6 py-3 ${course.popular
                                   ? 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
                                   : course.new
@@ -317,7 +317,7 @@ export default function CourseDetailPage() {
                                 {hasRegisteredForLiveCourse ? ( // Condición para el texto del botón
                                   <span>Ya Registrado</span>
                                 ) : (
-                                  <a href={`/courses/${course.slug}/learn`}>Registrate al Curso en Vivo</a>
+                                  <span>Registrate al Curso en Vivo</span>
                                 )}
                               </Button>
                             ) : (
@@ -370,7 +370,7 @@ export default function CourseDetailPage() {
                           ) : (
                             course.isLive ? (
                               <Button
-                                asChild
+                                onClick={() => window.location.href = `/courses/${course.slug}/learn`}
                                 className={`w-full ${course.popular
                                   ? 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
                                   : course.new
@@ -382,9 +382,9 @@ export default function CourseDetailPage() {
                                 disabled={enrollMutation.isPending || isLoadingEnrollments || hasRegisteredForLiveCourse} // Deshabilitar si ya se registró en vivo
                               >
                                 {hasRegisteredForLiveCourse ? (
-                                  <span>Ya Registrado</span>
+                                  <span>¡Ya Estás Registrado!</span>
                                 ) : (
-                                  <a href={`/courses/${course.slug}/learn`}>Formulario de Registro</a>
+                                  <span>Formulario de Registro</span>
                                 )}
                               </Button>
                             ) : (
