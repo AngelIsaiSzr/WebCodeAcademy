@@ -14,7 +14,7 @@ import session from "express-session";
 import createMemoryStore from "memorystore";
 import * as connectPgModule from "connect-pg-simple";
 import { db, pool } from "./db";
-import { eq, desc, asc, and } from "drizzle-orm";
+import { eq, desc, asc } from "drizzle-orm";
 
 const connectPg = connectPgModule.default || connectPgModule;
 
@@ -78,7 +78,6 @@ export interface IStorage {
 
   // Live Course Registrations
   createLiveCourseRegistration(registration: InsertLiveCourseRegistration): Promise<LiveCourseRegistration>;
-  getLiveCourseRegistrationByCourseAndUser(userId: number, courseId: number): Promise<LiveCourseRegistration | undefined>;
 
   // Session store
   sessionStore: any;
@@ -203,15 +202,13 @@ export class MemStorage implements IStorage {
 
   async createCourse(insertCourse: InsertCourse): Promise<Course> {
     const id = this.currentCourseIds++;
-    const course: Course = {
-      ...insertCourse,
+    const course: Course = { 
+      ...insertCourse, 
       id,
       createdAt: new Date(),
-      featured: insertCourse.featured ?? false,
-      popular: insertCourse.popular ?? false,
-      new: insertCourse.new ?? false,
-      isLive: insertCourse.isLive ?? false,
-      liveDetails: insertCourse.liveDetails ?? null,
+      featured: insertCourse.featured || null,
+      popular: insertCourse.popular || null,
+      new: insertCourse.new || null
     };
     this.courses.set(id, course);
     return course;
@@ -473,17 +470,11 @@ export class MemStorage implements IStorage {
       id,
       registeredAt: new Date(),
       userId: insertRegistration.userId || null,
-      guardianName: insertRegistration.guardianName ?? null,
-      guardianPhoneNumber: insertRegistration.guardianPhoneNumber ?? null,
+      guardianName: insertRegistration.guardianName || null,
+      guardianPhoneNumber: insertRegistration.guardianPhoneNumber || null,
     };
     this.liveCourseRegistrations.set(id, registration);
     return registration;
-  }
-
-  async getLiveCourseRegistrationByCourseAndUser(userId: number, courseId: number): Promise<LiveCourseRegistration | undefined> {
-    return Array.from(this.liveCourseRegistrations.values()).find(
-      (reg) => reg.userId === userId && reg.courseId === courseId
-    );
   }
 }
 
@@ -491,17 +482,11 @@ export class DatabaseStorage implements IStorage {
   sessionStore: any;
 
   constructor() {
-    if (process.env.NODE_ENV === "production") {
-      const PgSession = connectPg(session);
-      this.sessionStore = new PgSession({
-        pool: pool,
-        tableName: "user_sessions",
-      });
-    } else {
-      this.sessionStore = new MemoryStore({
-        checkPeriod: 86400000, // prune expired entries every 24h
-      });
-    }
+    const PostgresSessionStore = connectPg(session);
+    this.sessionStore = new PostgresSessionStore({ 
+      pool, 
+      createTableIfMissing: true 
+    });
   }
 
   // Users
@@ -810,26 +795,11 @@ export class DatabaseStorage implements IStorage {
 
   // Live Course Registrations
   async createLiveCourseRegistration(insertRegistration: InsertLiveCourseRegistration): Promise<LiveCourseRegistration> {
-    const [registration] = await db.insert(liveCourseRegistrations).values({
-      ...insertRegistration,
-      userId: insertRegistration.userId || null,
-      guardianName: insertRegistration.guardianName ?? null,
-      guardianPhoneNumber: insertRegistration.guardianPhoneNumber ?? null,
-    }).returning();
-    
-    if (!registration) {
-      throw new Error("Failed to create live course registration");
-    }
+    const [registration] = await db
+      .insert(liveCourseRegistrations)
+      .values(insertRegistration)
+      .returning();
     return registration;
-  }
-
-  async getLiveCourseRegistrationByCourseAndUser(userId: number, courseId: number): Promise<LiveCourseRegistration | undefined> {
-    const result = await db
-      .select()
-      .from(liveCourseRegistrations)
-      .where(and(eq(liveCourseRegistrations.userId, userId), eq(liveCourseRegistrations.courseId, courseId)));
-    
-    return result.length > 0 ? result[0] : undefined;
   }
 }
 
