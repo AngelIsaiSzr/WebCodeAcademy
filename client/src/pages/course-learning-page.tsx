@@ -49,6 +49,11 @@ export default function CourseLearningPage() {
   const [, navigate] = useLocation();
   const [showRegistrationSuccess, setShowRegistrationSuccess] = useState(false);
 
+  // Reset showRegistrationSuccess when the course slug changes (new course or page reload)
+  useEffect(() => {
+    setShowRegistrationSuccess(false);
+  }, [slug]);
+
   // Fetch course data
   const {
     data: course,
@@ -118,10 +123,6 @@ export default function CourseLearningPage() {
   // Manejador de éxito de registro en vivo
   const handleRegistrationSuccess = () => {
     setShowRegistrationSuccess(true);
-    // Reiniciar el estado de éxito después de un tiempo para que el mensaje "Ya registrado" tome prioridad después
-    setTimeout(() => {
-      setShowRegistrationSuccess(false);
-    }, 5000); // Mostrar el mensaje de éxito por 5 segundos
   };
 
   // Set initial active module and section
@@ -338,7 +339,7 @@ export default function CourseLearningPage() {
           <div className="text-center">
             <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
             <h1 className="text-2xl font-bold mb-2">¡Muchas gracias por registrarte!</h1>
-            <p className="text-muted mb-4">Días antes de iniciar el curso se te enviará un mensaje confirmando tu asistencia y modalidad.</p>
+            <p className="text-muted mb-2">Días antes de iniciar el curso se te enviará un mensaje confirmando tu asistencia y modalidad.</p>
             <p className="text-muted mb-4">
               Para dudas o aclaraciones: <span className="font-semibold text-accent-blue">+52 784 110 0108</span>
             </p>
