@@ -118,6 +118,10 @@ export default function CourseLearningPage() {
   // Manejador de éxito de registro en vivo
   const handleRegistrationSuccess = () => {
     setShowRegistrationSuccess(true);
+    // Reiniciar el estado de éxito después de un tiempo para que el mensaje "Ya registrado" tome prioridad después
+    setTimeout(() => {
+      setShowRegistrationSuccess(false);
+    }, 5000); // Mostrar el mensaje de éxito por 5 segundos
   };
 
   // Set initial active module and section
@@ -327,6 +331,29 @@ export default function CourseLearningPage() {
 
   // Renderiza el formulario de registro si es un curso en vivo
   if (course.isLive) {
+    // PRIORIDAD 1: Mostrar mensaje de éxito inmediatamente después del registro
+    if (showRegistrationSuccess) {
+      return (
+        <Card className="flex items-center justify-center min-h-[500px] text-center">
+          <CardContent className="flex flex-col items-center gap-4">
+            <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
+            <CardTitle className="text-2xl font-bold">¡Muchas gracias por registrarte!</CardTitle>
+            <CardDescription className="text-muted">
+              Días antes de iniciar el curso se te enviará un mensaje confirmando tu asistencia y modalidad.
+            </CardDescription>
+            <p className="text-muted mt-4">
+              Para dudas o aclaraciones: <span className="font-semibold text-accent-blue">+52 784 110 0108</span>
+            </p>
+            <p className="text-muted">- Web Code Academy</p>
+            <Button onClick={() => navigate('/courses')} className="mt-6">
+              Regresar a Cursos
+            </Button>
+          </CardContent>
+        </Card>
+      );
+    }
+
+    // PRIORIDAD 2: Mostrar mensaje de ya registrado en visitas posteriores
     if (hasRegisteredForLiveCourse) {
       return (
         <div className="min-h-screen flex items-center justify-center bg-primary-900 py-12">
@@ -340,27 +367,7 @@ export default function CourseLearningPage() {
       );
     }
 
-    if (showRegistrationSuccess) {
-      return (
-        <Card className="flex items-center justify-center min-h-[500px] text-center">
-          <CardContent className="flex flex-col items-center gap-4">
-          <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
-            <CardTitle className="text-2xl font-bold">¡Muchas gracias por registrarte!</CardTitle>
-            <CardDescription className="text-muted">
-              Días antes de iniciar el curso se te enviará un mensaje confirmando tu asistencia y modalidad.
-            </CardDescription>
-            <p className="text-muted mt-4">
-              Para dudas o aclaraciones: <span className="font-semibold text-accent-blue">+52 784 110 0108</span>
-            </p>
-            <p className="text-muted-foreground">- Web Code Academy</p>
-            <Button onClick={() => navigate('/courses')} className="mt-6">
-              Regresar a Cursos
-            </Button>
-          </CardContent>
-        </Card>
-      );
-    }
-
+    // PRIORIDAD 3: Mostrar el formulario si no se ha registrado ni se acaba de registrar
     return (
       <div className="min-h-screen flex items-center justify-center bg-primary-900 py-12">
         <LiveCourseRegistrationForm course={course} onSuccessRegistration={handleRegistrationSuccess} />
