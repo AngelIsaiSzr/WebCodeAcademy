@@ -89,12 +89,16 @@ export default function Navbar() {
               {user ? (
                 <DropdownMenu modal={false}>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="flex items-center gap-2">
+                    <Button variant="ghost" className="flex items-center gap-2 relative">
                       <UserAvatar size="sm" />
                       <span className="hidden lg:block">{user.name}</span>
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuContent 
+                    align="end" 
+                    className="w-56 fixed z-[100]"
+                    sideOffset={5}
+                  >
                     <DropdownMenuLabel>Mi cuenta</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <Link href="/profile">
