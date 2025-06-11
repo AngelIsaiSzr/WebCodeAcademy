@@ -42,9 +42,9 @@ export default function HeroSection() {
               <AnimateInView animation="fadeIn" delay={0.3}>
                 <div className="flex items-center">
                   <div className="flex -space-x-2">
-                    <img src="https://randomuser.me/api/portraits/women/44.jpg" className="w-10 h-10 rounded-full border-2 border-primary-800" alt="Estudiante" />
-                    <img src="https://randomuser.me/api/portraits/men/32.jpg" className="w-10 h-10 rounded-full border-2 border-primary-800" alt="Estudiante" />
-                    <img src="https://randomuser.me/api/portraits/women/68.jpg" className="w-10 h-10 rounded-full border-2 border-primary-800" alt="Estudiante" />
+                    <img src="https://res.cloudinary.com/dw6igi7fc/image/upload/v1749605314/portraits1_n976eu.png" className="w-10 h-10 rounded-full border-2 border-primary-800" alt="Estudiante" />
+                    <img src="https://res.cloudinary.com/dw6igi7fc/image/upload/v1749605314/portraits2_wzwuuv.png" className="w-10 h-10 rounded-full border-2 border-primary-800" alt="Estudiante" />
+                    <img src="https://res.cloudinary.com/dw6igi7fc/image/upload/v1749605313/portraits3_itzkds.png" className="w-10 h-10 rounded-full border-2 border-primary-800" alt="Estudiante" />
                   </div>
                   <div className="ml-4">
                     <p className="font-medium">+120 estudiantes</p>
