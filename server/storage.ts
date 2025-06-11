@@ -14,7 +14,7 @@ import session from "express-session";
 import createMemoryStore from "memorystore";
 import * as connectPgModule from "connect-pg-simple";
 import { db, pool } from "./db";
-import { eq, desc, asc } from "drizzle-orm";
+import { eq, desc, asc, and } from "drizzle-orm";
 
 const connectPg = connectPgModule.default || connectPgModule;
 
@@ -78,6 +78,7 @@ export interface IStorage {
 
   // Live Course Registrations
   createLiveCourseRegistration(registration: InsertLiveCourseRegistration): Promise<LiveCourseRegistration>;
+  getLiveCourseRegistrationsByUserIdAndCourseId(userId: number, courseId: number): Promise<LiveCourseRegistration[]>;
 
   // Session store
   sessionStore: any;
@@ -206,9 +207,11 @@ export class MemStorage implements IStorage {
       ...insertCourse, 
       id,
       createdAt: new Date(),
-      featured: insertCourse.featured || null,
-      popular: insertCourse.popular || null,
-      new: insertCourse.new || null
+      featured: insertCourse.featured ?? null,
+      popular: insertCourse.popular ?? null,
+      new: insertCourse.new ?? null,
+      isLive: insertCourse.isLive ?? null,
+      liveDetails: insertCourse.liveDetails ?? null
     };
     this.courses.set(id, course);
     return course;
@@ -465,16 +468,19 @@ export class MemStorage implements IStorage {
   // Live Course Registrations
   async createLiveCourseRegistration(insertRegistration: InsertLiveCourseRegistration): Promise<LiveCourseRegistration> {
     const id = this.currentLiveCourseRegistrationIds++;
-    const registration: LiveCourseRegistration = {
-      ...insertRegistration,
-      id,
-      registeredAt: new Date(),
-      userId: insertRegistration.userId || null,
-      guardianName: insertRegistration.guardianName || null,
-      guardianPhoneNumber: insertRegistration.guardianPhoneNumber || null,
+    const registration: LiveCourseRegistration = { 
+      ...insertRegistration, 
+      id, 
+      registeredAt: new Date()
     };
     this.liveCourseRegistrations.set(id, registration);
     return registration;
+  }
+
+  async getLiveCourseRegistrationsByUserIdAndCourseId(userId: number, courseId: number): Promise<LiveCourseRegistration[]> {
+    return Array.from(this.liveCourseRegistrations.values()).filter(
+      (reg) => reg.userId === userId && reg.courseId === courseId
+    );
   }
 }
 
@@ -795,11 +801,18 @@ export class DatabaseStorage implements IStorage {
 
   // Live Course Registrations
   async createLiveCourseRegistration(insertRegistration: InsertLiveCourseRegistration): Promise<LiveCourseRegistration> {
-    const [registration] = await db
-      .insert(liveCourseRegistrations)
-      .values(insertRegistration)
-      .returning();
+    const [registration] = await db.insert(liveCourseRegistrations).values(insertRegistration).returning();
+    if (!registration) {
+      throw new Error("Failed to create live course registration");
+    }
     return registration;
+  }
+
+  async getLiveCourseRegistrationsByUserIdAndCourseId(userId: number, courseId: number): Promise<LiveCourseRegistration[]> {
+    const regs = await db.select().from(liveCourseRegistrations)
+      .where(and(eq(liveCourseRegistrations.userId, userId), eq(liveCourseRegistrations.courseId, courseId)))
+      .execute();
+    return regs;
   }
 }
 

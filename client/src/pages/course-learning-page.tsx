@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRoute } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { Course, Module, Section } from "@shared/schema";
+import { Course, Module, Section, LiveCourseRegistration } from "@shared/schema";
 import { useAuth } from "@/hooks/use-auth";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { Button } from "@/components/ui/button";
@@ -31,21 +31,6 @@ interface SectionProgress {
   completed: boolean;
   timestamp: string;
   videoProgress?: number;
-}
-
-interface LiveCourseRegistration {
-  id: number;
-  courseId: number;
-  userId?: number | null;
-  fullName: string;
-  email: string;
-  phoneNumber: string;
-  age: number;
-  guardianName?: string | null;
-  guardianPhoneNumber?: string | null;
-  preferredModality: 'Presencial' | 'Virtual';
-  hasLaptop: boolean;
-  registeredAt: string;
 }
 
 type TabType = "description" | "resources" | "comments";

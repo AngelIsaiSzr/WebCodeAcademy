@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useRoute } from "wouter";
 import { Helmet } from "react-helmet";
-import { Course, Module } from "@shared/schema";
+import { Course, Module, LiveCourseRegistration } from "@shared/schema";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import CourseModules from "@/components/courses/course-modules";
@@ -15,21 +15,6 @@ import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { useEffect, useState } from "react";
 import { usePageLoading } from "@/hooks/use-page-loading";
 import { getRandomQuote } from "@/utils/quotes";
-
-interface LiveCourseRegistration {
-  id: number;
-  courseId: number;
-  userId?: number | null;
-  fullName: string;
-  email: string;
-  phoneNumber: string;
-  age: number;
-  guardianName?: string | null;
-  guardianPhoneNumber?: string | null;
-  preferredModality: 'Presencial' | 'Virtual';
-  hasLaptop: boolean;
-  registeredAt: string;
-}
 
 export default function CourseDetailPage() {
   const [, params] = useRoute("/courses/:slug");

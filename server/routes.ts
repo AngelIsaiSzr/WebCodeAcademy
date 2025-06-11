@@ -238,7 +238,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Live Course Registration route
+  // Live Course Registration routes
   app.post("/api/live-course-registrations", async (req, res) => {
     try {
       const validation = insertLiveCourseRegistrationSchema.safeParse(req.body);
@@ -250,18 +250,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      const userIdToUse = req.isAuthenticated() && req.user ? (req.user as User).id : null; // Acceder al ID del usuario autenticado de forma segura
-      const registrationData = { ...validation.data, userId: userIdToUse }; // Usar userIdToUse
+      const userIdToUse = req.isAuthenticated() && req.user ? (req.user as User).id : null;
+      const registrationData = { ...validation.data, userId: userIdToUse };
 
-      // Guardar en la base de datos
       const registration = await storage.createLiveCourseRegistration(registrationData);
 
-      // Obtener los detalles del curso para usar el nombre en el correo
       const course = await storage.getCourse(registration.courseId);
       const courseName = course ? course.title : "Curso Desconocido";
 
-      // Preparar y enviar el correo de confirmación al usuario
-      const emailToUser: EmailData = { 
+      const emailToUser: EmailData = {
         to: registration.email,
         from: "webcodeacademy0@gmail.com",
         name: registration.fullName,
@@ -275,8 +272,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         `
       };
 
-      // Preparar y enviar el correo de notificación a la administración
-      const emailToAdmin: EmailData = { 
+      const emailToAdmin: EmailData = {
         to: "webcodeacademy0@gmail.com",
         from: registration.email,
         name: `Registro de ${registration.fullName}`,
@@ -309,6 +305,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error en el registro de curso en vivo:", error);
       res.status(500).json({ message: "Error al registrarse en el curso." });
+    }
+  });
+
+  app.get("/api/live-course-registrations", async (req, res) => {
+    try {
+      if (!req.isAuthenticated()) {
+        return res.status(401).json({ message: "Debes iniciar sesión para ver los registros de cursos en vivo" });
+      }
+
+      const userId = parseInt(req.query.userId as string);
+      const courseId = parseInt(req.query.courseId as string);
+
+      if (isNaN(userId) || isNaN(courseId)) {
+        return res.status(400).json({ message: "ID de usuario y ID de curso son requeridos y deben ser números válidos." });
+      }
+
+      // Asumo que storage tiene un método para obtener registros por userId y courseId
+      const registrations = await storage.getLiveCourseRegistrationsByUserIdAndCourseId(userId, courseId);
+      res.json(registrations);
+    } catch (error) {
+      console.error("Error al obtener registros de cursos en vivo:", error);
+      res.status(500).json({ message: "Error al obtener registros de cursos en vivo." });
     }
   });
 
