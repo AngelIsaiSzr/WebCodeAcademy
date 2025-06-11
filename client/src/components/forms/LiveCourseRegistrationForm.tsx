@@ -49,10 +49,10 @@ type LiveRegistrationFormValues = z.infer<typeof liveRegistrationFormSchema>;
 
 interface LiveCourseRegistrationFormProps {
   course: Course;
+  onRegistrationSuccess: () => void;
 }
 
-export function LiveCourseRegistrationForm({ course }: LiveCourseRegistrationFormProps) {
-  const [showSuccess, setShowSuccess] = useState(false);
+export function LiveCourseRegistrationForm({ course, onRegistrationSuccess }: LiveCourseRegistrationFormProps) {
   const [, navigate] = useLocation();
   const queryClient = useQueryClient();
   const { user } = useAuth();
@@ -102,9 +102,9 @@ export function LiveCourseRegistrationForm({ course }: LiveCourseRegistrationFor
       return response.json();
     },
     onSuccess: () => {
-      setShowSuccess(true);
       reset();
       queryClient.invalidateQueries({ queryKey: ['/api/live-course-registrations', user?.id, course.id] });
+      onRegistrationSuccess();
     },
     onError: (error) => {
       alert(error.message);
@@ -114,27 +114,6 @@ export function LiveCourseRegistrationForm({ course }: LiveCourseRegistrationFor
   const onSubmit = (data: LiveRegistrationFormValues) => {
     registerMutation.mutate(data);
   };
-
-  if (showSuccess) {
-    return (
-      <Card className="flex items-center justify-center min-h-[500px] text-center">
-        <CardContent className="flex flex-col items-center gap-4">
-          <CheckCircle className="h-16 w-16 text-green-500" />
-          <CardTitle className="text-2xl font-bold">¡Muchas gracias por registrarte!</CardTitle>
-          <CardDescription className="text-muted-foreground">
-            Días antes de iniciar el curso se te enviará un mensaje confirmando tu asistencia y modalidad.
-          </CardDescription>
-          <p className="text-muted-foreground mt-4">
-            Para dudas o aclaraciones: <span className="font-semibold text-accent-blue">+52 784 110 0108</span>
-          </p>
-          <p className="text-muted-foreground">- Web Code Academy</p>
-          <Button onClick={() => navigate('/courses')} className="mt-6">
-            Regresar a Cursos
-          </Button>
-        </CardContent>
-      </Card>
-    );
-  }
 
   // Live course details from the course object
   const liveDetails = course.liveDetails as {
@@ -146,7 +125,7 @@ export function LiveCourseRegistrationForm({ course }: LiveCourseRegistrationFor
   };
 
   return (
-    <Card className="max-w-3xl mx-auto mt-4">
+    <Card className="max-w-3xl mx-auto mt-2">
       <CardHeader>
         <CardTitle className="text-3xl font-bold text-center mb-2">
           Curso: {course.title}

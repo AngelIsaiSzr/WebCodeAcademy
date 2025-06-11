@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRoute } from "wouter";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Course, Module, Section, LiveCourseRegistration } from "@shared/schema";
 import { useAuth } from "@/hooks/use-auth";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
@@ -46,6 +46,8 @@ export default function CourseLearningPage() {
   const [activeTab, setActiveTab] = useState<TabType>("description");
   const [videoProgress, setVideoProgress] = useState<number>(0);
   const [, navigate] = useLocation();
+  const [hasJustRegistered, setHasJustRegistered] = useState(false);
+  const queryClient = useQueryClient();
 
   // Fetch course data
   const {
@@ -112,6 +114,13 @@ export default function CourseLearningPage() {
   });
 
   const hasRegisteredForLiveCourse = liveRegistrations.length > 0;
+
+  // Función para manejar el éxito del registro desde el formulario
+  const handleRegistrationSuccess = () => {
+    setHasJustRegistered(true);
+    // Invalidar la caché de los registros en vivo para que se actualice en course-detail-page
+    queryClient.invalidateQueries({ queryKey: ['/api/live-course-registrations', user?.id, course?.id] });
+  };
 
   // Set initial active module and section
   useEffect(() => {
@@ -318,28 +327,8 @@ export default function CourseLearningPage() {
     );
   }
 
-  // Renderiza el formulario de registro si es un curso en vivo
-  if (course.isLive) {
-    if (hasRegisteredForLiveCourse) {
-      return (
-        <div className="min-h-screen flex items-center justify-center bg-primary-900 py-12">
-          <div className="text-center">
-            <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
-            <h1 className="text-2xl font-bold mb-2">¡Ya estás registrado en este curso en vivo!</h1>
-            <p className="text-muted mb-4">No necesitas registrarte de nuevo.</p>
-            <Button onClick={() => navigate('/courses')}>Regresar a Cursos</Button>
-          </div>
-        </div>
-      );
-    }
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-primary-900 py-12">
-        <LiveCourseRegistrationForm course={course} />
-      </div>
-    );
-  }
-
-  if (!isEnrolled) {
+  // Acceso Denegado para cursos NO en vivo si el usuario no está inscrito
+  if (!isEnrolled && !course.isLive) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -540,151 +529,173 @@ export default function CourseLearningPage() {
         {/* Content Area */}
         <div className="flex-1 overflow-y-auto">
           <div className="p-6 h-full">
-            <div className="max-w-4xl mx-auto space-y-6 h-full">
-              {/* Current Section Title */}
-              {activeSectionId && (
-                <div className="space-y-2">
-                  <h1 className="text-2xl font-bold">
-                    {modulesWithSections.data?.find(m => m.id === activeModuleId)
-                      ?.sections.find(s => s.id === activeSectionId)?.title}
-                  </h1>
-                  <div className="flex items-center gap-3 text-sm text-muted">
-                    <div className="flex items-center gap-2">
-                      <PlayCircle className="h-4 w-4" />
-                      <span>
-                        {modulesWithSections.data?.find(m => m.id === activeModuleId)
-                          ?.sections.find(s => s.id === activeSectionId)?.duration} min
-                      </span>
+            {course.isLive ? (
+              (hasRegisteredForLiveCourse || hasJustRegistered) ? (
+                <div className="flex items-center justify-center h-full">
+                  <div className="text-center">
+                    <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
+                    <h1 className="text-2xl font-bold mb-2">¡Muchas gracias por registrarte!</h1>
+                    <p className="text-muted mb-4">
+                      Días antes de iniciar el curso se te enviará un mensaje confirmando tu asistencia y modalidad.
+                    </p>
+                    <p className="text-muted mt-4">
+                      Para dudas o aclaraciones: <span className="font-semibold text-accent-blue">+52 784 110 0108</span>
+                    </p>
+                    <p className="text-muted">- Web Code Academy</p>
+                    <Button onClick={() => navigate('/courses')}>Regresar a Cursos</Button>
+                  </div>
+                </div>
+              ) : (
+                <LiveCourseRegistrationForm course={course} onRegistrationSuccess={handleRegistrationSuccess} />
+              )
+            ) : (
+              // Contenido original de la página de aprendizaje (video, tabs, etc.)
+              <div className="max-w-4xl mx-auto space-y-6 h-full">
+                {/* Current Section Title */}
+                {activeSectionId && (
+                  <div className="space-y-2">
+                    <h1 className="text-2xl font-bold">
+                      {modulesWithSections.data?.find(m => m.id === activeModuleId)
+                        ?.sections.find(s => s.id === activeSectionId)?.title}
+                    </h1>
+                    <div className="flex items-center gap-3 text-sm text-muted">
+                      <div className="flex items-center gap-2">
+                        <PlayCircle className="h-4 w-4" />
+                        <span>
+                          {modulesWithSections.data?.find(m => m.id === activeModuleId)
+                            ?.sections.find(s => s.id === activeSectionId)?.duration} min
+                        </span>
+                      </div>
+                      {isCurrentSectionCompleted() && (
+                        <div className="flex items-center gap-2 text-green-500">
+                          <CheckCircle className="h-4 w-4" />
+                          <span>Completado</span>
+                        </div>
+                      )}
                     </div>
-                    {isCurrentSectionCompleted() && (
-                      <div className="flex items-center gap-2 text-green-500">
-                        <CheckCircle className="h-4 w-4" />
-                        <span>Completado</span>
+                  </div>
+                )}
+
+                {/* Video Player Area */}
+                <div className="bg-primary-800 rounded-xl overflow-hidden">
+                  <div className="relative">
+                    {activeSectionId ? (
+                      <div className="aspect-video bg-black">
+                        <video
+                          className="w-full h-full"
+                          controls
+                          src="https://res.cloudinary.com/dw6igi7fc/video/upload/v1746151518/Back_animado_Lab_FFF_akn4mf.mp4"
+                          poster="https://res.cloudinary.com/dw6igi7fc/image/upload/v1746134148/back1_sngqjn.jpg"
+                          onTimeUpdate={(e) => handleVideoProgress(Math.floor(e.currentTarget.currentTime))}
+                          onEnded={() => handleVideoProgress(100)}
+                          autoPlay={false}
+                          loop={false}
+                        >
+                          Tu navegador no soporta el elemento de video.
+                        </video>
+                      </div>
+                    ) : (
+                      <div className="aspect-video bg-primary-900 flex items-center justify-center flex-col gap-4">
+                        <PlayCircle className="h-16 w-16 text-muted" />
+                        <p className="text-muted">Selecciona una sección para comenzar</p>
                       </div>
                     )}
                   </div>
                 </div>
-              )}
 
-              {/* Video Player Area */}
-              <div className="bg-primary-800 rounded-xl overflow-hidden">
-                <div className="relative">
-                  {activeSectionId ? (
-                    <div className="aspect-video bg-black">
-                      <video
-                        className="w-full h-full"
-                        controls
-                        src="https://res.cloudinary.com/dw6igi7fc/video/upload/v1746151518/Back_animado_Lab_FFF_akn4mf.mp4"
-                        poster="https://res.cloudinary.com/dw6igi7fc/image/upload/v1746134148/back1_sngqjn.jpg"
-                        onTimeUpdate={(e) => handleVideoProgress(Math.floor(e.currentTarget.currentTime))}
-                        onEnded={() => handleVideoProgress(100)}
-                        autoPlay={false}
-                        loop={false}
-                      >
-                        Tu navegador no soporta el elemento de video.
-                      </video>
+                {/* Section Content */}
+                <div className="bg-primary-800 rounded-xl p-6 flex-1">
+                  <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as TabType)} className="h-full flex flex-col">
+                    <TabsList className="w-full border-b border-primary-700 p-1">
+                      <TabsTrigger value="description" className="flex-1 gap-2 py-3">
+                        <FileText className="h-4 w-4" />
+                        Descripción
+                      </TabsTrigger>
+                      <TabsTrigger value="resources" className="flex-1 gap-2 py-3">
+                        <Download className="h-4 w-4" />
+                        Recursos
+                        <span className="ml-2 bg-primary-700 text-xs px-2 py-0.5 rounded-full">3</span>
+                      </TabsTrigger>
+                      <TabsTrigger value="comments" className="flex-1 gap-2 py-3">
+                        <MessageSquare className="h-4 w-4" />
+                        Comentarios
+                        <span className="ml-2 bg-primary-700 text-xs px-2 py-0.5 rounded-full">12</span>
+                      </TabsTrigger>
+                    </TabsList>
+
+                    {/* Next Section Indicator */}
+                    {next && (
+                      <div className="bg-primary-900/50 p-4 rounded-lg mt-4 flex items-center justify-between">
+                        <div>
+                          <p className="text-sm text-muted">Siguiente</p>
+                          <p className="font-medium">{next.section.title}</p>
+                        </div>
+                        <Button variant="outline" size="sm" onClick={handleNextSection}>
+                          Continuar
+                          <ChevronRight className="h-4 w-4 ml-2" />
+                        </Button>
+                      </div>
+                    )}
+
+                    <div className="flex-1 overflow-y-auto">
+                      <TabsContent value="description" className="pt-4 h-full">
+                        <div className="prose prose-invert max-w-none">
+                          <h2 className="text-xl font-bold mb-4">
+                            {modulesWithSections.data?.find(m => m.id === activeModuleId)
+                              ?.sections.find(s => s.id === activeSectionId)?.title}
+                          </h2>
+                          <p className="text-muted">
+                            {modulesWithSections.data?.find(m => m.id === activeModuleId)
+                              ?.sections.find(s => s.id === activeSectionId)?.content || 
+                              "Selecciona una sección para ver su contenido"}
+                          </p>
+                        </div>
+                      </TabsContent>
+
+                      <TabsContent value="resources" className="pt-4 h-full">
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-semibold mb-4">Recursos de la sección</h3>
+                          <div className="grid gap-4">
+                            {/* Placeholder para recursos */}
+                            <div className="border border-primary-700 rounded-lg p-4 flex items-center justify-between">
+                              <div className="flex items-center gap-3">
+                                <FileText className="h-5 w-5 text-muted" />
+                                <div>
+                                  <p className="font-medium">Material de apoyo</p>
+                                  <p className="text-sm text-muted">PDF - 2.3MB</p>
+                                </div>
+                              </div>
+                              <Button variant="outline" size="sm">
+                                <Download className="h-4 w-4 mr-2" />
+                                Descargar
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      </TabsContent>
+
+                      <TabsContent value="comments" className="pt-4 h-full">
+                        <div className="space-y-4">
+                          <h3 className="text-lg font-semibold mb-4">Comentarios y dudas</h3>
+                          <div className="space-y-4">
+                            <textarea
+                              className="w-full h-24 bg-primary-900 rounded-lg p-3 resize-none"
+                              placeholder="Escribe tu comentario o duda..."
+                            />
+                            <div className="flex justify-end">
+                              <Button>
+                                <MessageSquare className="h-4 w-4 mr-2" />
+                                Comentar
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      </TabsContent>
                     </div>
-                  ) : (
-                    <div className="aspect-video bg-primary-900 flex items-center justify-center flex-col gap-4">
-                      <PlayCircle className="h-16 w-16 text-muted" />
-                      <p className="text-muted">Selecciona una sección para comenzar</p>
-                    </div>
-                  )}
+                  </Tabs>
                 </div>
               </div>
-
-              {/* Section Content */}
-              <div className="bg-primary-800 rounded-xl p-6 flex-1">
-                <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as TabType)} className="h-full flex flex-col">
-                  <TabsList className="w-full border-b border-primary-700 p-1">
-                    <TabsTrigger value="description" className="flex-1 gap-2 py-3">
-                      <FileText className="h-4 w-4" />
-                      Descripción
-                    </TabsTrigger>
-                    <TabsTrigger value="resources" className="flex-1 gap-2 py-3">
-                      <Download className="h-4 w-4" />
-                      Recursos
-                      <span className="ml-2 bg-primary-700 text-xs px-2 py-0.5 rounded-full">3</span>
-                    </TabsTrigger>
-                    <TabsTrigger value="comments" className="flex-1 gap-2 py-3">
-                      <MessageSquare className="h-4 w-4" />
-                      Comentarios
-                      <span className="ml-2 bg-primary-700 text-xs px-2 py-0.5 rounded-full">12</span>
-                    </TabsTrigger>
-                  </TabsList>
-
-                  {/* Next Section Indicator */}
-                  {next && (
-                    <div className="bg-primary-900/50 p-4 rounded-lg mt-4 flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-muted">Siguiente</p>
-                        <p className="font-medium">{next.section.title}</p>
-                      </div>
-                      <Button variant="outline" size="sm" onClick={handleNextSection}>
-                        Continuar
-                        <ChevronRight className="h-4 w-4 ml-2" />
-                      </Button>
-                    </div>
-                  )}
-
-                  <div className="flex-1 overflow-y-auto">
-                    <TabsContent value="description" className="pt-4 h-full">
-                      <div className="prose prose-invert max-w-none">
-                        <h2 className="text-xl font-bold mb-4">
-                          {modulesWithSections.data?.find(m => m.id === activeModuleId)
-                            ?.sections.find(s => s.id === activeSectionId)?.title}
-                        </h2>
-                        <p className="text-muted">
-                          {modulesWithSections.data?.find(m => m.id === activeModuleId)
-                            ?.sections.find(s => s.id === activeSectionId)?.content || 
-                            "Selecciona una sección para ver su contenido"}
-                        </p>
-                      </div>
-                    </TabsContent>
-
-                    <TabsContent value="resources" className="pt-4 h-full">
-                      <div className="space-y-4">
-                        <h3 className="text-lg font-semibold mb-4">Recursos de la sección</h3>
-                        <div className="grid gap-4">
-                          {/* Placeholder para recursos */}
-                          <div className="border border-primary-700 rounded-lg p-4 flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                              <FileText className="h-5 w-5 text-muted" />
-                              <div>
-                                <p className="font-medium">Material de apoyo</p>
-                                <p className="text-sm text-muted">PDF - 2.3MB</p>
-                              </div>
-                            </div>
-                            <Button variant="outline" size="sm">
-                              <Download className="h-4 w-4 mr-2" />
-                              Descargar
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    </TabsContent>
-
-                    <TabsContent value="comments" className="pt-4 h-full">
-                      <div className="space-y-4">
-                        <h3 className="text-lg font-semibold mb-4">Comentarios y dudas</h3>
-                        <div className="space-y-4">
-                          <textarea
-                            className="w-full h-24 bg-primary-900 rounded-lg p-3 resize-none"
-                            placeholder="Escribe tu comentario o duda..."
-                          />
-                          <div className="flex justify-end">
-                            <Button>
-                              <MessageSquare className="h-4 w-4 mr-2" />
-                              Comentar
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    </TabsContent>
-                  </div>
-                </Tabs>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
