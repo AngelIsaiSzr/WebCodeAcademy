@@ -332,29 +332,24 @@ export default function CourseLearningPage() {
   // Renderiza el formulario de registro si es un curso en vivo
   if (course.isLive) {
     // PRIORIDAD 1: Mostrar mensaje de éxito inmediatamente después del registro
-    if (showRegistrationSuccess) {
+    if (showRegistrationSuccess && !hasRegisteredForLiveCourse) {
       return (
-        <Card className="flex items-center justify-center min-h-[500px] text-center">
-          <CardContent className="flex flex-col items-center gap-4">
+        <div className="min-h-screen flex items-center justify-center bg-primary-900 py-12">
+          <div className="text-center">
             <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
-            <CardTitle className="text-2xl font-bold">¡Muchas gracias por registrarte!</CardTitle>
-            <CardDescription className="text-muted">
-              Días antes de iniciar el curso se te enviará un mensaje confirmando tu asistencia y modalidad.
-            </CardDescription>
-            <p className="text-muted mt-4">
+            <h1 className="text-2xl font-bold mb-2">¡Muchas gracias por registrarte!</h1>
+            <p className="text-muted mb-4">Días antes de iniciar el curso se te enviará un mensaje confirmando tu asistencia y modalidad.</p>
+            <p className="text-muted mb-4">
               Para dudas o aclaraciones: <span className="font-semibold text-accent-blue">+52 784 110 0108</span>
             </p>
-            <p className="text-muted">- Web Code Academy</p>
-            <Button onClick={() => navigate('/courses')} className="mt-6">
-              Regresar a Cursos
-            </Button>
-          </CardContent>
-        </Card>
+            <Button onClick={() => navigate('/courses')}>Regresar a Cursos</Button>
+          </div>
+        </div>
       );
     }
 
     // PRIORIDAD 2: Mostrar mensaje de ya registrado en visitas posteriores
-    if (hasRegisteredForLiveCourse) {
+    if (!showRegistrationSuccess && hasRegisteredForLiveCourse) {
       return (
         <div className="min-h-screen flex items-center justify-center bg-primary-900 py-12">
           <div className="text-center">
