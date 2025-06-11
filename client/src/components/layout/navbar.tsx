@@ -94,15 +94,7 @@ export default function Navbar() {
                       <span className="hidden lg:block">{user.name}</span>
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent 
-                    align="end" 
-                    className="w-56"
-                    sideOffset={5}
-                    style={{
-                      position: 'absolute',
-                      zIndex: 1000
-                    }}
-                  >
+                  <DropdownMenuContent align="end" className="w-56" disablePortal>
                     <DropdownMenuLabel>Mi cuenta</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <Link href="/profile">
