@@ -332,7 +332,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             </div>
 
             <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
-              <p style="color: #666; font-size: 14px;">© 2024 Web Code Academy. Todos los derechos reservados.</p>
+              <p style="color: #666; font-size: 14px;">© 2025 Web Code Academy. Todos los derechos reservados.</p>
             </div>
           </div>
         `
