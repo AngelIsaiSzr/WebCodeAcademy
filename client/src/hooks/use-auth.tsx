@@ -8,6 +8,7 @@ import { insertUserSchema, User as SelectUser } from "@shared/schema";
 import { getQueryFn, apiRequest, queryClient } from "../lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
+import { useLocation } from 'wouter';
 
 // Extended schema for login
 const loginSchema = z.object({
@@ -58,6 +59,7 @@ const getErrorMessage = (error: Error) => {
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
+  const [, navigate] = useLocation();
   const {
     data: user,
     error,
@@ -122,6 +124,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         title: "Cierre de Sesión Exitoso",
         description: "Has cerrado sesión correctamente.",
       });
+      navigate('/');
     },
     onError: (error: Error) => {
       toast({
