@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 
-interface EmailData {
+export interface EmailData {
   to: string;
   from: string;
   subject: string;

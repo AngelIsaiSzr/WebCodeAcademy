@@ -95,6 +95,61 @@ const courseFormSchema = insertCourseSchema.extend({
   featured: z.boolean().optional(),
   popular: z.boolean().optional(),
   new: z.boolean().optional(),
+  isLive: z.boolean().optional().default(false),
+  liveDetails: z.object({
+    liveDuration: z.string().min(1, "La duración del curso en vivo es requerida."),
+    schedule: z.string().min(1, "El horario del curso en vivo es requerido."),
+    modality: z.enum(["Presencial", "Virtual", "Mixta"], { message: "Por favor, selecciona una modalidad.", } ),
+    address: z.string().min(1, "La dirección del curso en vivo es requerida."),
+    contact: z.string().min(1, "El contacto del curso en vivo es requerido."),
+  }).optional(),
+}).superRefine((data, ctx) => {
+  if (data.isLive) {
+    if (!data.liveDetails) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Los detalles del curso en vivo son requeridos si el curso es en vivo.',
+        path: ['liveDetails'],
+      });
+      return;
+    }
+    // Validar campos individuales dentro de liveDetails si isLive es true
+    if (!data.liveDetails.liveDuration || data.liveDetails.liveDuration.trim() === '') {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'La duración del curso en vivo es requerida.',
+        path: ['liveDetails.liveDuration'],
+      });
+    }
+    if (!data.liveDetails.schedule || data.liveDetails.schedule.trim() === '') {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'El horario del curso en vivo es requerido.',
+        path: ['liveDetails.schedule'],
+      });
+    }
+    if (!data.liveDetails.modality) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'La modalidad del curso en vivo es requerida.',
+        path: ['liveDetails.modality'],
+      });
+    }
+    if (!data.liveDetails.address || data.liveDetails.address.trim() === '') {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'La dirección del curso en vivo es requerida.',
+        path: ['liveDetails.address'],
+      });
+    }
+    if (!data.liveDetails.contact || data.liveDetails.contact.trim() === '') {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'El contacto del curso en vivo es requerido.',
+        path: ['liveDetails.contact'],
+      });
+    }
+  }
 });
 
 const teamFormSchema = insertTeamSchema.extend({
@@ -159,10 +214,11 @@ export default function AdminPage() {
   const [sectionToDelete, setSectionToDelete] = useState<number | null>(null);
   const [teamToDelete, setTeamToDelete] = useState<number | null>(null);
   const [testimonialToDelete, setTestimonialToDelete] = useState<number | null>(null);
+  const [showLiveSettings, setShowLiveSettings] = useState(false);
 
   // Redirect if not authenticated or not admin
   useEffect(() => {
-    if (!user) {
+    if (!user || user.role !== "admin") {
       navigate("/auth");
     } else if (user.role !== "admin") {
       navigate("/");
@@ -290,6 +346,8 @@ export default function AdminPage() {
     popular: false,
     new: false,
     instructor: "",
+    isLive: false,
+    liveDetails: undefined,
   };
 
   // Course form
@@ -315,13 +373,29 @@ export default function AdminPage() {
         popular: editingCourse.popular || false,
         new: editingCourse.new || false,
         instructor: editingCourse.instructor,
+        isLive: editingCourse.isLive || false,
+        liveDetails: editingCourse.liveDetails || undefined,
       });
+      // Si estamos editando un curso en vivo, mostrar las configuraciones
+      if (editingCourse.isLive) {
+        setShowLiveSettings(true);
+      }
     }
   }, [editingCourse, courseForm]);
 
+  // Handle isLive checkbox change
+  const handleIsLiveChange = (checked: boolean) => {
+    courseForm.setValue("isLive", checked);
+    if (!checked) {
+      setShowLiveSettings(false);
+      courseForm.setValue('liveDetails', undefined); // Limpiar liveDetails si no es en vivo
+    }
+  };
+
   const createCourseMutation = useMutation({
     mutationFn: async (data: CourseFormValues) => {
-      const res = await apiRequest("POST", "/api/courses", data);
+      const payload = { ...data, liveDetails: data.isLive ? data.liveDetails : undefined }; // Ajustar payload
+      const res = await apiRequest("POST", "/api/courses", payload);
       return res.json();
     },
     onSuccess: () => {
@@ -331,6 +405,7 @@ export default function AdminPage() {
       });
       courseForm.reset();
       setEditingCourse(null);
+      setShowLiveSettings(false); // Resetear estado
       queryClient.invalidateQueries({ queryKey: ["/api/courses"] });
     },
     onError: (error: Error) => {
@@ -344,7 +419,8 @@ export default function AdminPage() {
   
   const updateCourseMutation = useMutation({
     mutationFn: async ({ id, data }: { id: number; data: CourseFormValues }) => {
-      const res = await apiRequest("PATCH", `/api/courses/${id}`, data);
+      const payload = { ...data, liveDetails: data.isLive ? data.liveDetails : undefined }; // Ajustar payload
+      const res = await apiRequest("PATCH", `/api/courses/${id}`, payload);
       return res.json();
     },
     onSuccess: () => {
@@ -355,6 +431,7 @@ export default function AdminPage() {
       // Explicitly reset with empty values
       courseForm.reset(emptyCourseValues);
       setEditingCourse(null);
+      setShowLiveSettings(false); // Resetear estado
       queryClient.invalidateQueries({ queryKey: ["/api/courses"] });
     },
     onError: (error: Error) => {
@@ -1402,7 +1479,129 @@ export default function AdminPage() {
                               </FormItem>
                             )}
                           />
+
+                          {/* Campo para curso en vivo */}
+                          <FormField
+                            control={courseForm.control}
+                            name="isLive"
+                            render={({ field }) => (
+                              <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                                <FormControl>
+                                  <Checkbox
+                                    checked={field.value || false}
+                                    onCheckedChange={handleIsLiveChange}
+                                  />
+                                </FormControl>
+                                <div className="space-y-1 leading-none">
+                                  <FormLabel>Es un curso en vivo</FormLabel>
+                                  <FormDescription>
+                                    Marca si este curso tendrá sesiones en vivo.
+                                  </FormDescription>
+                                </div>
+                              </FormItem>
+                            )}
+                          />
                         </div>
+
+                        {courseForm.watch('isLive') && (
+                          <Button 
+                            type="button" 
+                            variant="outline" 
+                            onClick={() => setShowLiveSettings(prev => !prev)}
+                            className="w-fit mt-4"
+                          >
+                            {showLiveSettings ? 'Ocultar' : 'Mostrar'} más configuraciones de curso en vivo
+                          </Button>
+                        )}
+
+                        {showLiveSettings && courseForm.watch('isLive') && (
+                          <Card className="border-dashed border-2 p-6 mt-4">
+                            <CardHeader className="px-0 pt-0">
+                              <CardTitle className="text-xl">Detalles del Curso en Vivo</CardTitle>
+                              <CardDescription>Configura la información específica para cursos con sesiones en vivo.</CardDescription>
+                            </CardHeader>
+                            <CardContent className="px-0 pb-0 space-y-4">
+                              <FormField
+                                control={courseForm.control}
+                                name="liveDetails.liveDuration"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Duración del curso en vivo (Ej: 23 de Junio - 16 de Julio)</FormLabel>
+                                    <FormControl>
+                                      <Input placeholder="Ej: Desde el 23 de Junio del 2025 hasta el 16 de Julio del 2025" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+
+                              <FormField
+                                control={courseForm.control}
+                                name="liveDetails.schedule"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Horario (Ej: Lunes, Miércoles y Viernes de 3PM a 5:30PM)</FormLabel>
+                                    <FormControl>
+                                      <Input placeholder="Ej: Lunes, Miércoles y Viernes de 3PM a 5:30PM" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+
+                              <FormField
+                                control={courseForm.control}
+                                name="liveDetails.modality"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Modalidad</FormLabel>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                      <FormControl>
+                                        <SelectTrigger>
+                                          <SelectValue placeholder="Selecciona una modalidad" />
+                                        </SelectTrigger>
+                                      </FormControl>
+                                      <SelectContent>
+                                        <SelectItem value="Presencial">Presencial</SelectItem>
+                                        <SelectItem value="Virtual">Virtual</SelectItem>
+                                        <SelectItem value="Mixta">Mixta</SelectItem>
+                                      </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+
+                              <FormField
+                                control={courseForm.control}
+                                name="liveDetails.address"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Dirección (Solo para modalidad Presencial o Mixta)</FormLabel>
+                                    <FormControl>
+                                      <Input placeholder="Ej: CECyTEV, 02 Papantla" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+
+                              <FormField
+                                control={courseForm.control}
+                                name="liveDetails.contact"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Información de Contacto (Ej: +52 784 110 0108)</FormLabel>
+                                    <FormControl>
+                                      <Input placeholder="Ej: +52 784 110 0108" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                            </CardContent>
+                          </Card>
+                        )}
 
                         <div className="flex justify-end space-x-4 pt-4">
                           {editingCourse && (
@@ -1449,6 +1648,7 @@ export default function AdminPage() {
                                   <h4 className="text-lg font-medium">{course.title}</h4>
                                   <p className="text-sm text-muted-foreground mb-2">
                                     {course.category} • {course.level} • {course.duration} horas
+                                    {course.isLive && " • EN VIVO"} {/* Mostrar 'EN VIVO' si isLive es true */}
                                   </p>
                                 </div>
                               </div>
@@ -1468,6 +1668,11 @@ export default function AdminPage() {
                                 {course.new && (
                                   <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-500/20 text-green-700 dark:text-green-300">
                                     Nuevo
+                                  </span>
+                                )}
+                                {course.isLive && (
+                                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-500/20 text-blue-700 dark:text-blue-300">
+                                    EN VIVO
                                   </span>
                                 )}
                               </div>

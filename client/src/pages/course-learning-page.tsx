@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { LiveCourseRegistrationForm } from '@/components/forms/LiveCourseRegistrationForm';
 
 interface Enrollment {
   id: number;
@@ -304,6 +305,15 @@ export default function CourseLearningPage() {
             <a href={`/courses/${course.slug}`}>Volver al curso</a>
           </Button>
         </div>
+      </div>
+    );
+  }
+
+  // Renderiza el formulario de registro si es un curso en vivo
+  if (course.isLive) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-primary-900 py-12">
+        <LiveCourseRegistrationForm course={course} />
       </div>
     );
   }

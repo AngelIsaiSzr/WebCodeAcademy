@@ -2,8 +2,8 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, hashPassword } from "./auth";
-import { insertContactSchema } from "@shared/schema";
-import { sendEmail } from "./services/email";
+import { insertContactSchema, insertLiveCourseRegistrationSchema, User } from "@shared/schema";
+import { sendEmail, EmailData } from "./services/email";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Setup authentication routes
@@ -235,6 +235,76 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ 
         message: "Hubo un error al enviar tu mensaje. Por favor intenta de nuevo más tarde." 
       });
+    }
+  });
+
+  // Live Course Registration route
+  app.post("/api/live-course-registrations", async (req, res) => {
+    try {
+      const validation = insertLiveCourseRegistrationSchema.safeParse(req.body);
+
+      if (!validation.success) {
+        return res.status(400).json({
+          message: "Por favor completa todos los campos correctamente",
+          errors: validation.error.format()
+        });
+      }
+
+      const userIdToUse = req.isAuthenticated() && req.user ? (req.user as User).id : null; // Acceder al ID del usuario autenticado de forma segura
+      const registrationData = { ...validation.data, userId: userIdToUse }; // Usar userIdToUse
+
+      // Guardar en la base de datos
+      const registration = await storage.createLiveCourseRegistration(registrationData);
+
+      // Preparar y enviar el correo de confirmación al usuario
+      const emailToUser: EmailData = { // Tipificación explícita
+        to: registration.email,
+        from: "webcodeacademy0@gmail.com", // Typo corregido
+        name: registration.fullName,
+        subject: `Confirmación de registro al curso: ${registration.courseId}`,
+        text: `¡Muchas gracias por registrarte en el curso! Días antes de iniciar el curso se te enviará un mensaje confirmando tu asistencia y modalidad. Para dudas o aclaraciones: +52 784 110 0108 - Web Code Academy`,
+        html: `
+          <p>¡Muchas gracias por registrarte en el curso!</p>
+          <p>Días antes de iniciar el curso se te enviará un mensaje confirmando tu asistencia y modalidad.</p>
+          <p>Para dudas o aclaraciones: <b>+52 784 110 0108</b></p>
+          <p>- Web Code Academy</p>
+        `
+      };
+
+      // Preparar y enviar el correo de notificación a la administración
+      const emailToAdmin: EmailData = { // Tipificación explícita
+        to: "webcodeacademy0@gmail.com",
+        from: registration.email,
+        name: `Registro de ${registration.fullName}`,
+        subject: `Nuevo registro a curso en vivo: ${registration.fullName}`,
+        text: `Nuevo registro para curso en vivo:\n          Nombre: ${registration.fullName}\n          Correo: ${registration.email}\n          Teléfono: ${registration.phoneNumber}\n          Edad: ${registration.age}\n          Modalidad preferida: ${registration.preferredModality}\n          Tiene laptop: ${registration.hasLaptop ? 'Sí' : 'No'}\n          ${registration.guardianName ? `Nombre del tutor: ${registration.guardianName}` : ''}\n          ${registration.guardianPhoneNumber ? `Teléfono del tutor: ${registration.guardianPhoneNumber}` : ''}\n          Curso ID: ${registration.courseId}\n        `,
+        html: `
+          <p>Nuevo registro para curso en vivo:</p>
+          <ul>
+            <li><b>Nombre:</b> ${registration.fullName}</li>
+            <li><b>Correo:</b> ${registration.email}</li>
+            <li><b>Teléfono:</b> ${registration.phoneNumber}</li>
+            <li><b>Edad:</b> ${registration.age}</li>
+            <li><b>Modalidad preferida:</b> ${registration.preferredModality}</li>
+            <li><b>Tiene laptop:</b> ${registration.hasLaptop ? 'Sí' : 'No'}</li>
+            ${registration.guardianName ? `<li><b>Nombre del tutor:</b> ${registration.guardianName}</li>` : ''}
+            ${registration.guardianPhoneNumber ? `<li><b>Teléfono del tutor:</b> ${registration.guardianPhoneNumber}</li>` : ''}
+            <li><b>Curso ID:</b> ${registration.courseId}</li>
+          </ul>
+        `
+      };
+
+      try {
+        await sendEmail(emailToUser);
+        await sendEmail(emailToAdmin);
+      } catch (emailError) {
+        console.error("Error al enviar correo de registro de curso en vivo:", emailError);
+      }
+
+      res.status(201).json({ message: "Registro exitoso", registration });
+    } catch (error) {
+      console.error("Error en el registro de curso en vivo:", error);
+      res.status(500).json({ message: "Error al registrarse en el curso." });
     }
   });
 

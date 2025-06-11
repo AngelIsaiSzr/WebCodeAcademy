@@ -7,7 +7,8 @@ import {
   InsertTeam, Team, 
   InsertTestimonial, Testimonial,
   InsertContact, Contact,
-  users, courses, enrollments, modules, sections, teams, testimonials, contacts
+  InsertLiveCourseRegistration, LiveCourseRegistration,
+  users, courses, enrollments, modules, sections, teams, testimonials, contacts, liveCourseRegistrations
 } from "@shared/schema";
 import session from "express-session";
 import createMemoryStore from "memorystore";
@@ -75,6 +76,9 @@ export interface IStorage {
   createContact(contact: InsertContact): Promise<Contact>;
   getAllContacts(): Promise<Contact[]>;
 
+  // Live Course Registrations
+  createLiveCourseRegistration(registration: InsertLiveCourseRegistration): Promise<LiveCourseRegistration>;
+
   // Session store
   sessionStore: any;
 }
@@ -88,6 +92,7 @@ export class MemStorage implements IStorage {
   private teams: Map<number, Team>;
   private testimonials: Map<number, Testimonial>;
   private contacts: Map<number, Contact>;
+  private liveCourseRegistrations: Map<number, LiveCourseRegistration>;
   
   private currentUserIds: number;
   private currentCourseIds: number;
@@ -97,6 +102,7 @@ export class MemStorage implements IStorage {
   private currentTeamIds: number;
   private currentTestimonialIds: number;
   private currentContactIds: number;
+  private currentLiveCourseRegistrationIds: number;
 
   sessionStore: any;
 
@@ -109,6 +115,7 @@ export class MemStorage implements IStorage {
     this.teams = new Map();
     this.testimonials = new Map();
     this.contacts = new Map();
+    this.liveCourseRegistrations = new Map();
     
     this.currentUserIds = 1;
     this.currentCourseIds = 1;
@@ -118,6 +125,7 @@ export class MemStorage implements IStorage {
     this.currentTeamIds = 1;
     this.currentTestimonialIds = 1;
     this.currentContactIds = 1;
+    this.currentLiveCourseRegistrationIds = 1;
 
     this.sessionStore = new MemoryStore({
       checkPeriod: 86400000, // prune expired entries every 24h
@@ -453,6 +461,21 @@ export class MemStorage implements IStorage {
   async getAllContacts(): Promise<Contact[]> {
     return Array.from(this.contacts.values());
   }
+
+  // Live Course Registrations
+  async createLiveCourseRegistration(insertRegistration: InsertLiveCourseRegistration): Promise<LiveCourseRegistration> {
+    const id = this.currentLiveCourseRegistrationIds++;
+    const registration: LiveCourseRegistration = {
+      ...insertRegistration,
+      id,
+      registeredAt: new Date(),
+      userId: insertRegistration.userId || null,
+      guardianName: insertRegistration.guardianName || null,
+      guardianPhoneNumber: insertRegistration.guardianPhoneNumber || null,
+    };
+    this.liveCourseRegistrations.set(id, registration);
+    return registration;
+  }
 }
 
 export class DatabaseStorage implements IStorage {
@@ -768,6 +791,15 @@ export class DatabaseStorage implements IStorage {
 
   async getAllContacts(): Promise<Contact[]> {
     return await db.select().from(contacts);
+  }
+
+  // Live Course Registrations
+  async createLiveCourseRegistration(insertRegistration: InsertLiveCourseRegistration): Promise<LiveCourseRegistration> {
+    const [registration] = await db
+      .insert(liveCourseRegistrations)
+      .values(insertRegistration)
+      .returning();
+    return registration;
   }
 }
 

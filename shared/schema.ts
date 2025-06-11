@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp, jsonb } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -29,6 +29,8 @@ export const courses = pgTable("courses", {
   popular: boolean("popular").default(false),
   new: boolean("new").default(false),
   instructor: text("instructor").notNull(),
+  isLive: boolean("is_live").default(false),
+  liveDetails: jsonb("live_details"),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -91,6 +93,21 @@ export const contacts = pgTable("contacts", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+export const liveCourseRegistrations = pgTable("live_course_registrations", {
+  id: serial("id").primaryKey(),
+  courseId: integer("course_id").notNull().references(() => courses.id, { onDelete: "cascade" }),
+  userId: integer("user_id").references(() => users.id, { onDelete: "set null" }),
+  fullName: text("full_name").notNull(),
+  email: text("email").notNull(),
+  phoneNumber: text("phone_number").notNull(),
+  age: integer("age").notNull(),
+  guardianName: text("guardian_name"),
+  guardianPhoneNumber: text("guardian_phone_number"),
+  preferredModality: text("preferred_modality", { enum: ["Presencial", "Virtual"] }).notNull(),
+  hasLaptop: boolean("has_laptop").notNull(),
+  registeredAt: timestamp("registered_at").defaultNow(),
+});
+
 // Insert Schemas
 export const insertUserSchema = createInsertSchema(users).omit({
   id: true,
@@ -135,6 +152,11 @@ export const insertContactSchema = z.object({
   })
 });
 
+export const insertLiveCourseRegistrationSchema = createInsertSchema(liveCourseRegistrations).omit({
+  id: true,
+  registeredAt: true,
+});
+
 // Types for insertion
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type InsertCourse = z.infer<typeof insertCourseSchema>;
@@ -144,6 +166,7 @@ export type InsertSection = z.infer<typeof insertSectionSchema>;
 export type InsertTeam = z.infer<typeof insertTeamSchema>;
 export type InsertTestimonial = z.infer<typeof insertTestimonialSchema>;
 export type InsertContact = z.infer<typeof insertContactSchema>;
+export type InsertLiveCourseRegistration = z.infer<typeof insertLiveCourseRegistrationSchema>;
 
 // Types for selection
 export type User = typeof users.$inferSelect;
@@ -154,3 +177,4 @@ export type Section = typeof sections.$inferSelect;
 export type Team = typeof teams.$inferSelect;
 export type Testimonial = typeof testimonials.$inferSelect;
 export type Contact = typeof contacts.$inferSelect;
+export type LiveCourseRegistration = typeof liveCourseRegistrations.$inferSelect;
