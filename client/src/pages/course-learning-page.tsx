@@ -340,7 +340,7 @@ export default function CourseLearningPage() {
       );
     }
 
-    if (showRegistrationSuccess && !hasRegisteredForLiveCourse) {
+    if (showRegistrationSuccess) {
       return (
         <Card className="flex items-center justify-center min-h-[500px] text-center">
           <CardContent className="flex flex-col items-center gap-4">
