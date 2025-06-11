@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { InsertLiveCourseRegistration, Course } from '@shared/schema';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -17,7 +17,9 @@ const liveRegistrationFormSchema = z.object({
   fullName: z.string().min(1, { message: 'El nombre completo es requerido.' }),
   email: z.string().email({ message: 'Por favor, ingresa un correo electrónico válido.' }),
   phoneNumber: z.string().min(10, { message: 'El número de teléfono es requerido y debe tener al menos 10 dígitos.' }).max(15, { message: 'El número de teléfono no debe exceder los 15 dígitos.' }),
-  age: z.coerce.number().min(1, { message: 'La edad es requerida.' }),
+  age: z.coerce.number()
+    .min(1, { message: 'La edad debe ser mayor a 0.' })
+    .max(100, { message: 'La edad no puede ser mayor a 100.' }),
   preferredModality: z.enum(['Presencial', 'Virtual'], { message: 'Por favor, selecciona una modalidad.' }),
   hasLaptop: z.boolean({ message: 'Debes indicar si cuentas con una computadora portátil.' }),
   // Conditional fields for minors
@@ -51,6 +53,7 @@ interface LiveCourseRegistrationFormProps {
 export function LiveCourseRegistrationForm({ course }: LiveCourseRegistrationFormProps) {
   const [showSuccess, setShowSuccess] = useState(false);
   const [, navigate] = useLocation();
+  const queryClient = useQueryClient();
 
   const form = useForm<LiveRegistrationFormValues>({
     resolver: zodResolver(liveRegistrationFormSchema),
@@ -99,6 +102,7 @@ export function LiveCourseRegistrationForm({ course }: LiveCourseRegistrationFor
     onSuccess: () => {
       setShowSuccess(true);
       reset();
+      queryClient.invalidateQueries({ queryKey: ['/api/live-course-registrations'] });
     },
     onError: (error) => {
       alert(error.message);
@@ -178,7 +182,14 @@ export function LiveCourseRegistrationForm({ course }: LiveCourseRegistrationFor
 
           <div>
             <Label htmlFor="age">Edad</Label>
-            <Input id="age" type="number" {...register('age', { valueAsNumber: true })} className="mt-1" />
+            <Input 
+              id="age" 
+              type="number" 
+              min={1}
+              max={100}
+              {...register('age', { valueAsNumber: true })} 
+              className="mt-1" 
+            />
             {errors.age && <p className="text-red-500 text-sm mt-1">{errors.age.message}</p>}
           </div>
 
