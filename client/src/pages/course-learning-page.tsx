@@ -332,7 +332,7 @@ export default function CourseLearningPage() {
   // Renderiza el formulario de registro si es un curso en vivo
   if (course.isLive) {
     // PRIORIDAD 1: Mostrar mensaje de éxito inmediatamente después del registro
-    if (showRegistrationSuccess && !hasRegisteredForLiveCourse) {
+    if (showRegistrationSuccess) {
       return (
         <div className="min-h-screen flex items-center justify-center bg-primary-900 py-12">
           <div className="text-center">
@@ -349,7 +349,7 @@ export default function CourseLearningPage() {
     }
 
     // PRIORIDAD 2: Mostrar mensaje de ya registrado en visitas posteriores
-    if (!showRegistrationSuccess && hasRegisteredForLiveCourse) {
+    else if (hasRegisteredForLiveCourse) {
       return (
         <div className="min-h-screen flex items-center justify-center bg-primary-900 py-12">
           <div className="text-center">
@@ -363,11 +363,13 @@ export default function CourseLearningPage() {
     }
 
     // PRIORIDAD 3: Mostrar el formulario si no se ha registrado ni se acaba de registrar
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-primary-900 py-12">
-        <LiveCourseRegistrationForm course={course} onSuccessRegistration={handleRegistrationSuccess} />
-      </div>
-    );
+    else {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-primary-900 py-12">
+          <LiveCourseRegistrationForm course={course} onSuccessRegistration={handleRegistrationSuccess} />
+        </div>
+      );
+    }
   }
 
   if (!isEnrolled) {
