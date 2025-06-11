@@ -256,12 +256,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Guardar en la base de datos
       const registration = await storage.createLiveCourseRegistration(registrationData);
 
+      // Obtener los detalles del curso para usar el nombre en el correo
+      const course = await storage.getCourse(registration.courseId);
+      const courseName = course ? course.title : "Curso Desconocido";
+
       // Preparar y enviar el correo de confirmación al usuario
-      const emailToUser: EmailData = { // Tipificación explícita
+      const emailToUser: EmailData = { 
         to: registration.email,
-        from: "webcodeacademy0@gmail.com", // Typo corregido
+        from: "webcodeacademy0@gmail.com",
         name: registration.fullName,
-        subject: `Confirmación de registro al curso: ${registration.courseId}`,
+        subject: `Confirmación de registro al curso: ${courseName}`,
         text: `¡Muchas gracias por registrarte en el curso! Días antes de iniciar el curso se te enviará un mensaje confirmando tu asistencia y modalidad. Para dudas o aclaraciones: +52 784 110 0108 - Web Code Academy`,
         html: `
           <p>¡Muchas gracias por registrarte en el curso!</p>
@@ -272,7 +276,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       };
 
       // Preparar y enviar el correo de notificación a la administración
-      const emailToAdmin: EmailData = { // Tipificación explícita
+      const emailToAdmin: EmailData = { 
         to: "webcodeacademy0@gmail.com",
         from: registration.email,
         name: `Registro de ${registration.fullName}`,

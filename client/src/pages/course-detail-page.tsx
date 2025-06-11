@@ -268,23 +268,40 @@ export default function CourseDetailPage() {
                               </blockquote>
                               <p className="text-sm text-muted mt-2">- {quote.author}</p>
                             </div>
-                            <Button
-                              onClick={handleEnroll}
-                              className={`px-6 py-3 ${course.popular
-                                ? 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
-                                : course.new
-                                  ? 'bg-accent-yellow hover:bg-accent-yellow hover:opacity-90 text-primary-900'
-                                  : course.featured
-                                    ? 'bg-accent-red hover:bg-accent-red hover:opacity-90'
-                                    : 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
-                                }`}
-                              disabled={enrollMutation.isPending || isLoadingEnrollments}
-                            >
-                              {enrollMutation.isPending ? (
-                                <span className="mr-2 inline-block h-4 w-4 animate-spin">⟳</span>
-                              ) : null}
-                              Inscribirme Gratis
-                            </Button>
+                            {course.isLive ? (
+                              <Button
+                                asChild
+                                className={`px-6 py-3 ${course.popular
+                                  ? 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
+                                  : course.new
+                                    ? 'bg-accent-yellow hover:bg-accent-yellow hover:opacity-90 text-primary-900'
+                                    : course.featured
+                                      ? 'bg-accent-red hover:bg-accent-red hover:opacity-90'
+                                      : 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
+                                  }`}
+                                disabled={enrollMutation.isPending || isLoadingEnrollments}
+                              >
+                                <a href={`/courses/${course.slug}/learn`}>Registrate al Curso en Vivo</a>
+                              </Button>
+                            ) : (
+                              <Button
+                                onClick={handleEnroll}
+                                className={`px-6 py-3 ${course.popular
+                                  ? 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
+                                  : course.new
+                                    ? 'bg-accent-yellow hover:bg-accent-yellow hover:opacity-90 text-primary-900'
+                                    : course.featured
+                                      ? 'bg-accent-red hover:bg-accent-red hover:opacity-90'
+                                      : 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
+                                  }`}
+                                disabled={enrollMutation.isPending || isLoadingEnrollments}
+                              >
+                                {enrollMutation.isPending ? (
+                                  <span className="mr-2 inline-block h-4 w-4 animate-spin">⟳</span>
+                                ) : null}
+                                Inscribirme Gratis
+                              </Button>
+                            )}
                           </>
                         )}
                       </div>
@@ -314,23 +331,40 @@ export default function CourseDetailPage() {
                               <a href={`/courses/${course.slug}/learn`}>Comenzar a Aprender</a>
                             </Button>
                           ) : (
-                            <Button
-                              onClick={handleEnroll}
-                              className={`w-full ${course.popular
-                                ? 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
-                                : course.new
-                                  ? 'bg-accent-yellow hover:bg-accent-yellow hover:opacity-90 text-primary-900'
-                                  : course.featured
-                                    ? 'bg-accent-red hover:bg-accent-red hover:opacity-90'
-                                    : 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
-                                }`}
-                              disabled={enrollMutation.isPending || isLoadingEnrollments}
-                            >
-                              {enrollMutation.isPending ? (
-                                <span className="mr-2 inline-block h-4 w-4 animate-spin">⟳</span>
-                              ) : null}
-                              Inscribirme Gratis
-                            </Button>
+                            course.isLive ? (
+                              <Button
+                                asChild
+                                className={`w-full ${course.popular
+                                  ? 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
+                                  : course.new
+                                    ? 'bg-accent-yellow hover:bg-accent-yellow hover:opacity-90 text-primary-900'
+                                    : course.featured
+                                      ? 'bg-accent-red hover:bg-accent-red hover:opacity-90'
+                                      : 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
+                                  }`}
+                                disabled={enrollMutation.isPending || isLoadingEnrollments}
+                              >
+                                <a href={`/courses/${course.slug}/learn`}>Formulario de Registro</a>
+                              </Button>
+                            ) : (
+                              <Button
+                                onClick={handleEnroll}
+                                className={`w-full ${course.popular
+                                  ? 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
+                                  : course.new
+                                    ? 'bg-accent-yellow hover:bg-accent-yellow hover:opacity-90 text-primary-900'
+                                    : course.featured
+                                      ? 'bg-accent-red hover:bg-accent-red hover:opacity-90'
+                                      : 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
+                                  }`}
+                                disabled={enrollMutation.isPending || isLoadingEnrollments}
+                              >
+                                {enrollMutation.isPending ? (
+                                  <span className="mr-2 inline-block h-4 w-4 animate-spin">⟳</span>
+                                ) : null}
+                                Inscribirme Gratis
+                              </Button>
+                            )
                           )}
                         </div>
                       </div>

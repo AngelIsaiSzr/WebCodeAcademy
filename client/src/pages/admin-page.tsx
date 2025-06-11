@@ -1648,7 +1648,7 @@ export default function AdminPage() {
                                   <h4 className="text-lg font-medium">{course.title}</h4>
                                   <p className="text-sm text-muted-foreground mb-2">
                                     {course.category} • {course.level} • {course.duration} horas
-                                    {course.isLive && " • EN VIVO"} {/* Mostrar 'EN VIVO' si isLive es true */}
+                                    {course.isLive && " • En Vivo"} {/* Mostrar 'En Vivo' si isLive es true */}
                                   </p>
                                 </div>
                               </div>
@@ -1672,7 +1672,7 @@ export default function AdminPage() {
                                 )}
                                 {course.isLive && (
                                   <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-500/20 text-blue-700 dark:text-blue-300">
-                                    EN VIVO
+                                    En Vivo
                                   </span>
                                 )}
                               </div>

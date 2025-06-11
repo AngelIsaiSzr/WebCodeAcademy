@@ -11,6 +11,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LiveCourseRegistrationForm } from '@/components/forms/LiveCourseRegistrationForm';
+import { useLocation } from 'wouter';
 
 interface Enrollment {
   id: number;
@@ -32,6 +33,21 @@ interface SectionProgress {
   videoProgress?: number;
 }
 
+interface LiveCourseRegistration {
+  id: number;
+  courseId: number;
+  userId?: number | null;
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  age: number;
+  guardianName?: string | null;
+  guardianPhoneNumber?: string | null;
+  preferredModality: 'Presencial' | 'Virtual';
+  hasLaptop: boolean;
+  registeredAt: string;
+}
+
 type TabType = "description" | "resources" | "comments";
 
 export default function CourseLearningPage() {
@@ -44,6 +60,7 @@ export default function CourseLearningPage() {
   const [completedSections, setCompletedSections] = useState<SectionProgress[]>([]);
   const [activeTab, setActiveTab] = useState<TabType>("description");
   const [videoProgress, setVideoProgress] = useState<number>(0);
+  const [, navigate] = useLocation();
 
   // Fetch course data
   const {
@@ -79,7 +96,7 @@ export default function CourseLearningPage() {
     }
   });
 
-  // Verificar si el usuario está inscrito
+  // Verificar si el usuario está inscrito en cursos normales
   const {
     data: enrollments = [],
     isLoading: isLoadingEnrollments
@@ -89,6 +106,27 @@ export default function CourseLearningPage() {
   });
 
   const isEnrolled = enrollments.some(enrollment => enrollment.courseId === course?.id);
+
+  // Verificar si el usuario ya se ha registrado en este curso en vivo
+  const {
+    data: liveRegistrations,
+    isLoading: isLoadingLiveRegistrations,
+  } = useQuery<LiveCourseRegistration[]>({
+    queryKey: ['/api/live-course-registrations', user?.id, course?.id],
+    enabled: Boolean(user && course?.id) && (course?.isLive ?? false),
+    queryFn: async () => {
+      if (!user || !course?.id || !(course?.isLive ?? false)) return [];
+      const response = await fetch(`/api/live-course-registrations?userId=${user.id}&courseId=${course.id}`);
+      if (!response.ok) {
+        throw new Error('Error al cargar los registros de cursos en vivo.');
+      }
+      const data = await response.json() as LiveCourseRegistration[];
+      return data.filter((reg: LiveCourseRegistration) => reg.courseId === course.id);
+    },
+    initialData: [],
+  });
+
+  const hasRegisteredForLiveCourse = liveRegistrations.length > 0;
 
   // Set initial active module and section
   useEffect(() => {
@@ -273,7 +311,7 @@ export default function CourseLearningPage() {
     }
   };
 
-  if (isLoadingCourse || isLoadingModules || isLoadingEnrollments) {
+  if (isLoadingCourse || isLoadingModules || isLoadingEnrollments || isLoadingLiveRegistrations) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <LoadingSpinner size="lg" text="Cargando..." />
@@ -295,6 +333,27 @@ export default function CourseLearningPage() {
     );
   }
 
+  // Renderiza el formulario de registro si es un curso en vivo
+  if (course.isLive) {
+    if (hasRegisteredForLiveCourse) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-primary-900 py-12">
+          <div className="text-center">
+            <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
+            <h1 className="text-2xl font-bold mb-2">¡Ya estás registrado en este curso en vivo!</h1>
+            <p className="text-muted mb-4">No necesitas registrarte de nuevo.</p>
+            <Button onClick={() => navigate('/courses')}>Regresar a Cursos</Button>
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-primary-900 py-12">
+        <LiveCourseRegistrationForm course={course} />
+      </div>
+    );
+  }
+
   if (!isEnrolled) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -305,15 +364,6 @@ export default function CourseLearningPage() {
             <a href={`/courses/${course.slug}`}>Volver al curso</a>
           </Button>
         </div>
-      </div>
-    );
-  }
-
-  // Renderiza el formulario de registro si es un curso en vivo
-  if (course.isLive) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-primary-900 py-12">
-        <LiveCourseRegistrationForm course={course} />
       </div>
     );
   }

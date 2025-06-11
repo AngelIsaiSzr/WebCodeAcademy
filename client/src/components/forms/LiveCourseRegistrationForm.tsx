@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle } from 'lucide-react';
+import { useLocation } from 'wouter';
 
 // Define the Zod schema for the form
 const liveRegistrationFormSchema = z.object({
@@ -49,6 +50,7 @@ interface LiveCourseRegistrationFormProps {
 
 export function LiveCourseRegistrationForm({ course }: LiveCourseRegistrationFormProps) {
   const [showSuccess, setShowSuccess] = useState(false);
+  const [, navigate] = useLocation();
 
   const form = useForm<LiveRegistrationFormValues>({
     resolver: zodResolver(liveRegistrationFormSchema),
@@ -120,6 +122,9 @@ export function LiveCourseRegistrationForm({ course }: LiveCourseRegistrationFor
             Para dudas o aclaraciones: <span className="font-semibold text-accent-blue">+52 784 110 0108</span>
           </p>
           <p className="text-muted-foreground">- Web Code Academy</p>
+          <Button onClick={() => navigate('/courses')} className="mt-6">
+            Regresar a Cursos
+          </Button>
         </CardContent>
       </Card>
     );
@@ -127,7 +132,7 @@ export function LiveCourseRegistrationForm({ course }: LiveCourseRegistrationFor
 
   // Live course details from the course object
   const liveDetails = course.liveDetails as {
-    duration: string;
+    liveDuration: string;
     schedule: string;
     modality: string;
     address: string;
@@ -144,7 +149,7 @@ export function LiveCourseRegistrationForm({ course }: LiveCourseRegistrationFor
           {course.shortDescription}
         </CardDescription>
         <div className="mt-4 text-center text-sm text-muted-foreground">
-          <p><strong>Duración:</strong> {liveDetails.duration}</p>
+          <p><strong>Duración:</strong> {liveDetails.liveDuration}</p>
           <p><strong>Horario:</strong> {liveDetails.schedule}</p>
           <p><strong>Modalidad:</strong> {liveDetails.modality}</p>
           <p><strong>Dirección:</strong> {liveDetails.address}</p>
