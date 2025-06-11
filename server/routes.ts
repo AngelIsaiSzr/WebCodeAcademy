@@ -253,6 +253,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userIdToUse = req.isAuthenticated() && req.user ? (req.user as User).id : null;
       const registrationData = { ...validation.data, userId: userIdToUse };
 
+      // Verificar si ya existe un registro para este usuario y curso
+      if (userIdToUse !== null && registrationData.courseId) {
+        const existingRegistrations = await storage.getLiveCourseRegistrationsByUserIdAndCourseId(userIdToUse, registrationData.courseId);
+        if (existingRegistrations && existingRegistrations.length > 0) {
+          return res.status(409).json({ message: "Ya estás registrado en este curso en vivo." });
+        }
+      }
+
+      // Guardar en la base de datos solo si no hay duplicados
       const registration = await storage.createLiveCourseRegistration(registrationData);
 
       const course = await storage.getCourse(registration.courseId);

@@ -13,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LiveCourseRegistrationForm } from '@/components/forms/LiveCourseRegistrationForm';
 import { useLocation } from 'wouter';
 import { Card, CardContent, CardTitle, CardDescription } from '@/components/ui/card';
+import { queryClient } from "@/lib/queryClient";
 
 interface Enrollment {
   id: number;
@@ -49,10 +50,14 @@ export default function CourseLearningPage() {
   const [, navigate] = useLocation();
   const [showRegistrationSuccess, setShowRegistrationSuccess] = useState(false);
 
-  // Reset showRegistrationSuccess when the course slug changes (new course or page reload)
+  // Reset showRegistrationSuccess and refetch live registrations when the course data becomes available or changes
   useEffect(() => {
     setShowRegistrationSuccess(false);
-  }, [slug]);
+    // Forzar refetch de los registros en vivo al cargar la página
+    if (user && slug && course?.id) {
+      queryClient.invalidateQueries({ queryKey: ['/api/live-course-registrations', user.id, course.id] });
+    }
+  }, [slug, user]);
 
   // Fetch course data
   const {
@@ -116,6 +121,9 @@ export default function CourseLearningPage() {
       return data.filter((reg: LiveCourseRegistration) => reg.courseId === course.id);
     },
     initialData: [],
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+    staleTime: 0,
   });
 
   const hasRegisteredForLiveCourse = liveRegistrations.length > 0;

@@ -125,7 +125,7 @@ export function LiveCourseRegistrationForm({ course, onSuccessRegistration }: Li
   };
 
   return (
-    <Card className="max-w-3xl mx-auto mt-2">
+    <Card className="max-w-3xl mx-auto">
       <CardHeader>
         <CardTitle className="text-3xl font-bold text-center mb-2">
           Curso: {course.title}
