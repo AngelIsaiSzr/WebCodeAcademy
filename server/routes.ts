@@ -312,6 +312,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get("/api/live-course-registrations", async (req, res) => {
+    try {
+      if (!req.isAuthenticated()) {
+        return res.status(401).json({ message: "Debes iniciar sesión para ver los registros de cursos en vivo" });
+      }
+
+      const userId = req.user.id;
+      const courseId = parseInt(req.query.courseId as string);
+
+      if (isNaN(courseId)) {
+        return res.status(400).json({ message: "ID de curso inválido" });
+      }
+
+      const registration = await storage.getLiveCourseRegistrationByCourseAndUser(userId, courseId);
+      
+      if (registration) {
+        res.json([registration]); // Devolver un array para que coincida con el tipo esperado por useQuery (LiveCourseRegistration[])
+      } else {
+        res.json([]);
+      }
+
+    } catch (error) {
+      console.error("Error al obtener registros de cursos en vivo:", error);
+      res.status(500).json({ message: "Error al obtener registros de cursos en vivo" });
+    }
+  });
+
   // Admin routes
   app.post("/api/courses", async (req, res) => {
     try {
@@ -810,6 +837,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.error("Seeding error:", error);
       res.status(500).json({ message: "Failed to seed data" });
     }
+  });
+
+  app.get("/api/admin/users", async (req, res) => {
+    // Implementation of the new endpoint
   });
 
   const httpServer = createServer(app);
