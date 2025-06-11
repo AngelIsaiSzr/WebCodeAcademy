@@ -11,6 +11,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle } from 'lucide-react';
 import { useLocation } from 'wouter';
+import { useAuth } from "@/hooks/use-auth";
 
 // Define the Zod schema for the form
 const liveRegistrationFormSchema = z.object({
@@ -54,6 +55,7 @@ export function LiveCourseRegistrationForm({ course }: LiveCourseRegistrationFor
   const [showSuccess, setShowSuccess] = useState(false);
   const [, navigate] = useLocation();
   const queryClient = useQueryClient();
+  const { user } = useAuth();
 
   const form = useForm<LiveRegistrationFormValues>({
     resolver: zodResolver(liveRegistrationFormSchema),
@@ -102,7 +104,7 @@ export function LiveCourseRegistrationForm({ course }: LiveCourseRegistrationFor
     onSuccess: () => {
       setShowSuccess(true);
       reset();
-      queryClient.invalidateQueries({ queryKey: ['/api/live-course-registrations'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/live-course-registrations', user?.id, course.id] });
     },
     onError: (error) => {
       alert(error.message);
@@ -144,7 +146,7 @@ export function LiveCourseRegistrationForm({ course }: LiveCourseRegistrationFor
   };
 
   return (
-    <Card className="max-w-3xl mx-auto mt-8">
+    <Card className="max-w-3xl mx-auto mt-4">
       <CardHeader>
         <CardTitle className="text-3xl font-bold text-center mb-2">
           Curso: {course.title}
