@@ -69,6 +69,9 @@ export default function CourseDetailPage() {
       return data.filter((reg: LiveCourseRegistration) => reg.courseId === course.id);
     },
     initialData: [],
+    refetchOnMount: true, // Forzar refetch al montar el componente
+    refetchOnWindowFocus: true, // Forzar refetch cuando la ventana recupera el foco
+    staleTime: 0, // Asegurar que los datos siempre se consideren 'stale'
   });
 
   const hasRegisteredForLiveCourse = liveRegistrations.length > 0;
@@ -115,6 +118,13 @@ export default function CourseDetailPage() {
   useEffect(() => {
     setLoading(isLoadingCourse || isLoadingModules || isLoadingLiveRegistrations);
   }, [isLoadingCourse, isLoadingModules, isLoadingLiveRegistrations, setLoading]);
+
+  // Forzar refetch de liveRegistrations al montar el componente o cuando cambien user/course.id
+  useEffect(() => {
+    if (user && course?.id) {
+      queryClient.invalidateQueries({ queryKey: ['/api/live-course-registrations', user.id, course.id] });
+    }
+  }, [user, course?.id, queryClient]);
 
   if (isLoadingCourse || isLoadingModules || isLoadingLiveRegistrations) {
     return (
