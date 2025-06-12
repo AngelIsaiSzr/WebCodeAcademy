@@ -2587,6 +2587,9 @@ export default function AdminPage() {
                                   }}
                                 />
                               </FormControl>
+                              <FormDescription>
+                                Determina el orden de aparición (menor número = aparece antes)
+                              </FormDescription>
                               <FormMessage />
                             </FormItem>
                           )}
