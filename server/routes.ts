@@ -324,10 +324,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 <li style="margin-bottom: 10px; color: #555;"><strong>Correo:</strong> <a href="mailto:${registration.email}" style="color: #297de0; text-decoration: none;">${registration.email}</a></li>
                 <li style="margin-bottom: 10px; color: #555;"><strong>Teléfono:</strong> <a href="tel:${registration.phoneNumber}" style="color: #297de0; text-decoration: none;">${registration.phoneNumber}</a></li>
                 <li style="margin-bottom: 10px; color: #555;"><strong>Edad:</strong> ${registration.age}</li>
-                <li style="margin-bottom: 10px; color: #555;"><strong>Modalidad preferida:</strong> ${registration.preferredModality}</li>
-                <li style="margin-bottom: 10px; color: #555;"><strong>Tiene laptop:</strong> ${registration.hasLaptop ? 'Sí' : 'No'}</li>
                 ${registration.guardianName ? `<li style="margin-bottom: 10px; color: #555;"><strong>Nombre del tutor:</strong> ${registration.guardianName}</li>` : ''}
                 ${registration.guardianPhoneNumber ? `<li style="margin-bottom: 10px; color: #555;"><strong>Teléfono del tutor:</strong> ${registration.guardianPhoneNumber}</li>` : ''}
+                <li style="margin-bottom: 10px; color: #555;"><strong>Modalidad preferida:</strong> ${registration.preferredModality}</li>
+                <li style="margin-bottom: 10px; color: #555;"><strong>Tiene laptop:</strong> ${registration.hasLaptop ? 'Sí' : 'No'}</li>
               </ul>
             </div>
 

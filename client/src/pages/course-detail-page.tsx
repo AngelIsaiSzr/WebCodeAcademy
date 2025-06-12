@@ -276,7 +276,7 @@ export default function CourseDetailPage() {
                     <AnimateInView animation="fadeIn" delay={0.5}>
                       <div>
                         {isEnrolled ? (
-                          <> 
+                          <>
                             <div className="mb-6 p-4 bg-primary-700 rounded-lg">
                               <blockquote className="italic text-muted">
                                 "{quote.text}"
@@ -316,23 +316,23 @@ export default function CourseDetailPage() {
                                 )}
                               </Button>
                             ) : (
-                              <Button
-                                onClick={handleEnroll}
-                                className={`px-6 py-3 ${course.popular
-                                  ? 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
-                                  : course.new
-                                    ? 'bg-accent-yellow hover:bg-accent-yellow hover:opacity-90 text-primary-900'
-                                    : course.featured
-                                      ? 'bg-accent-red hover:bg-accent-red hover:opacity-90'
-                                      : 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
-                                  }`}
-                                disabled={enrollMutation.isPending || isLoadingEnrollments}
-                              >
-                                {enrollMutation.isPending ? (
-                                  <span className="mr-2 inline-block h-4 w-4 animate-spin">⟳</span>
-                                ) : null}
-                                Inscribirme Gratis
-                              </Button>
+                            <Button
+                              onClick={handleEnroll}
+                              className={`px-6 py-3 ${course.popular
+                                ? 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
+                                : course.new
+                                  ? 'bg-accent-yellow hover:bg-accent-yellow hover:opacity-90 text-primary-900'
+                                  : course.featured
+                                    ? 'bg-accent-red hover:bg-accent-red hover:opacity-90'
+                                    : 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
+                                }`}
+                              disabled={enrollMutation.isPending || isLoadingEnrollments}
+                            >
+                              {enrollMutation.isPending ? (
+                                <span className="mr-2 inline-block h-4 w-4 animate-spin">⟳</span>
+                              ) : null}
+                              Inscribirme Gratis
+                            </Button>
                             )}
                           </>
                         )}
@@ -381,25 +381,25 @@ export default function CourseDetailPage() {
                                 ) : (
                                   <span>Formulario de Registro</span>
                                 )}
-                              </Button>
-                            ) : (
-                              <Button
-                                onClick={handleEnroll}
-                                className={`w-full ${course.popular
-                                  ? 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
-                                  : course.new
-                                    ? 'bg-accent-yellow hover:bg-accent-yellow hover:opacity-90 text-primary-900'
-                                    : course.featured
-                                      ? 'bg-accent-red hover:bg-accent-red hover:opacity-90'
-                                      : 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
-                                  }`}
-                                disabled={enrollMutation.isPending || isLoadingEnrollments}
-                              >
-                                {enrollMutation.isPending ? (
-                                  <span className="mr-2 inline-block h-4 w-4 animate-spin">⟳</span>
-                                ) : null}
-                                Inscribirme Gratis
-                              </Button>
+                            </Button>
+                          ) : (
+                            <Button
+                              onClick={handleEnroll}
+                              className={`w-full ${course.popular
+                                ? 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
+                                : course.new
+                                  ? 'bg-accent-yellow hover:bg-accent-yellow hover:opacity-90 text-primary-900'
+                                  : course.featured
+                                    ? 'bg-accent-red hover:bg-accent-red hover:opacity-90'
+                                    : 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
+                                }`}
+                              disabled={enrollMutation.isPending || isLoadingEnrollments}
+                            >
+                              {enrollMutation.isPending ? (
+                                <span className="mr-2 inline-block h-4 w-4 animate-spin">⟳</span>
+                              ) : null}
+                              Inscribirme Gratis
+                            </Button>
                             )
                           )}
                         </div>

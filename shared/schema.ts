@@ -83,6 +83,7 @@ export const testimonials = pgTable("testimonials", {
   image: text("image").notNull(),
   text: text("text").notNull(),
   rating: integer("rating").notNull(),
+  order: integer("order").notNull(),
 });
 
 export const contacts = pgTable("contacts", {

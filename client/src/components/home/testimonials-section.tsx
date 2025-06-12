@@ -27,8 +27,10 @@ export default function TestimonialsSection() {
   // Update displayed testimonials when currentIndex changes or data loads
   useEffect(() => {
     if (testimonials && testimonials.length > 0) {
-      const endIndex = Math.min(currentIndex + 3, testimonials.length);
-      setDisplayedTestimonials(testimonials.slice(currentIndex, endIndex));
+      // Ordenar testimonios por el campo order
+      const sortedTestimonials = [...testimonials].sort((a, b) => a.order - b.order);
+      const endIndex = Math.min(currentIndex + 3, sortedTestimonials.length);
+      setDisplayedTestimonials(sortedTestimonials.slice(currentIndex, endIndex));
     }
   }, [testimonials, currentIndex]);
 
@@ -50,7 +52,7 @@ export default function TestimonialsSection() {
           transition={{ duration: 0.5 }}
         >
           <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">Lo que dicen nuestros estudiantes</h2>
-          <p className="text-muted max-w-2xl mx-auto">Descubre cómo Web Code Academy ha transformado la vida profesional de nuestros alumnos.</p>
+          <p className="text-muted max-w-2xl mx-auto">Descubre cómo Web Code Academy ha transformado la vida y el aprendizaje de nuestros estudiantes.</p>
         </motion.div>
 
         {isLoading ? (

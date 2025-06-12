@@ -28,6 +28,18 @@ const runMigrate = async () => {
     ALTER TABLE courses 
     ADD COLUMN IF NOT EXISTS is_live boolean DEFAULT false,
     ADD COLUMN IF NOT EXISTS live_details jsonb;
+
+    ALTER TABLE testimonials 
+    ADD COLUMN IF NOT EXISTS "order" integer NOT NULL DEFAULT 1;
+
+    WITH numbered_testimonials AS (
+      SELECT id, ROW_NUMBER() OVER (ORDER BY id) as row_num
+      FROM testimonials
+    )
+    UPDATE testimonials
+    SET "order" = numbered_testimonials.row_num
+    FROM numbered_testimonials
+    WHERE testimonials.id = numbered_testimonials.id;
   `);
   
   const end = Date.now();

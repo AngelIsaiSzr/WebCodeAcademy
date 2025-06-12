@@ -169,6 +169,10 @@ const teamFormSchema = insertTeamSchema.extend({
 
 const testimonialFormSchema = insertTestimonialSchema.extend({
   image: z.string().min(5, "La URL de la imagen es requerida"),
+  order: z.number({
+    required_error: "El orden es requerido",
+    invalid_type_error: "El orden debe ser un número"
+  }).min(1, "El orden debe ser mayor a 0"),
 });
 
 const moduleFormSchema = insertModuleSchema.extend({
@@ -572,6 +576,7 @@ export default function AdminPage() {
     text: "",
     image: "",
     rating: 5,
+    order: 1,
   };
   
   // Testimonial form  
@@ -589,6 +594,7 @@ export default function AdminPage() {
         text: editingTestimonial.text,
         image: editingTestimonial.image,
         rating: editingTestimonial.rating,
+        order: editingTestimonial.order,
       });
     }
   }, [editingTestimonial, testimonialForm]);
@@ -2555,6 +2561,29 @@ export default function AdminPage() {
                                   onChange={(e) => {
                                     const value = parseInt(e.target.value);
                                     field.onChange(value < 1 ? 1 : value > 5 ? 5 : value);
+                                  }}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={testimonialForm.control}
+                          name="order"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Orden</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  type="number" 
+                                  min="1"
+                                  placeholder="1" 
+                                  {...field}
+                                  onChange={(e) => {
+                                    const value = parseInt(e.target.value);
+                                    field.onChange(value < 1 ? 1 : value);
                                   }}
                                 />
                               </FormControl>
