@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import { PageLoader } from "@/components/layout/page-loader";
 import { PageTransition } from "@/components/ui/page-transition";
 import { useDynamicTitle } from './hooks/useDynamicTitle';
+import { useEffect } from "react";
 
 import HomePage from "@/pages/home-page";
 import AuthPage from "@/pages/auth-page";
@@ -44,8 +45,34 @@ function Router() {
   );
 }
 
+function DonorboxButton() {
+  useEffect(() => {
+    // Evitar duplicados
+    if (document.getElementById("donorbox-popup-button-installer")) return;
+    const script = document.createElement("script");
+    script.id = "donorbox-popup-button-installer";
+    script.src = "https://donorbox.org/install-popup-button.js";
+    script.defer = true;
+    script.setAttribute("data-href", "https://donorbox.org/juntos-por-la-educacion-tecnologica?");
+    script.setAttribute("data-style", "background: #297de0; color: #fff; text-decoration: none; font-family: Verdana, sans-serif; display: flex; gap: 8px; width: fit-content; font-size: 16px; border-radius: 5px 5px 0 0; line-height: 24px; position: fixed; top: 50%; transform-origin: center; z-index: 9999; overflow: hidden; padding: 8px 22px 8px 18px; right: 20px; transform: translate(+50%, -50%) rotate(-90deg)");
+    script.setAttribute("data-button-cta", "Apóyanos");
+    script.setAttribute("data-img-src", "https://donorbox.org/images/white_logo.svg");
+    document.body.appendChild(script);
+    return () => {
+      script.remove();
+    };
+  }, []);
+  return null;
+}
+
 function App() {
   useDynamicTitle();
+  const [location] = useLocation();
+  // Ocultar en /courses/:slug/learn y en el registro en vivo
+  const hideDonorbox =
+    /^\/courses\/[^/]+\/learn$/.test(location) ||
+    location.includes("registro-en-vivo") ||
+    location.includes("live-course-registration");
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="dark" storageKey="web-code-academy-theme">
@@ -53,6 +80,7 @@ function App() {
           <TooltipProvider>
             <PageLoader />
             <Toaster />
+            {!hideDonorbox && <DonorboxButton />}
             <Router />
           </TooltipProvider>
         </AuthProvider>
