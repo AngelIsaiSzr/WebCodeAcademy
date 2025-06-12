@@ -3,17 +3,17 @@ import { Helmet } from "react-helmet";
 import { useAuth } from "@/hooks/use-auth";
 import { useLocation } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { 
-  Course, 
-  Team, 
-  Testimonial, 
-  Module, 
-  Section, 
-  insertCourseSchema, 
-  insertTeamSchema, 
+import {
+  Course,
+  Team,
+  Testimonial,
+  Module,
+  Section,
+  insertCourseSchema,
+  insertTeamSchema,
   insertTestimonialSchema,
   insertModuleSchema,
-  insertSectionSchema 
+  insertSectionSchema
 } from "@shared/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -99,7 +99,7 @@ const courseFormSchema = insertCourseSchema.extend({
   liveDetails: z.object({
     liveDuration: z.string().min(1, "La duración del curso en vivo es requerida."),
     schedule: z.string().min(1, "El horario del curso en vivo es requerido."),
-    modality: z.enum(["Presencial", "Virtual", "Mixta"], { message: "Por favor, selecciona una modalidad.", } ),
+    modality: z.enum(["Presencial", "Virtual", "Mixta"], { message: "Por favor, selecciona una modalidad.", }),
     address: z.string().min(1, "La dirección del curso en vivo es requerida."),
     contact: z.string().min(1, "El contacto del curso en vivo es requerido."),
   }).optional(),
@@ -211,7 +211,7 @@ export default function AdminPage() {
   const { user } = useAuth();
   const [, navigate] = useLocation();
   const { toast } = useToast();
-  
+
   // Estados para los diálogos de confirmación
   const [moduleToDelete, setModuleToDelete] = useState<number | null>(null);
   const [courseToDelete, setCourseToDelete] = useState<number | null>(null);
@@ -246,7 +246,7 @@ export default function AdminPage() {
   const { data: testimonials, refetch: refetchTestimonials } = useQuery<Testimonial[]>({
     queryKey: ["/api/testimonials"],
   });
-  
+
   // Delete course mutation
   const deleteCourse = useMutation({
     mutationFn: async (courseId: number) => {
@@ -272,7 +272,7 @@ export default function AdminPage() {
       });
     },
   });
-  
+
   // Delete team member mutation
   const deleteTeamMember = useMutation({
     mutationFn: async (teamId: number) => {
@@ -298,7 +298,7 @@ export default function AdminPage() {
       });
     },
   });
-  
+
   // Delete testimonial mutation
   const deleteTestimonial = useMutation({
     mutationFn: async (testimonialId: number) => {
@@ -334,7 +334,7 @@ export default function AdminPage() {
   const [editingSection, setEditingSection] = useState<Section | null>(null);
   const [selectedModule, setSelectedModule] = useState<Module | null>(null);
   const [showModules, setShowModules] = useState(false);
-  
+
   // Default empty values for course form
   const emptyCourseValues = {
     title: "",
@@ -359,7 +359,7 @@ export default function AdminPage() {
     resolver: zodResolver(courseFormSchema),
     defaultValues: emptyCourseValues,
   });
-  
+
   // Update form with course data when editing
   useEffect(() => {
     if (editingCourse) {
@@ -420,7 +420,7 @@ export default function AdminPage() {
       });
     },
   });
-  
+
   const updateCourseMutation = useMutation({
     mutationFn: async ({ id, data }: { id: number; data: CourseFormValues }) => {
       const payload = { ...data, liveDetails: data.isLive ? data.liveDetails : undefined }; // Ajustar payload
@@ -454,7 +454,7 @@ export default function AdminPage() {
       createCourseMutation.mutate(data);
     }
   };
-  
+
   const cancelEditing = () => {
     setEditingCourse(null);
     courseForm.reset(emptyCourseValues);
@@ -464,13 +464,13 @@ export default function AdminPage() {
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const title = e.target.value;
     courseForm.setValue("title", title);
-    
+
     // Generate slug from title
     const slug = title
       .toLowerCase()
       .replace(/[^\w\s]/gi, "")
       .replace(/\s+/g, "-");
-    
+
     courseForm.setValue("slug", slug);
   };
 
@@ -486,13 +486,13 @@ export default function AdminPage() {
     instagram: "",
     order: 1,
   };
-  
+
   // Team member form  
   const teamForm = useForm<TeamFormValues>({
     resolver: zodResolver(teamFormSchema),
     defaultValues: emptyTeamValues,
   });
-  
+
   // Update form with team member data when editing
   useEffect(() => {
     if (editingTeam) {
@@ -563,7 +563,7 @@ export default function AdminPage() {
       createTeamMemberMutation.mutate(data);
     }
   };
-  
+
   const cancelEditingTeam = () => {
     setEditingTeam(null);
     teamForm.reset(emptyTeamValues);
@@ -578,13 +578,13 @@ export default function AdminPage() {
     rating: 5,
     order: 1,
   };
-  
+
   // Testimonial form  
   const testimonialForm = useForm<TestimonialFormValues>({
     resolver: zodResolver(testimonialFormSchema),
     defaultValues: emptyTestimonialValues,
   });
-  
+
   // Update form with testimonial data when editing
   useEffect(() => {
     if (editingTestimonial) {
@@ -652,7 +652,7 @@ export default function AdminPage() {
       createTestimonialMutation.mutate(data);
     }
   };
-  
+
   const cancelEditingTestimonial = () => {
     setEditingTestimonial(null);
     testimonialForm.reset(emptyTestimonialValues);
@@ -668,13 +668,13 @@ export default function AdminPage() {
     difficulty: "Principiante",
     instructor: "",
   };
-  
+
   // Module form 
   const moduleForm = useForm<ModuleFormValues>({
     resolver: zodResolver(moduleFormSchema),
     defaultValues: emptyModuleValues,
   });
-  
+
   // Update form with module data when editing
   useEffect(() => {
     if (editingModule) {
@@ -750,7 +750,7 @@ export default function AdminPage() {
         description: "El módulo ha sido eliminado correctamente",
       });
       refetchModules();
-      
+
       setModuleToDelete(null);
     },
     onError: (error: Error) => {
@@ -788,7 +788,7 @@ export default function AdminPage() {
 
   const onModuleSubmit = (data: ModuleFormValues) => {
     // Check if order already exists
-    const orderExists = modules?.some(m => 
+    const orderExists = modules?.some(m =>
       m.order === data.order && (!editingModule || m.id !== editingModule.id)
     );
 
@@ -807,7 +807,7 @@ export default function AdminPage() {
       createModuleMutation.mutate(data);
     }
   };
-  
+
   const cancelEditingModule = () => {
     setEditingModule(null);
     if (selectedCourse) {
@@ -828,7 +828,7 @@ export default function AdminPage() {
     duration: 30,
     order: 1,
   };
-  
+
   // Section form
   const sectionForm = useForm<SectionFormValues>({
     resolver: zodResolver(sectionFormSchema),
@@ -942,7 +942,7 @@ export default function AdminPage() {
 
   const onSectionSubmit = (data: SectionFormValues) => {
     // Check if order already exists
-    const orderExists = sections?.some(s => 
+    const orderExists = sections?.some(s =>
       s.order === data.order && (!editingSection || s.id !== editingSection.id)
     );
 
@@ -961,7 +961,7 @@ export default function AdminPage() {
       createSectionMutation.mutate(data);
     }
   };
-  
+
   const cancelEditingSection = () => {
     setEditingSection(null);
     if (selectedModule) {
@@ -1012,7 +1012,7 @@ export default function AdminPage() {
       </DialogContent>
     </Dialog>
   );
-  
+
   const sectionDeleteDialog = (
     <Dialog open={sectionToDelete !== null} onOpenChange={(open) => !open && setSectionToDelete(null)}>
       <DialogContent>
@@ -1047,7 +1047,7 @@ export default function AdminPage() {
       </DialogContent>
     </Dialog>
   );
-  
+
   const courseDeleteDialog = (
     <Dialog open={courseToDelete !== null} onOpenChange={(open) => !open && setCourseToDelete(null)}>
       <DialogContent>
@@ -1082,7 +1082,7 @@ export default function AdminPage() {
       </DialogContent>
     </Dialog>
   );
-  
+
   const teamDeleteDialog = (
     <Dialog open={teamToDelete !== null} onOpenChange={(open) => !open && setTeamToDelete(null)}>
       <DialogContent>
@@ -1117,7 +1117,7 @@ export default function AdminPage() {
       </DialogContent>
     </Dialog>
   );
-  
+
   const testimonialDeleteDialog = (
     <Dialog open={testimonialToDelete !== null} onOpenChange={(open) => !open && setTestimonialToDelete(null)}>
       <DialogContent>
@@ -1161,7 +1161,7 @@ export default function AdminPage() {
       {courseDeleteDialog}
       {teamDeleteDialog}
       {testimonialDeleteDialog}
-      
+
       <Helmet>
         <title>Web Code Academy</title>
       </Helmet>
@@ -1195,8 +1195,8 @@ export default function AdminPage() {
                   <CardHeader>
                     <CardTitle>{editingCourse ? "Editar curso" : "Agregar nuevo curso"}</CardTitle>
                     <CardDescription>
-                      {editingCourse 
-                        ? `Actualizando el curso: ${editingCourse.title}` 
+                      {editingCourse
+                        ? `Actualizando el curso: ${editingCourse.title}`
                         : "Crea un nuevo curso para la plataforma."}
                     </CardDescription>
                   </CardHeader>
@@ -1210,9 +1210,9 @@ export default function AdminPage() {
                             <FormItem>
                               <FormLabel>Título del curso</FormLabel>
                               <FormControl>
-                                <Input 
-                                  placeholder="Ej: Desarrollo Web" 
-                                  {...field} 
+                                <Input
+                                  placeholder="Ej: Desarrollo Web"
+                                  {...field}
                                   onChange={handleTitleChange}
                                 />
                               </FormControl>
@@ -1228,9 +1228,9 @@ export default function AdminPage() {
                             <FormItem>
                               <FormLabel>Slug</FormLabel>
                               <FormControl>
-                                <Input 
-                                  placeholder="Ej: desarrollo-web" 
-                                  {...field} 
+                                <Input
+                                  placeholder="Ej: desarrollo-web"
+                                  {...field}
                                 />
                               </FormControl>
                               <FormDescription>
@@ -1248,8 +1248,8 @@ export default function AdminPage() {
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel>Nivel</FormLabel>
-                                <Select 
-                                  onValueChange={field.onChange} 
+                                <Select
+                                  onValueChange={field.onChange}
                                   defaultValue={field.value}
                                 >
                                   <FormControl>
@@ -1275,8 +1275,8 @@ export default function AdminPage() {
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel>Categoría</FormLabel>
-                                <Select 
-                                  onValueChange={field.onChange} 
+                                <Select
+                                  onValueChange={field.onChange}
                                   defaultValue={field.value}
                                 >
                                   <FormControl>
@@ -1289,11 +1289,20 @@ export default function AdminPage() {
                                     <SelectItem value="Frontend">Frontend</SelectItem>
                                     <SelectItem value="Backend">Backend</SelectItem>
                                     <SelectItem value="FullStack">FullStack</SelectItem>
-                                    <SelectItem value="Mobile">Mobile</SelectItem>
-                                    <SelectItem value="Data Science">Data Science</SelectItem>
+                                    <SelectItem value="Desarrollo Móvil">Desarrollo Móvil</SelectItem>
+                                    <SelectItem value="Diseño UX/UI">Diseño UX/UI</SelectItem>
+                                    <SelectItem value="Ciberseguridad">Ciberseguridad</SelectItem>
+                                    <SelectItem value="Computación">Computación</SelectItem>
+                                    <SelectItem value="Informática">Informática</SelectItem>
+                                    <SelectItem value="Ofimática">Ofimática</SelectItem>
+                                    <SelectItem value="Herramientas Digitales">Herramientas Digitales</SelectItem>
+                                    <SelectItem value="Pensamiento Computacional">Pensamiento Computacional</SelectItem>
+                                    <SelectItem value="Educación Tecnológica">Educación Tecnológica</SelectItem>
+                                    <SelectItem value="Programación">Programación</SelectItem>
+                                    <SelectItem value="Ciencia de Datos">Ciencia de Datos</SelectItem>
                                     <SelectItem value="DevOps">DevOps</SelectItem>
-                                    <SelectItem value="UX/UI">UX/UI</SelectItem>
-                                    <SelectItem value="Herramientas">Herramientas</SelectItem>
+                                    <SelectItem value="Inteligencia Artificial">Inteligencia Artificial</SelectItem>
+                                    <SelectItem value="Innovación Social">Innovación Social</SelectItem>
                                   </SelectContent>
                                 </Select>
                                 <FormMessage />
@@ -1310,9 +1319,9 @@ export default function AdminPage() {
                               <FormItem>
                                 <FormLabel>Duración (horas)</FormLabel>
                                 <FormControl>
-                                  <Input 
-                                    type="number" 
-                                    placeholder="Ej: 30" 
+                                  <Input
+                                    type="number"
+                                    placeholder="Ej: 30"
                                     {...field}
                                     value={field.value || ''}
                                     onChange={(e) => {
@@ -1334,9 +1343,9 @@ export default function AdminPage() {
                               <FormItem>
                                 <FormLabel>Número de módulos</FormLabel>
                                 <FormControl>
-                                  <Input 
-                                    type="number" 
-                                    placeholder="Ej: 5" 
+                                  <Input
+                                    type="number"
+                                    placeholder="Ej: 5"
                                     {...field}
                                     value={field.value || ''}
                                     onChange={(e) => {
@@ -1359,9 +1368,9 @@ export default function AdminPage() {
                             <FormItem>
                               <FormLabel>Descripción corta</FormLabel>
                               <FormControl>
-                                <Textarea 
-                                  placeholder="Breve descripción para mostrar en tarjetas" 
-                                  {...field} 
+                                <Textarea
+                                  placeholder="Breve descripción para mostrar en tarjetas"
+                                  {...field}
                                   rows={2}
                                 />
                               </FormControl>
@@ -1377,9 +1386,9 @@ export default function AdminPage() {
                             <FormItem>
                               <FormLabel>Descripción completa</FormLabel>
                               <FormControl>
-                                <Textarea 
-                                  placeholder="Descripción detallada del curso" 
-                                  {...field} 
+                                <Textarea
+                                  placeholder="Descripción detallada del curso"
+                                  {...field}
                                   rows={4}
                                 />
                               </FormControl>
@@ -1395,9 +1404,9 @@ export default function AdminPage() {
                             <FormItem>
                               <FormLabel>Instructor</FormLabel>
                               <FormControl>
-                                <Input 
-                                  placeholder="Nombre del instructor" 
-                                  {...field} 
+                                <Input
+                                  placeholder="Nombre del instructor"
+                                  {...field}
                                 />
                               </FormControl>
                               <FormMessage />
@@ -1412,9 +1421,9 @@ export default function AdminPage() {
                             <FormItem>
                               <FormLabel>URL de la imagen</FormLabel>
                               <FormControl>
-                                <Input 
-                                  placeholder="https://example.com/image.jpg" 
-                                  {...field} 
+                                <Input
+                                  placeholder="https://example.com/image.jpg"
+                                  {...field}
                                 />
                               </FormControl>
                               <FormMessage />
@@ -1443,7 +1452,7 @@ export default function AdminPage() {
                               </FormItem>
                             )}
                           />
-                          
+
                           <FormField
                             control={courseForm.control}
                             name="popular"
@@ -1464,7 +1473,7 @@ export default function AdminPage() {
                               </FormItem>
                             )}
                           />
-                          
+
                           <FormField
                             control={courseForm.control}
                             name="new"
@@ -1510,9 +1519,9 @@ export default function AdminPage() {
                         </div>
 
                         {courseForm.watch('isLive') && (
-                          <Button 
-                            type="button" 
-                            variant="outline" 
+                          <Button
+                            type="button"
+                            variant="outline"
                             onClick={() => setShowLiveSettings(prev => !prev)}
                             className="w-fit mt-4"
                           >
@@ -1611,8 +1620,8 @@ export default function AdminPage() {
 
                         <div className="flex justify-end space-x-4 pt-4">
                           {editingCourse && (
-                            <Button 
-                              type="button" 
+                            <Button
+                              type="button"
                               variant="outline"
                               onClick={cancelEditing}
                             >
@@ -1634,16 +1643,16 @@ export default function AdminPage() {
 
               <div className="mt-8">
                 <h3 className="text-xl font-medium mb-4">Cursos existentes</h3>
-                
+
                 {courses && courses.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {courses.map((course) => (
                       <Card key={course.id} className="overflow-hidden flex flex-col">
                         <div className="flex flex-col">
                           <div className="w-full h-48 relative">
-                            <img 
-                              src={course.image} 
-                              alt={course.title} 
+                            <img
+                              src={course.image}
+                              alt={course.title}
                               className="w-full h-full object-cover"
                             />
                           </div>
@@ -1659,7 +1668,7 @@ export default function AdminPage() {
                                 </div>
                               </div>
                               <p className="text-sm">{course.shortDescription}</p>
-                              
+
                               <div className="flex flex-wrap gap-2 mt-3">
                                 {course.featured && (
                                   <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/20 text-primary">
@@ -1682,10 +1691,10 @@ export default function AdminPage() {
                                   </span>
                                 )}
                               </div>
-                              
+
                               <div className="flex flex-wrap gap-2 mt-4 border-t pt-3">
-                                <Button 
-                                  size="sm" 
+                                <Button
+                                  size="sm"
                                   variant="outline"
                                   className="border-primary/20 text-primary hover:bg-primary/10 hover:text-primary"
                                   onClick={() => setEditingCourse(course)}
@@ -1693,9 +1702,9 @@ export default function AdminPage() {
                                   <Pencil className="h-4 w-4 mr-1.5" />
                                   Editar
                                 </Button>
-                                
-                                <Button 
-                                  size="sm" 
+
+                                <Button
+                                  size="sm"
                                   variant="outline"
                                   className="border-blue-500/20 text-blue-600 hover:bg-blue-500/10 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300"
                                   onClick={() => {
@@ -1709,9 +1718,9 @@ export default function AdminPage() {
                                   </svg>
                                   Módulos
                                 </Button>
-                                
-                                <Button 
-                                  size="sm" 
+
+                                <Button
+                                  size="sm"
                                   variant="outline"
                                   className="border-red-500/20 text-red-600 hover:bg-red-500/10 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300"
                                   onClick={() => setCourseToDelete(course.id)}
@@ -1732,7 +1741,7 @@ export default function AdminPage() {
                   </div>
                 )}
               </div>
-              
+
               {/* Módulos y Secciones */}
               {showModules && selectedCourse && (
                 <div className="mt-8">
@@ -1741,8 +1750,8 @@ export default function AdminPage() {
                       Módulos para: {selectedCourse.title}
                     </h3>
                     <div className="flex space-x-2">
-                      <Button 
-                        variant="outline" 
+                      <Button
+                        variant="outline"
                         size="sm"
                         onClick={() => {
                           setShowModules(false);
@@ -1754,15 +1763,15 @@ export default function AdminPage() {
                       </Button>
                     </div>
                   </div>
-                  
+
                   <div className="flex flex-col gap-8">
                     <div>
                       <Card>
                         <CardHeader>
                           <CardTitle>{editingModule ? "Editar módulo" : "Agregar nuevo módulo"}</CardTitle>
                           <CardDescription>
-                            {editingModule 
-                              ? `Actualizando el módulo: ${editingModule.title}` 
+                            {editingModule
+                              ? `Actualizando el módulo: ${editingModule.title}`
                               : `Agrega un nuevo módulo para el curso "${selectedCourse.title}".`}
                           </CardDescription>
                         </CardHeader>
@@ -1776,16 +1785,16 @@ export default function AdminPage() {
                                   <FormItem>
                                     <FormLabel>Título del módulo</FormLabel>
                                     <FormControl>
-                                      <Input 
-                                        placeholder="Ej: Introducción a HTML y CSS" 
-                                        {...field} 
+                                      <Input
+                                        placeholder="Ej: Introducción a HTML y CSS"
+                                        {...field}
                                       />
                                     </FormControl>
                                     <FormMessage />
                                   </FormItem>
                                 )}
                               />
-                              
+
                               <FormField
                                 control={moduleForm.control}
                                 name="description"
@@ -1793,9 +1802,9 @@ export default function AdminPage() {
                                   <FormItem>
                                     <FormLabel>Descripción</FormLabel>
                                     <FormControl>
-                                      <Textarea 
-                                        placeholder="Describe el contenido de este módulo..." 
-                                        {...field} 
+                                      <Textarea
+                                        placeholder="Describe el contenido de este módulo..."
+                                        {...field}
                                         rows={3}
                                       />
                                     </FormControl>
@@ -1803,7 +1812,7 @@ export default function AdminPage() {
                                   </FormItem>
                                 )}
                               />
-                              
+
                               <div className="grid grid-cols-2 gap-4">
                                 <FormField
                                   control={moduleForm.control}
@@ -1812,9 +1821,9 @@ export default function AdminPage() {
                                     <FormItem>
                                       <FormLabel>Duración (horas)</FormLabel>
                                       <FormControl>
-                                        <Input 
-                                          type="number" 
-                                          placeholder="Ej: 1" 
+                                        <Input
+                                          type="number"
+                                          placeholder="Ej: 1"
                                           {...field}
                                           value={field.value || ''}
                                           onChange={(e) => {
@@ -1828,7 +1837,7 @@ export default function AdminPage() {
                                     </FormItem>
                                   )}
                                 />
-                                
+
                                 <FormField
                                   control={moduleForm.control}
                                   name="order"
@@ -1836,9 +1845,9 @@ export default function AdminPage() {
                                     <FormItem>
                                       <FormLabel>Orden</FormLabel>
                                       <FormControl>
-                                        <Input 
-                                          type="number" 
-                                          placeholder="Ej: 1" 
+                                        <Input
+                                          type="number"
+                                          placeholder="Ej: 1"
                                           {...field}
                                           value={field.value || ''}
                                           onChange={(e) => {
@@ -1853,15 +1862,15 @@ export default function AdminPage() {
                                   )}
                                 />
                               </div>
-                              
+
                               <FormField
                                 control={moduleForm.control}
                                 name="difficulty"
                                 render={({ field }) => (
                                   <FormItem>
                                     <FormLabel>Dificultad</FormLabel>
-                                    <Select 
-                                      onValueChange={field.onChange} 
+                                    <Select
+                                      onValueChange={field.onChange}
                                       defaultValue={field.value}
                                     >
                                       <FormControl>
@@ -1879,7 +1888,7 @@ export default function AdminPage() {
                                   </FormItem>
                                 )}
                               />
-                              
+
                               <FormField
                                 control={moduleForm.control}
                                 name="instructor"
@@ -1887,16 +1896,16 @@ export default function AdminPage() {
                                   <FormItem>
                                     <FormLabel>Instructor</FormLabel>
                                     <FormControl>
-                                      <Input 
-                                        placeholder="Nombre del instructor" 
-                                        {...field} 
+                                      <Input
+                                        placeholder="Nombre del instructor"
+                                        {...field}
                                       />
                                     </FormControl>
                                     <FormMessage />
                                   </FormItem>
                                 )}
                               />
-                              
+
                               <div className="flex justify-end space-x-2 pt-2">
                                 {editingModule && (
                                   <Button
@@ -1919,10 +1928,10 @@ export default function AdminPage() {
                         </CardContent>
                       </Card>
                     </div>
-                    
+
                     <div>
                       <h4 className="text-lg font-semibold mb-4">Módulos existentes</h4>
-                      
+
                       {modules && modules.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                           {modules.map((module) => (
@@ -1957,7 +1966,7 @@ export default function AdminPage() {
                               </div>
                               <div className="border-t p-3 flex justify-between items-center">
                                 <Button
-                                  size="sm" 
+                                  size="sm"
                                   variant="outline"
                                   className="border-blue-500/20 text-blue-600 hover:bg-blue-500/10 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300"
                                   onClick={() => {
@@ -1991,7 +2000,7 @@ export default function AdminPage() {
                                   </Button>
                                 </div>
                               </div>
-                              
+
                               {selectedModule && selectedModule.id === module.id && (
                                 <div className="border-t p-4 bg-muted/40">
                                   <div className="flex justify-between items-center mb-4">
@@ -2004,7 +2013,7 @@ export default function AdminPage() {
                                       Cerrar
                                     </Button>
                                   </div>
-                                  
+
                                   <div className="space-y-4">
                                     <Card>
                                       <CardHeader className="py-2">
@@ -2020,16 +2029,16 @@ export default function AdminPage() {
                                                 <FormItem>
                                                   <FormLabel>Título</FormLabel>
                                                   <FormControl>
-                                                    <Input 
-                                                      placeholder="Ej: Estructura básica HTML" 
-                                                      {...field} 
+                                                    <Input
+                                                      placeholder="Ej: Estructura básica HTML"
+                                                      {...field}
                                                     />
                                                   </FormControl>
                                                   <FormMessage />
                                                 </FormItem>
                                               )}
                                             />
-                                            
+
                                             <FormField
                                               control={sectionForm.control}
                                               name="content"
@@ -2037,9 +2046,9 @@ export default function AdminPage() {
                                                 <FormItem>
                                                   <FormLabel>Contenido</FormLabel>
                                                   <FormControl>
-                                                    <Textarea 
-                                                      placeholder="Contenido de la sección (puede incluir texto, enlaces, códigos, etc.)" 
-                                                      {...field} 
+                                                    <Textarea
+                                                      placeholder="Contenido de la sección (puede incluir texto, enlaces, códigos, etc.)"
+                                                      {...field}
                                                       rows={3}
                                                     />
                                                   </FormControl>
@@ -2047,7 +2056,7 @@ export default function AdminPage() {
                                                 </FormItem>
                                               )}
                                             />
-                                            
+
                                             <div className="grid grid-cols-2 gap-3">
                                               <FormField
                                                 control={sectionForm.control}
@@ -2056,9 +2065,9 @@ export default function AdminPage() {
                                                   <FormItem>
                                                     <FormLabel>Duración (minutos)</FormLabel>
                                                     <FormControl>
-                                                      <Input 
-                                                        type="number" 
-                                                        placeholder="Ej: 30" 
+                                                      <Input
+                                                        type="number"
+                                                        placeholder="Ej: 30"
                                                         {...field}
                                                         value={field.value || ''}
                                                         onChange={(e) => {
@@ -2072,7 +2081,7 @@ export default function AdminPage() {
                                                   </FormItem>
                                                 )}
                                               />
-                                              
+
                                               <FormField
                                                 control={sectionForm.control}
                                                 name="order"
@@ -2080,9 +2089,9 @@ export default function AdminPage() {
                                                   <FormItem>
                                                     <FormLabel>Orden</FormLabel>
                                                     <FormControl>
-                                                      <Input 
-                                                        type="number" 
-                                                        placeholder="Ej: 1" 
+                                                      <Input
+                                                        type="number"
+                                                        placeholder="Ej: 1"
                                                         {...field}
                                                         value={field.value || ''}
                                                         onChange={(e) => {
@@ -2097,7 +2106,7 @@ export default function AdminPage() {
                                                 )}
                                               />
                                             </div>
-                                            
+
                                             <div className="flex justify-end space-x-2 pt-2">
                                               {editingSection && (
                                                 <Button
@@ -2120,7 +2129,7 @@ export default function AdminPage() {
                                         </Form>
                                       </CardContent>
                                     </Card>
-                                    
+
                                     {sections && sections.length > 0 ? (
                                       <div className="space-y-2">
                                         <h6 className="font-medium text-sm mb-2">Secciones existentes:</h6>
@@ -2189,8 +2198,8 @@ export default function AdminPage() {
                   <CardHeader>
                     <CardTitle>{editingTeam ? "Editar miembro" : "Agregar nuevo miembro"}</CardTitle>
                     <CardDescription>
-                      {editingTeam 
-                        ? `Actualizando a: ${editingTeam.name}` 
+                      {editingTeam
+                        ? `Actualizando a: ${editingTeam.name}`
                         : "Agrega un nuevo miembro al equipo."}
                     </CardDescription>
                   </CardHeader>
@@ -2204,9 +2213,9 @@ export default function AdminPage() {
                             <FormItem>
                               <FormLabel>Nombre</FormLabel>
                               <FormControl>
-                                <Input 
-                                  placeholder="Nombre completo" 
-                                  {...field} 
+                                <Input
+                                  placeholder="Nombre completo"
+                                  {...field}
                                 />
                               </FormControl>
                               <FormMessage />
@@ -2221,9 +2230,9 @@ export default function AdminPage() {
                             <FormItem>
                               <FormLabel>Cargo</FormLabel>
                               <FormControl>
-                                <Input 
-                                  placeholder="Ej: CEO & Fundador" 
-                                  {...field} 
+                                <Input
+                                  placeholder="Ej: CEO & Fundador"
+                                  {...field}
                                 />
                               </FormControl>
                               <FormMessage />
@@ -2238,9 +2247,9 @@ export default function AdminPage() {
                             <FormItem>
                               <FormLabel>Biografía</FormLabel>
                               <FormControl>
-                                <Textarea 
-                                  placeholder="Breve biografía" 
-                                  {...field} 
+                                <Textarea
+                                  placeholder="Breve biografía"
+                                  {...field}
                                   rows={3}
                                 />
                               </FormControl>
@@ -2256,9 +2265,9 @@ export default function AdminPage() {
                             <FormItem>
                               <FormLabel>URL de la imagen</FormLabel>
                               <FormControl>
-                                <Input 
-                                  placeholder="https://example.com/image.jpg" 
-                                  {...field} 
+                                <Input
+                                  placeholder="https://example.com/image.jpg"
+                                  {...field}
                                 />
                               </FormControl>
                               <FormMessage />
@@ -2273,9 +2282,9 @@ export default function AdminPage() {
                             <FormItem>
                               <FormLabel>Orden</FormLabel>
                               <FormControl>
-                                <Input 
-                                  type="number" 
-                                  placeholder="Ej: 1" 
+                                <Input
+                                  type="number"
+                                  placeholder="Ej: 1"
                                   {...field}
                                   value={field.value || ''}
                                   onChange={(e) => {
@@ -2301,8 +2310,8 @@ export default function AdminPage() {
                               <FormItem>
                                 <FormLabel>LinkedIn</FormLabel>
                                 <FormControl>
-                                  <Input 
-                                    placeholder="URL de LinkedIn" 
+                                  <Input
+                                    placeholder="URL de LinkedIn"
                                     {...field}
                                     value={field.value || ''}
                                   />
@@ -2319,8 +2328,8 @@ export default function AdminPage() {
                               <FormItem>
                                 <FormLabel>GitHub</FormLabel>
                                 <FormControl>
-                                  <Input 
-                                    placeholder="URL de GitHub" 
+                                  <Input
+                                    placeholder="URL de GitHub"
                                     {...field}
                                     value={field.value || ''}
                                   />
@@ -2339,8 +2348,8 @@ export default function AdminPage() {
                               <FormItem>
                                 <FormLabel>Twitter</FormLabel>
                                 <FormControl>
-                                  <Input 
-                                    placeholder="URL de Twitter" 
+                                  <Input
+                                    placeholder="URL de Twitter"
                                     {...field}
                                     value={field.value || ''}
                                   />
@@ -2357,8 +2366,8 @@ export default function AdminPage() {
                               <FormItem>
                                 <FormLabel>Instagram</FormLabel>
                                 <FormControl>
-                                  <Input 
-                                    placeholder="URL de Instagram" 
+                                  <Input
+                                    placeholder="URL de Instagram"
                                     {...field}
                                     value={field.value || ''}
                                   />
@@ -2371,8 +2380,8 @@ export default function AdminPage() {
 
                         <div className="flex justify-end space-x-4 pt-4">
                           {editingTeam && (
-                            <Button 
-                              type="button" 
+                            <Button
+                              type="button"
                               variant="outline"
                               onClick={cancelEditingTeam}
                             >
@@ -2394,16 +2403,16 @@ export default function AdminPage() {
 
               <div>
                 <h3 className="text-xl font-medium mb-4">Miembros del equipo</h3>
-                
+
                 {teamMembers && teamMembers.length > 0 ? (
                   <div className="space-y-4">
                     {teamMembers.map((member) => (
                       <Card key={member.id}>
                         <div className="flex items-start p-4">
                           <div className="flex-shrink-0 mr-4">
-                            <img 
-                              src={member.image} 
-                              alt={member.name} 
+                            <img
+                              src={member.image}
+                              alt={member.name}
                               className="w-16 h-16 rounded-full object-cover"
                             />
                           </div>
@@ -2414,17 +2423,17 @@ export default function AdminPage() {
                                 <p className="text-sm text-muted-foreground">{member.role}</p>
                               </div>
                               <div className="flex space-x-2">
-                                <Button 
-                                  size="sm" 
+                                <Button
+                                  size="sm"
                                   variant="ghost"
                                   onClick={() => setEditingTeam(member)}
                                 >
                                   <Pencil className="h-4 w-4 mr-1" />
                                   Editar
                                 </Button>
-                                
-                                <Button 
-                                  size="sm" 
+
+                                <Button
+                                  size="sm"
                                   variant="destructive"
                                   onClick={() => setTeamToDelete(member.id)}
                                 >
@@ -2468,8 +2477,8 @@ export default function AdminPage() {
                   <CardHeader>
                     <CardTitle>{editingTestimonial ? "Editar testimonio" : "Agregar nuevo testimonio"}</CardTitle>
                     <CardDescription>
-                      {editingTestimonial 
-                        ? `Actualizando el testimonio de: ${editingTestimonial.name}` 
+                      {editingTestimonial
+                        ? `Actualizando el testimonio de: ${editingTestimonial.name}`
                         : "Agrega un nuevo testimonio de estudiante."}
                     </CardDescription>
                   </CardHeader>
@@ -2483,9 +2492,9 @@ export default function AdminPage() {
                             <FormItem>
                               <FormLabel>Nombre del estudiante</FormLabel>
                               <FormControl>
-                                <Input 
-                                  placeholder="Nombre completo" 
-                                  {...field} 
+                                <Input
+                                  placeholder="Nombre completo"
+                                  {...field}
                                 />
                               </FormControl>
                               <FormMessage />
@@ -2500,9 +2509,9 @@ export default function AdminPage() {
                             <FormItem>
                               <FormLabel>Nombre del curso</FormLabel>
                               <FormControl>
-                                <Input 
-                                  placeholder="Ej: Desarrollo Web" 
-                                  {...field} 
+                                <Input
+                                  placeholder="Ej: Desarrollo Web"
+                                  {...field}
                                 />
                               </FormControl>
                               <FormMessage />
@@ -2517,9 +2526,9 @@ export default function AdminPage() {
                             <FormItem>
                               <FormLabel>Testimonio</FormLabel>
                               <FormControl>
-                                <Textarea 
-                                  placeholder="Texto del testimonio" 
-                                  {...field} 
+                                <Textarea
+                                  placeholder="Texto del testimonio"
+                                  {...field}
                                   rows={4}
                                 />
                               </FormControl>
@@ -2535,9 +2544,9 @@ export default function AdminPage() {
                             <FormItem>
                               <FormLabel>URL de la imagen</FormLabel>
                               <FormControl>
-                                <Input 
-                                  placeholder="https://example.com/image.jpg" 
-                                  {...field} 
+                                <Input
+                                  placeholder="https://example.com/image.jpg"
+                                  {...field}
                                 />
                               </FormControl>
                               <FormMessage />
@@ -2552,11 +2561,11 @@ export default function AdminPage() {
                             <FormItem>
                               <FormLabel>Calificación (1-5)</FormLabel>
                               <FormControl>
-                                <Input 
-                                  type="number" 
+                                <Input
+                                  type="number"
                                   min="1"
                                   max="5"
-                                  placeholder="5" 
+                                  placeholder="5"
                                   {...field}
                                   onChange={(e) => {
                                     const value = parseInt(e.target.value);
@@ -2576,10 +2585,10 @@ export default function AdminPage() {
                             <FormItem>
                               <FormLabel>Orden</FormLabel>
                               <FormControl>
-                                <Input 
-                                  type="number" 
+                                <Input
+                                  type="number"
                                   min="1"
-                                  placeholder="1" 
+                                  placeholder="1"
                                   {...field}
                                   onChange={(e) => {
                                     const value = parseInt(e.target.value);
@@ -2597,8 +2606,8 @@ export default function AdminPage() {
 
                         <div className="flex justify-end space-x-4 pt-4">
                           {editingTestimonial && (
-                            <Button 
-                              type="button" 
+                            <Button
+                              type="button"
                               variant="outline"
                               onClick={cancelEditingTestimonial}
                             >
@@ -2620,7 +2629,7 @@ export default function AdminPage() {
 
               <div>
                 <h3 className="text-xl font-medium mb-4">Testimonios existentes</h3>
-                
+
                 {testimonials && testimonials.length > 0 ? (
                   <div className="space-y-4">
                     {testimonials.map((testimonial) => (
@@ -2629,9 +2638,9 @@ export default function AdminPage() {
                           <div className="flex justify-between">
                             <div className="flex items-center">
                               <div className="flex-shrink-0 mr-3">
-                                <img 
-                                  src={testimonial.image} 
-                                  alt={testimonial.name} 
+                                <img
+                                  src={testimonial.image}
+                                  alt={testimonial.name}
                                   className="w-12 h-12 rounded-full object-cover"
                                 />
                               </div>
@@ -2640,32 +2649,32 @@ export default function AdminPage() {
                                 <p className="text-sm text-muted-foreground">{testimonial.courseName}</p>
                                 <div className="flex items-center mt-1">
                                   {Array.from({ length: 5 }).map((_, i) => (
-                                    <svg 
+                                    <svg
                                       key={i}
                                       className={`w-4 h-4 ${i < testimonial.rating ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600'}`}
-                                      aria-hidden="true" 
-                                      xmlns="http://www.w3.org/2000/svg" 
-                                      fill="currentColor" 
+                                      aria-hidden="true"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      fill="currentColor"
                                       viewBox="0 0 22 20"
                                     >
-                                      <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                                      <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
                                     </svg>
                                   ))}
                                 </div>
                               </div>
                             </div>
                             <div className="flex space-x-2">
-                              <Button 
-                                size="sm" 
+                              <Button
+                                size="sm"
                                 variant="ghost"
                                 onClick={() => setEditingTestimonial(testimonial)}
                               >
                                 <Pencil className="h-4 w-4 mr-1" />
                                 Editar
                               </Button>
-                              
-                              <Button 
-                                size="sm" 
+
+                              <Button
+                                size="sm"
                                 variant="destructive"
                                 onClick={() => setTestimonialToDelete(testimonial.id)}
                               >
