@@ -10,7 +10,7 @@ const features = [
   {
     icon: 'fas fa-chalkboard-teacher',
     title: 'Clases Mixtas',
-    description: 'Disfruta de modalidad presencial y virtual. Accede a las grabaciones de las clases en cualquier momento.',
+    description: 'Disfruta de modalidad presencial y virtual. Accede a las grabaciones y recursos de las clases en cualquier momento.',
     color: 'accent-blue'
   },
   {

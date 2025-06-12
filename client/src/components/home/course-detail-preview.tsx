@@ -74,47 +74,47 @@ export default function CourseDetailPreview() {
           >
             <div className="bg-primary-700 rounded-xl p-6 md:p-8">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-heading font-semibold">Python Fullstack</h3>
-                <span className="px-3 py-1 bg-accent-blue text-white text-xs rounded-full">Módulo 1</span>
+                <h3 className="text-xl font-heading font-semibold">Desarrollo Web</h3>
+                <span className="px-3 py-1 bg-accent-blue text-white text-xs rounded-full">11 Módulos</span>
               </div>
               
               <div className="space-y-4">
                 <div className="bg-primary-800 rounded-lg p-4 border-l-4 border-accent-blue">
                   <div className="flex justify-between items-center">
-                    <h4 className="font-medium">Introducción a Python</h4>
+                    <h4 className="font-medium">Módulo 1: Introducción a la Computación</h4>
                     <span className="text-xs text-muted">2 horas</span>
                   </div>
-                  <p className="text-muted text-sm mt-2">Historia, instalación y conceptos básicos de Python.</p>
+                  <p className="text-muted text-sm mt-2">Aprende los conceptos básicos de la computación.</p>
                 </div>
                 
                 <div className="bg-primary-800 rounded-lg p-4 border-l-4 border-accent-yellow">
                   <div className="flex justify-between items-center">
-                    <h4 className="font-medium">Variables y Tipos de Datos</h4>
-                    <span className="text-xs text-muted">3 horas</span>
+                    <h4 className="font-medium">Módulo 2: HTML Básico</h4>
+                    <span className="text-xs text-muted">2 horas</span>
                   </div>
-                  <p className="text-muted text-sm mt-2">Strings, números, listas, diccionarios y operaciones básicas.</p>
+                  <p className="text-muted text-sm mt-2">Descubre el mundo del código: tu primer paso hacia HTML.</p>
                 </div>
                 
                 <div className="bg-primary-800 rounded-lg p-4 border-l-4 border-accent-red">
                   <div className="flex justify-between items-center">
-                    <h4 className="font-medium">Control de Flujo</h4>
-                    <span className="text-xs text-muted">3 horas</span>
+                    <h4 className="font-medium">Módulo 3: HTML Intermedio</h4>
+                    <span className="text-xs text-muted">2 horas</span>
                   </div>
-                  <p className="text-muted text-sm mt-2">Condicionales, bucles y estructuras de control en Python.</p>
+                  <p className="text-muted text-sm mt-2">Maneja el uso de enlaces y multimedia para enriquecer tu contenido.</p>
                 </div>
                 
                 <div className="bg-primary-800 rounded-lg p-4 opacity-60">
                   <div className="flex justify-between items-center">
-                    <h4 className="font-medium">Funciones y Módulos</h4>
+                    <h4 className="font-medium">Módulo 4: HTML Avanzado</h4>
                     <span className="text-xs text-muted">Próximamente</span>
                   </div>
-                  <p className="text-muted text-sm mt-2">Creación de funciones, argumentos y uso de módulos.</p>
+                  <p className="text-muted text-sm mt-2">Conoce como crear formularios y mejores prácticas.</p>
                 </div>
               </div>
               
               <div className="mt-6 text-center">
                 <Button className="bg-accent-blue hover:bg-accent-blue hover:opacity-90 inline-flex items-center">
-                  <a href="/courses/python-fullstack">
+                  <a href="/courses/web-development">
                     Explorar contenido completo
                     <i className="fas fa-external-link-alt ml-2"></i>
                   </a>
