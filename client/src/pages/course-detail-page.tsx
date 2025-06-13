@@ -433,7 +433,7 @@ export default function CourseDetailPage() {
                   </div>
                 ) : modules && modules.length > 0 ? (
                   <AnimateInView animation="fadeIn" delay={0.4}>
-                    <CourseModules modules={modules} isEnrolled={!!isEnrolled} />
+                    <CourseModules modules={modules} isEnrolled={!!isEnrolled} isLive={!!course?.isLive} />
                   </AnimateInView>
                 ) : (
                   <div className="text-center py-12">

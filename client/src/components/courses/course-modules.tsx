@@ -7,9 +7,10 @@ import { ChevronDown, ChevronUp, Lock, CheckCircle } from 'lucide-react';
 type CourseModulesProps = {
   modules: Module[];
   isEnrolled: boolean;
+  isLive?: boolean;
 };
 
-export default function CourseModules({ modules, isEnrolled }: CourseModulesProps) {
+export default function CourseModules({ modules, isEnrolled, isLive = false }: CourseModulesProps) {
   const [expandedModuleId, setExpandedModuleId] = useState<number | null>(
     modules.length > 0 ? modules[0].id : null
   );
@@ -17,6 +18,42 @@ export default function CourseModules({ modules, isEnrolled }: CourseModulesProp
   const toggleModule = (moduleId: number) => {
     setExpandedModuleId(expandedModuleId === moduleId ? null : moduleId);
   };
+
+  if (isLive) {
+    return (
+      <div className="space-y-6">
+        {modules.map((module, index) => (
+          <motion.div 
+            key={module.id}
+            className="bg-primary-700 rounded-xl overflow-hidden"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ 
+              duration: 0.5,
+              delay: index * 0.1
+            }}
+          >
+            <div className="p-6">
+              <div>
+                <div className="flex items-center">
+                  <h3 className="text-xl font-heading font-semibold mr-3">
+                    Módulo {index + 1}: {module.title}
+                  </h3>
+                  <span className="px-3 py-1 text-xs rounded-full bg-secondary-800 text-muted">
+                    {module.duration} horas
+                  </span>
+                  <span className="ml-3 px-3 py-1 text-xs rounded-full bg-secondary-800 text-muted">
+                    {getDifficultyLabel(module.difficulty)}
+                  </span>
+                </div>
+                <p className="text-muted mt-2 pr-8">{module.description}</p>
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
