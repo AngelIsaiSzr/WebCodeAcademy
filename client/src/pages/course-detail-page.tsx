@@ -33,12 +33,6 @@ export default function CourseDetailPage() {
     enabled: !!slug,
   });
 
-  useEffect(() => {
-    if (course) {
-      console.log('Course data in CourseDetailPage:', course);
-    }
-  }, [course]);
-
   // Fetch course modules
   const {
     data: modules,

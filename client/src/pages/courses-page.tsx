@@ -63,7 +63,11 @@ export default function CoursesPage() {
   
   const levels = courses ? 
     courses.map(course => course.level)
-      .filter((level, index, self) => self.indexOf(level) === index) : 
+      .filter((level, index, self) => self.indexOf(level) === index && level !== "Todos los niveles")
+      .sort((a, b) => {
+        const order = ["Principiante", "Intermedio", "Avanzado", "Todos los niveles"];
+        return order.indexOf(a) - order.indexOf(b);
+      }) : 
     [];
 
   return (
