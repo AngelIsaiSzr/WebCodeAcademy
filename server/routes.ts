@@ -308,7 +308,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         to: "webcodeacademy0@gmail.com",
         from: registration.email,
         name: `Registro de ${registration.fullName}`,
-        subject: `Nuevo registro a curso en vivo: ${registration.fullName}`,
+        subject: `Nuevo registro desde la plataforma a curso en vivo: ${registration.fullName}`,
         text: `Nuevo registro para curso en vivo:\n          Nombre: ${registration.fullName}\n          Correo: ${registration.email}\n          Teléfono: ${registration.phoneNumber}\n          Edad: ${registration.age}\n          Modalidad preferida: ${registration.preferredModality}\n          Tiene laptop: ${registration.hasLaptop ? 'Sí' : 'No'}\n          ${registration.guardianName ? `Nombre del tutor: ${registration.guardianName}` : ''}\n          ${registration.guardianPhoneNumber ? `Teléfono del tutor: ${registration.guardianPhoneNumber}` : ''}\n          Curso: ${courseName}\n        `,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f8f9fa; border-radius: 8px;">
