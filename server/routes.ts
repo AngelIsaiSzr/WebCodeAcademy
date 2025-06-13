@@ -838,6 +838,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Seed data route (for development purposes)
   app.post("/api/seed", async (req, res) => {
     try {
+      // Verificar que sea una llamada explícita
+      if (!req.body.explicitCall) {
+        return res.status(403).json({ message: "Esta ruta solo puede ser llamada explícitamente" });
+      }
+
       // Create admin user if not exists
       const existingAdmin = await storage.getUserByEmail("admin@webcodeacademy.com");
       if (!existingAdmin) {
@@ -865,8 +870,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
       
-      // Seed some sample team members and testimonials
-      // This should be called once initially to set up the app data
       res.status(200).json({ message: "Data seeded successfully" });
     } catch (error) {
       console.error("Seeding error:", error);

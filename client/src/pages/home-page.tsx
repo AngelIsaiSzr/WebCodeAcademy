@@ -10,31 +10,13 @@ import TeamSection from "@/components/home/team-section";
 import TestimonialsSection from "@/components/home/testimonials-section";
 import CtaSection from "@/components/home/cta-section";
 import { useEffect, useState } from "react";
-import { apiRequest } from "@/lib/queryClient";
 
 export default function HomePage() {
   const [isReady, setIsReady] = useState(false);
 
-  // Seed data only if needed (for demo purposes)
   useEffect(() => {
-    // Utilizamos localStorage para evitar ejecutar la semilla múltiples veces
-    const hasSeedData = localStorage.getItem('wca-seeded');
-
-    const loadData = async () => {
-      if (!hasSeedData) {
-        try {
-          await apiRequest("POST", "/api/seed", {});
-          localStorage.setItem('wca-seeded', 'true');
-        } catch (error) {
-          console.error("Error seeding data:", error);
-        }
-      }
-
-      // Aseguramos que el componente esté montado antes de continuar
-      setIsReady(true);
-    };
-
-    loadData();
+    // Simplemente marcamos como listo el componente
+    setIsReady(true);
 
     // Cleanup 
     return () => {
