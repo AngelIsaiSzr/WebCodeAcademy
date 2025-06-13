@@ -113,12 +113,17 @@ export default function TeamSection() {
   );
 }
 
-// Helper function to get the appropriate text color based on role
+// Función auxiliar para obtener el color de texto apropiado según el rol
 function getRoleColor(role: string): string {
   const roleMap: { [key: string]: string } = {
     'CEO & Fundador': 'accent-blue',
     'COO & CoFundadora': 'accent-red',
-    'Community Manager': 'accent-yellow',
+    'CMO': 'accent-yellow',
+    'CIO': 'accent-blue',
+    'CFO': 'accent-red',
+    'CTO': 'accent-blue',
+    'CSO': 'accent-yellow',
+    'Técnico de Soporte Educativo': 'accent-blue',
     'Instructor Principal': 'accent-blue',
     'Instructor': 'accent-red',
     'Desarrollador': 'accent-yellow'
