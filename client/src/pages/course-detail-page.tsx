@@ -307,9 +307,9 @@ export default function CourseDetailPage() {
                                       ? 'bg-accent-red hover:bg-accent-red hover:opacity-90'
                                       : 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
                                   }`}
-                                disabled={enrollMutation.isPending || isLoadingEnrollments || hasRegisteredForLiveCourse} // Deshabilitar si ya se registró en vivo
+                                disabled={enrollMutation.isPending || isLoadingEnrollments || hasRegisteredForLiveCourse || course.isDisabled}
                               >
-                                {hasRegisteredForLiveCourse ? ( // Condición para el texto del botón
+                                {hasRegisteredForLiveCourse ? (
                                   <span>Ya Registrado</span>
                                 ) : (
                                   <span>Registrate al Curso en Vivo</span>
@@ -326,7 +326,7 @@ export default function CourseDetailPage() {
                                     ? 'bg-accent-red hover:bg-accent-red hover:opacity-90'
                                     : 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
                                 }`}
-                              disabled={enrollMutation.isPending || isLoadingEnrollments}
+                              disabled={enrollMutation.isPending || isLoadingEnrollments || course.isDisabled}
                             >
                               {enrollMutation.isPending ? (
                                 <span className="mr-2 inline-block h-4 w-4 animate-spin">⟳</span>
@@ -374,7 +374,7 @@ export default function CourseDetailPage() {
                                       ? 'bg-accent-red hover:bg-accent-red hover:opacity-90'
                                       : 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
                                   }`}
-                                disabled={enrollMutation.isPending || isLoadingEnrollments || hasRegisteredForLiveCourse} // Deshabilitar si ya se registró en vivo
+                                disabled={enrollMutation.isPending || isLoadingEnrollments || hasRegisteredForLiveCourse || course.isDisabled}
                               >
                                 {hasRegisteredForLiveCourse ? (
                                   <span>¡Ya Estás Registrado!</span>
@@ -393,7 +393,7 @@ export default function CourseDetailPage() {
                                     ? 'bg-accent-red hover:bg-accent-red hover:opacity-90'
                                     : 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
                                 }`}
-                              disabled={enrollMutation.isPending || isLoadingEnrollments}
+                              disabled={enrollMutation.isPending || isLoadingEnrollments || course.isDisabled}
                             >
                               {enrollMutation.isPending ? (
                                 <span className="mr-2 inline-block h-4 w-4 animate-spin">⟳</span>

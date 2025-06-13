@@ -103,6 +103,7 @@ const courseFormSchema = insertCourseSchema.extend({
     address: z.string().min(1, "La dirección del curso en vivo es requerida."),
     contact: z.string().min(1, "El contacto del curso en vivo es requerido."),
   }).optional(),
+  isDisabled: z.boolean().optional().default(false), // Nuevo campo: deshabilitado
 }).superRefine((data, ctx) => {
   if (data.isLive) {
     if (!data.liveDetails) {
@@ -325,6 +326,32 @@ export default function AdminPage() {
     },
   });
 
+  // Toggle course disabled status mutation
+  const toggleCourseDisabled = useMutation({
+    mutationFn: async ({ id, isDisabled }: { id: number; isDisabled: boolean }) => {
+      const response = await apiRequest("PATCH", `/api/courses/${id}`, { isDisabled });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Error al actualizar el estado del curso");
+      }
+      return response.json();
+    },
+    onSuccess: (_, variables) => {
+      toast({
+        title: "Estado del curso actualizado",
+        description: `El curso ha sido ${variables.isDisabled ? 'inhabilitado' : 'habilitado'} correctamente.`, 
+      });
+      refetchCourses();
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
   // State variables
   const [editingCourse, setEditingCourse] = useState<Course | null>(null);
   const [editingTeam, setEditingTeam] = useState<Team | null>(null);
@@ -352,6 +379,7 @@ export default function AdminPage() {
     instructor: "",
     isLive: false,
     liveDetails: undefined,
+    isDisabled: false, // Nuevo campo: deshabilitado por defecto
   };
 
   // Course form
@@ -379,6 +407,7 @@ export default function AdminPage() {
         instructor: editingCourse.instructor,
         isLive: editingCourse.isLive || false,
         liveDetails: editingCourse.liveDetails || undefined,
+        isDisabled: editingCourse.isDisabled || false, // Añadido isDisabled
       });
       // Si estamos editando un curso en vivo, mostrar las configuraciones
       if (editingCourse.isLive) {
@@ -398,7 +427,11 @@ export default function AdminPage() {
 
   const createCourseMutation = useMutation({
     mutationFn: async (data: CourseFormValues) => {
-      const payload = { ...data, liveDetails: data.isLive ? data.liveDetails : undefined }; // Ajustar payload
+      const payload = { 
+        ...data, 
+        liveDetails: data.isLive ? data.liveDetails : undefined,
+        isDisabled: data.isDisabled || false, // Asegurarse de enviar isDisabled
+      }; 
       const res = await apiRequest("POST", "/api/courses", payload);
       return res.json();
     },
@@ -423,7 +456,11 @@ export default function AdminPage() {
 
   const updateCourseMutation = useMutation({
     mutationFn: async ({ id, data }: { id: number; data: CourseFormValues }) => {
-      const payload = { ...data, liveDetails: data.isLive ? data.liveDetails : undefined }; // Ajustar payload
+      const payload = { 
+        ...data, 
+        liveDetails: data.isLive ? data.liveDetails : undefined,
+        isDisabled: data.isDisabled || false, // Asegurarse de enviar isDisabled
+      }; 
       const res = await apiRequest("PATCH", `/api/courses/${id}`, payload);
       return res.json();
     },
@@ -1516,6 +1553,28 @@ export default function AdminPage() {
                               </FormItem>
                             )}
                           />
+
+                          {/* Nuevo campo para deshabilitar curso */}
+                          <FormField
+                            control={courseForm.control}
+                            name="isDisabled"
+                            render={({ field }) => (
+                              <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                                <FormControl>
+                                  <Checkbox
+                                    checked={field.value || false}
+                                    onCheckedChange={field.onChange}
+                                  />
+                                </FormControl>
+                                <div className="space-y-1 leading-none">
+                                  <FormLabel>Deshabilitar curso</FormLabel>
+                                  <FormDescription>
+                                    Si está marcado, los usuarios no podrán inscribirse o registrarse.
+                                  </FormDescription>
+                                </div>
+                              </FormItem>
+                            )}
+                          />
                         </div>
 
                         {courseForm.watch('isLive') && (
@@ -1664,6 +1723,7 @@ export default function AdminPage() {
                                   <p className="text-sm text-muted-foreground mb-2">
                                     {course.category} • {course.level} • {course.duration} horas
                                     {course.isLive && " • En Vivo"} {/* Mostrar 'En Vivo' si isLive es true */}
+                                    {course.isDisabled && " • Deshabilitado"} {/* Mostrar 'Deshabilitado' si isDisabled es true */}
                                   </p>
                                 </div>
                               </div>
@@ -1688,6 +1748,11 @@ export default function AdminPage() {
                                 {course.isLive && (
                                   <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-500/20 text-blue-700 dark:text-blue-300">
                                     En Vivo
+                                  </span>
+                                )}
+                                {course.isDisabled && (
+                                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-500/20 text-red-700 dark:text-red-300">
+                                    Deshabilitado
                                   </span>
                                 )}
                               </div>
@@ -1717,6 +1782,24 @@ export default function AdminPage() {
                                     <path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"></path>
                                   </svg>
                                   Módulos
+                                </Button>
+
+                                {/* Nuevo botón para habilitar/deshabilitar */}
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className={`border-${course.isDisabled ? 'green' : 'red'}-500/20 text-${course.isDisabled ? 'green' : 'red'}-600 hover:bg-${course.isDisabled ? 'green' : 'red'}-500/10 hover:text-${course.isDisabled ? 'green' : 'red'}-600 dark:text-${course.isDisabled ? 'green' : 'red'}-400 dark:hover:text-${course.isDisabled ? 'green' : 'red'}-300`}
+                                  onClick={() => toggleCourseDisabled.mutate({ id: course.id, isDisabled: !course.isDisabled })}
+                                >
+                                  {toggleCourseDisabled.isPending ? (
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                  ) : (
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1.5">
+                                      <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
+                                      <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                  )}
+                                  {course.isDisabled ? "Habilitar" : "Inhabilitar"}
                                 </Button>
 
                                 <Button

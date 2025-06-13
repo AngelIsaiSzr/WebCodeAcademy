@@ -16,7 +16,7 @@ export default function HomePage() {
 
   useEffect(() => {
     // Simplemente marcamos como listo el componente
-    setIsReady(true);
+      setIsReady(true);
 
     // Cleanup 
     return () => {
