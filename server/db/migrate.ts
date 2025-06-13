@@ -27,7 +27,8 @@ const runMigrate = async () => {
   await db.execute(sql`
     ALTER TABLE courses 
     ADD COLUMN IF NOT EXISTS is_live boolean DEFAULT false,
-    ADD COLUMN IF NOT EXISTS live_details jsonb;
+    ADD COLUMN IF NOT EXISTS live_details jsonb,
+    ADD COLUMN IF NOT EXISTS is_disabled boolean DEFAULT false;
 
     ALTER TABLE testimonials 
     ADD COLUMN IF NOT EXISTS "order" integer NOT NULL DEFAULT 1;
