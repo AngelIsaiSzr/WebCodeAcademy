@@ -47,12 +47,12 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-heading font-semibold mb-6">Cursos</h3>
             <ul className="space-y-4">
-              <li><Link href="/courses" className="text-muted hover-accent-blue">Desarrollo Web Frontend</Link></li>
-              <li><Link href="/courses" className="text-muted hover-accent-blue">Python Fullstack</Link></li>
-              <li><Link href="/courses" className="text-muted hover-accent-blue">Java Fullstack</Link></li>
-              <li><Link href="/courses" className="text-muted hover-accent-blue">React & Redux</Link></li>
+              <li><Link href="/courses" className="text-muted hover-accent-blue">Desarrollo Web</Link></li>
+              <li><Link href="/courses" className="text-muted hover-accent-blue">Descubre la Computación</Link></li>
+              <li><Link href="/courses" className="text-muted hover-accent-blue">Primeros Pasos en Python</Link></li>
+              <li><Link href="/courses" className="text-muted hover-accent-blue">Edición de Video</Link></li>
               <li><Link href="/courses" className="text-muted hover-accent-blue">Ciencia de Datos</Link></li>
-              <li><Link href="/courses" className="text-muted hover-accent-blue">Node.js & Express</Link></li>
+              <li><Link href="/courses" className="text-muted hover-accent-blue">Desarrollo Móvil</Link></li>
             </ul>
           </div>
           
