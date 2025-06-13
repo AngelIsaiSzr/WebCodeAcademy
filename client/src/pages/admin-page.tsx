@@ -103,7 +103,7 @@ const courseFormSchema = insertCourseSchema.extend({
     address: z.string().min(1, "La dirección del curso en vivo es requerida."),
     contact: z.string().min(1, "El contacto del curso en vivo es requerido."),
   }).optional(),
-  isDisabled: z.boolean().optional().default(false), // Nuevo campo: deshabilitado
+  isDisabled: z.boolean().optional().default(false),
 }).superRefine((data, ctx) => {
   if (data.isLive) {
     if (!data.liveDetails) {
@@ -326,32 +326,6 @@ export default function AdminPage() {
     },
   });
 
-  // Toggle course disabled status mutation
-  const toggleCourseDisabled = useMutation({
-    mutationFn: async ({ id, isDisabled }: { id: number; isDisabled: boolean }) => {
-      const response = await apiRequest("PATCH", `/api/courses/${id}`, { isDisabled });
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Error al actualizar el estado del curso");
-      }
-      return response.json();
-    },
-    onSuccess: (_, variables) => {
-      toast({
-        title: "Estado del curso actualizado",
-        description: `El curso ha sido ${variables.isDisabled ? 'inhabilitado' : 'habilitado'} correctamente.`, 
-      });
-      refetchCourses();
-    },
-    onError: (error: Error) => {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
-    },
-  });
-
   // State variables
   const [editingCourse, setEditingCourse] = useState<Course | null>(null);
   const [editingTeam, setEditingTeam] = useState<Team | null>(null);
@@ -379,7 +353,7 @@ export default function AdminPage() {
     instructor: "",
     isLive: false,
     liveDetails: undefined,
-    isDisabled: false, // Nuevo campo: deshabilitado por defecto
+    isDisabled: false, // Nuevo campo
   };
 
   // Course form
@@ -407,7 +381,7 @@ export default function AdminPage() {
         instructor: editingCourse.instructor,
         isLive: editingCourse.isLive || false,
         liveDetails: editingCourse.liveDetails || undefined,
-        isDisabled: editingCourse.isDisabled || false, // Añadido isDisabled
+        isDisabled: editingCourse.isDisabled || false, // Cargar valor de isDisabled
       });
       // Si estamos editando un curso en vivo, mostrar las configuraciones
       if (editingCourse.isLive) {
@@ -427,11 +401,7 @@ export default function AdminPage() {
 
   const createCourseMutation = useMutation({
     mutationFn: async (data: CourseFormValues) => {
-      const payload = { 
-        ...data, 
-        liveDetails: data.isLive ? data.liveDetails : undefined,
-        isDisabled: data.isDisabled || false, // Asegurarse de enviar isDisabled
-      }; 
+      const payload = { ...data, liveDetails: data.isLive ? data.liveDetails : undefined }; // Ajustar payload
       const res = await apiRequest("POST", "/api/courses", payload);
       return res.json();
     },
@@ -456,11 +426,7 @@ export default function AdminPage() {
 
   const updateCourseMutation = useMutation({
     mutationFn: async ({ id, data }: { id: number; data: CourseFormValues }) => {
-      const payload = { 
-        ...data, 
-        liveDetails: data.isLive ? data.liveDetails : undefined,
-        isDisabled: data.isDisabled || false, // Asegurarse de enviar isDisabled
-      }; 
+      const payload = { ...data, liveDetails: data.isLive ? data.liveDetails : undefined }; // Ajustar payload
       const res = await apiRequest("PATCH", `/api/courses/${id}`, payload);
       return res.json();
     },
@@ -1554,7 +1520,7 @@ export default function AdminPage() {
                             )}
                           />
 
-                          {/* Nuevo campo para deshabilitar curso */}
+                          {/* Campo para curso inhabilitado */}
                           <FormField
                             control={courseForm.control}
                             name="isDisabled"
@@ -1567,9 +1533,9 @@ export default function AdminPage() {
                                   />
                                 </FormControl>
                                 <div className="space-y-1 leading-none">
-                                  <FormLabel>Deshabilitar curso</FormLabel>
+                                  <FormLabel>Inhabilitar curso</FormLabel>
                                   <FormDescription>
-                                    Si está marcado, los usuarios no podrán inscribirse o registrarse.
+                                    Desactiva el registro o inscripción al curso.
                                   </FormDescription>
                                 </div>
                               </FormItem>
@@ -1723,7 +1689,6 @@ export default function AdminPage() {
                                   <p className="text-sm text-muted-foreground mb-2">
                                     {course.category} • {course.level} • {course.duration} horas
                                     {course.isLive && " • En Vivo"} {/* Mostrar 'En Vivo' si isLive es true */}
-                                    {course.isDisabled && " • Deshabilitado"} {/* Mostrar 'Deshabilitado' si isDisabled es true */}
                                   </p>
                                 </div>
                               </div>
@@ -1750,9 +1715,11 @@ export default function AdminPage() {
                                     En Vivo
                                   </span>
                                 )}
+
+                                {/* Mostrar 'Inhabilitado' si isDisabled es true */}
                                 {course.isDisabled && (
                                   <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-500/20 text-red-700 dark:text-red-300">
-                                    Deshabilitado
+                                    Inhabilitado
                                   </span>
                                 )}
                               </div>
@@ -1784,24 +1751,6 @@ export default function AdminPage() {
                                   Módulos
                                 </Button>
 
-                                {/* Nuevo botón para habilitar/deshabilitar */}
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  className={`border-${course.isDisabled ? 'green' : 'red'}-500/20 text-${course.isDisabled ? 'green' : 'red'}-600 hover:bg-${course.isDisabled ? 'green' : 'red'}-500/10 hover:text-${course.isDisabled ? 'green' : 'red'}-600 dark:text-${course.isDisabled ? 'green' : 'red'}-400 dark:hover:text-${course.isDisabled ? 'green' : 'red'}-300`}
-                                  onClick={() => toggleCourseDisabled.mutate({ id: course.id, isDisabled: !course.isDisabled })}
-                                >
-                                  {toggleCourseDisabled.isPending ? (
-                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                  ) : (
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1.5">
-                                      <rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect>
-                                      <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                                    </svg>
-                                  )}
-                                  {course.isDisabled ? "Habilitar" : "Inhabilitar"}
-                                </Button>
-
                                 <Button
                                   size="sm"
                                   variant="outline"
@@ -1810,6 +1759,42 @@ export default function AdminPage() {
                                 >
                                   <Trash2 className="h-4 w-4 mr-1.5" />
                                   Eliminar
+                                </Button>
+
+                                {/* Botón Inhabilitar/Habilitar */}
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className={`border-orange-500/20 text-orange-600 hover:bg-orange-500/10 hover:text-orange-600 dark:text-orange-400 dark:hover:text-orange-300 ${updateCourseMutation.isPending && "opacity-50 cursor-not-allowed"}`}
+                                  onClick={() => {
+                                    updateCourseMutation.mutate({
+                                      id: course.id,
+                                      data: {
+                                        title: course.title,
+                                        slug: course.slug,
+                                        description: course.description,
+                                        shortDescription: course.shortDescription,
+                                        level: course.level,
+                                        category: course.category,
+                                        duration: course.duration,
+                                        modules: course.modules,
+                                        image: course.image,
+                                        instructor: course.instructor,
+                                        featured: course.featured as boolean,
+                                        popular: course.popular as boolean,
+                                        new: course.new as boolean,
+                                        isLive: course.isLive as boolean,
+                                        liveDetails: (course.liveDetails || undefined) as CourseFormValues['liveDetails'],
+                                        isDisabled: !(course.isDisabled as boolean),
+                                      },
+                                    });
+                                  }}
+                                  disabled={updateCourseMutation.isPending}
+                                >
+                                  {updateCourseMutation.isPending && (
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                  )}
+                                  {course.isDisabled ? "Habilitar" : "Inhabilitar"}
                                 </Button>
                               </div>
                             </div>

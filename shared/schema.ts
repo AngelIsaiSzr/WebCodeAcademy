@@ -25,13 +25,13 @@ export const courses = pgTable("courses", {
   duration: integer("duration").notNull(),
   modules: integer("modules").notNull(),
   image: text("image").notNull(),
+  instructor: text("instructor").notNull(),
   featured: boolean("featured").default(false),
   popular: boolean("popular").default(false),
   new: boolean("new").default(false),
-  instructor: text("instructor").notNull(),
-  isLive: boolean("is_live").notNull().default(false),
+  isLive: boolean("is_live").default(false),
   liveDetails: jsonb("live_details"),
-  isDisabled: boolean("is_disabled").notNull().default(false),
+  isDisabled: boolean("is_disabled").default(false),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -119,7 +119,6 @@ export const insertUserSchema = createInsertSchema(users).omit({
 export const insertCourseSchema = createInsertSchema(courses).omit({
   id: true,
   createdAt: true,
-  isDisabled: true,
 });
 
 export const insertEnrollmentSchema = createInsertSchema(enrollments).omit({
