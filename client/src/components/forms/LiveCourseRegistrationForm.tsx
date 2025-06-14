@@ -158,7 +158,7 @@ export function LiveCourseRegistrationForm({ course, onSuccessRegistration }: Li
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="firstName">Nombre</Label>
+              <Label htmlFor="firstName">Nombres</Label>
               <Input id="firstName" {...register('firstName')} className="mt-1" />
               {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName.message}</p>}
             </div>
@@ -200,7 +200,7 @@ export function LiveCourseRegistrationForm({ course, onSuccessRegistration }: Li
                 <Label>Escribe el nombre de tu Madre, Padre o Tutor</Label>
                 <div className="grid grid-cols-2 gap-4 mt-1">
                   <div>
-                    <Input id="guardianFirstName" placeholder="Nombre" {...register('guardianFirstName')} />
+                    <Input id="guardianFirstName" placeholder="Nombres" {...register('guardianFirstName')} />
                     {errors.guardianFirstName && <p className="text-red-500 text-sm mt-1">{errors.guardianFirstName.message}</p>}
                   </div>
                   <div>

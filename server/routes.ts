@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { setupAuth, hashPassword } from "./auth";
 import { insertContactSchema, insertLiveCourseRegistrationSchema, User } from "@shared/schema";
 import { sendEmail, EmailData } from "./services/email";
+import { saveRegistrationToSheet } from './services/google-sheets';
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Setup authentication routes
@@ -261,10 +262,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
 
-      // Guardar en la base de datos solo si no hay duplicados
+      // Guardar en la base de datos
       const registration = await storage.createLiveCourseRegistration(registrationData);
 
+      // Obtener el curso para el slug
       const course = await storage.getCourse(registration.courseId);
+      if (!course) {
+        throw new Error("Curso no encontrado");
+      }
+
+      // Guardar en Google Sheets
+      try {
+        await saveRegistrationToSheet(registration, course.slug);
+      } catch (sheetsError) {
+        console.error("Error al guardar en Google Sheets:", sheetsError);
+        // No devolvemos el error al cliente, pero lo registramos
+      }
+
       const courseName = course ? course.title : "Curso Desconocido";
 
       const emailToUser: EmailData = {

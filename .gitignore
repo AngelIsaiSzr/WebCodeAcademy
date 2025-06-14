@@ -5,3 +5,11 @@ server/public
 vite.config.ts.*
 *.tar.gz
 .env
+
+# Google Cloud credentials
+credentials/
+*.json
+!package.json
+!package-lock.json
+!tsconfig.json
+!drizzle.config.ts
