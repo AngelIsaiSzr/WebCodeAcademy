@@ -15,7 +15,8 @@ import { useAuth } from "@/hooks/use-auth";
 
 // Define the Zod schema for the form
 const liveRegistrationFormSchema = z.object({
-  fullName: z.string().min(1, { message: 'El nombre completo es requerido.' }),
+  firstName: z.string().min(1, { message: 'El nombre es requerido.' }),
+  lastName: z.string().min(1, { message: 'Los apellidos son requeridos.' }),
   email: z.string().email({ message: 'Por favor, ingresa un correo electrónico válido.' }),
   phoneNumber: z.string().min(10, { message: 'El número de teléfono es requerido y debe tener al menos 10 dígitos.' }).max(15, { message: 'El número de teléfono no debe exceder los 15 dígitos.' }),
   age: z.coerce.number()
@@ -24,15 +25,23 @@ const liveRegistrationFormSchema = z.object({
   preferredModality: z.enum(['Presencial', 'Virtual'], { message: 'Por favor, selecciona una modalidad.' }),
   hasLaptop: z.boolean({ message: 'Debes indicar si cuentas con una computadora portátil.' }),
   // Conditional fields for minors
-  guardianName: z.string().optional(),
+  guardianFirstName: z.string().optional(),
+  guardianLastName: z.string().optional(),
   guardianPhoneNumber: z.string().optional(),
 }).superRefine((data, ctx) => {
   if (data.age < 18) {
-    if (!data.guardianName || data.guardianName.trim() === '') {
+    if (!data.guardianFirstName || data.guardianFirstName.trim() === '') {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: 'El nombre del tutor es requerido para menores de edad.',
-        path: ['guardianName'],
+        path: ['guardianFirstName'],
+      });
+    }
+    if (!data.guardianLastName || data.guardianLastName.trim() === '') {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Los apellidos del tutor son requeridos para menores de edad.',
+        path: ['guardianLastName'],
       });
     }
     if (!data.guardianPhoneNumber || data.guardianPhoneNumber.trim() === '') {
@@ -60,13 +69,15 @@ export function LiveCourseRegistrationForm({ course, onSuccessRegistration }: Li
   const form = useForm<LiveRegistrationFormValues>({
     resolver: zodResolver(liveRegistrationFormSchema),
     defaultValues: {
-      fullName: '',
+      firstName: '',
+      lastName: '',
       email: '',
       phoneNumber: '',
       age: undefined,
       preferredModality: 'Virtual',
       hasLaptop: false,
-      guardianName: '',
+      guardianFirstName: '',
+      guardianLastName: '',
       guardianPhoneNumber: '',
     },
   });
@@ -79,13 +90,15 @@ export function LiveCourseRegistrationForm({ course, onSuccessRegistration }: Li
     mutationFn: async (data: LiveRegistrationFormValues) => {
       const payload: InsertLiveCourseRegistration = {
         courseId: course.id,
-        fullName: data.fullName,
+        firstName: data.firstName,
+        lastName: data.lastName,
         email: data.email,
         phoneNumber: data.phoneNumber,
         age: data.age,
         preferredModality: data.preferredModality,
         hasLaptop: data.hasLaptop,
-        guardianName: isMinor ? data.guardianName : undefined,
+        guardianFirstName: isMinor ? data.guardianFirstName : undefined,
+        guardianLastName: isMinor ? data.guardianLastName : undefined,
         guardianPhoneNumber: isMinor ? data.guardianPhoneNumber : undefined,
       };
 
@@ -143,10 +156,17 @@ export function LiveCourseRegistrationForm({ course, onSuccessRegistration }: Li
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div>
-            <Label htmlFor="fullName">Nombre completo (Nombre | Apellidos)</Label>
-            <Input id="fullName" {...register('fullName')} className="mt-1" />
-            {errors.fullName && <p className="text-red-500 text-sm mt-1">{errors.fullName.message}</p>}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="firstName">Nombre</Label>
+              <Input id="firstName" {...register('firstName')} className="mt-1" />
+              {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName.message}</p>}
+            </div>
+            <div>
+              <Label htmlFor="lastName">Apellidos</Label>
+              <Input id="lastName" {...register('lastName')} className="mt-1" />
+              {errors.lastName && <p className="text-red-500 text-sm mt-1">{errors.lastName.message}</p>}
+            </div>
           </div>
 
           <div>
@@ -177,9 +197,17 @@ export function LiveCourseRegistrationForm({ course, onSuccessRegistration }: Li
           {isMinor && (
             <>
               <div>
-                <Label htmlFor="guardianName">Escribe el nombre de tu Madre, Padre o Tutor (Nombre | Apellidos)</Label>
-                <Input id="guardianName" {...register('guardianName')} className="mt-1" />
-                {errors.guardianName && <p className="text-red-500 text-sm mt-1">{errors.guardianName.message}</p>}
+                <Label>Escribe el nombre de tu Madre, Padre o Tutor</Label>
+                <div className="grid grid-cols-2 gap-4 mt-1">
+                  <div>
+                    <Input id="guardianFirstName" placeholder="Nombre" {...register('guardianFirstName')} />
+                    {errors.guardianFirstName && <p className="text-red-500 text-sm mt-1">{errors.guardianFirstName.message}</p>}
+                  </div>
+                  <div>
+                    <Input id="guardianLastName" placeholder="Apellidos" {...register('guardianLastName')} />
+                    {errors.guardianLastName && <p className="text-red-500 text-sm mt-1">{errors.guardianLastName.message}</p>}
+                  </div>
+                </div>
               </div>
 
               <div>

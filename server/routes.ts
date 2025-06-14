@@ -270,7 +270,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const emailToUser: EmailData = {
         to: registration.email,
         from: "webcodeacademy0@gmail.com",
-        name: registration.fullName,
+        name: `${registration.firstName} ${registration.lastName}`,
         subject: `Confirmación de registro al curso: ${courseName}`,
         text: `¡Muchas gracias por registrarte en el curso! Días antes de iniciar el curso se te enviará un mensaje confirmando tu asistencia y modalidad. Para dudas o aclaraciones: +52 784 110 0108 - Web Code Academy`,
         html: `
@@ -307,9 +307,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const emailToAdmin: EmailData = {
         to: "webcodeacademy0@gmail.com",
         from: registration.email,
-        name: `Registro de ${registration.fullName}`,
-        subject: `Nuevo registro desde la plataforma a curso en vivo: ${registration.fullName}`,
-        text: `Nuevo registro para curso en vivo:\n          Nombre: ${registration.fullName}\n          Correo: ${registration.email}\n          Teléfono: ${registration.phoneNumber}\n          Edad: ${registration.age}\n          Modalidad preferida: ${registration.preferredModality}\n          Tiene laptop: ${registration.hasLaptop ? 'Sí' : 'No'}\n          ${registration.guardianName ? `Nombre del tutor: ${registration.guardianName}` : ''}\n          ${registration.guardianPhoneNumber ? `Teléfono del tutor: ${registration.guardianPhoneNumber}` : ''}\n          Curso: ${courseName}\n        `,
+        name: `Registro de ${registration.firstName} ${registration.lastName}`,
+        subject: `Nuevo registro desde la plataforma a curso en vivo: ${registration.firstName} ${registration.lastName}`,
+        text: `Nuevo registro para curso en vivo:\n          Nombre: ${registration.firstName} ${registration.lastName}\n          Correo: ${registration.email}\n          Teléfono: ${registration.phoneNumber}\n          Edad: ${registration.age}\n          Modalidad preferida: ${registration.preferredModality}\n          Tiene laptop: ${registration.hasLaptop ? 'Sí' : 'No'}\n          ${registration.guardianFirstName ? `Nombre del tutor: ${registration.guardianFirstName} ${registration.guardianLastName}` : ''}\n          ${registration.guardianPhoneNumber ? `Teléfono del tutor: ${registration.guardianPhoneNumber}` : ''}\n          Curso: ${courseName}\n        `,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f8f9fa; border-radius: 8px;">
             <div style="text-align: center; margin-bottom: 30px;">
@@ -320,11 +320,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
             <div style="background-color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
               <h2 style="color: #297de0; margin-bottom: 15px;">Información del Registro:</h2>
               <ul style="list-style: none; padding: 0; margin: 0;">
-                <li style="margin-bottom: 10px; color: #555;"><strong>Nombre:</strong> ${registration.fullName}</li>
+                <li style="margin-bottom: 10px; color: #555;"><strong>Nombre:</strong> ${registration.firstName} ${registration.lastName}</li>
                 <li style="margin-bottom: 10px; color: #555;"><strong>Correo:</strong> <a href="mailto:${registration.email}" style="color: #297de0; text-decoration: none;">${registration.email}</a></li>
                 <li style="margin-bottom: 10px; color: #555;"><strong>Teléfono:</strong> <a href="tel:${registration.phoneNumber}" style="color: #297de0; text-decoration: none;">${registration.phoneNumber}</a></li>
                 <li style="margin-bottom: 10px; color: #555;"><strong>Edad:</strong> ${registration.age}</li>
-                ${registration.guardianName ? `<li style="margin-bottom: 10px; color: #555;"><strong>Nombre del tutor:</strong> ${registration.guardianName}</li>` : ''}
+                ${registration.guardianFirstName ? `<li style="margin-bottom: 10px; color: #555;"><strong>Nombre del tutor:</strong> ${registration.guardianFirstName} ${registration.guardianLastName}</li>` : ''}
                 ${registration.guardianPhoneNumber ? `<li style="margin-bottom: 10px; color: #555;"><strong>Teléfono del tutor:</strong> ${registration.guardianPhoneNumber}</li>` : ''}
                 <li style="margin-bottom: 10px; color: #555;"><strong>Modalidad preferida:</strong> ${registration.preferredModality}</li>
                 <li style="margin-bottom: 10px; color: #555;"><strong>Tiene laptop:</strong> ${registration.hasLaptop ? 'Sí' : 'No'}</li>

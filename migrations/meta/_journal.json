@@ -15,6 +15,13 @@
       "when": 1749607683886,
       "tag": "0001_flawless_firelord",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1749875435054,
+      "tag": "0002_material_amazoness",
+      "breakpoints": true
     }
   ]
 }
