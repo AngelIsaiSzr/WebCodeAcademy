@@ -13,7 +13,8 @@
     "db:migrate": "tsx server/db/migrate.ts",
     "db:check": "tsx server/db/check.ts",
     "db:update": "tsx server/db/update-schema.ts",
-    "db:seed": "ts-node client/src/seed.ts"
+    "db:seed": "ts-node client/src/seed.ts",
+    "db:update-live-registrations": "tsx server/db/update-live-registrations.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
