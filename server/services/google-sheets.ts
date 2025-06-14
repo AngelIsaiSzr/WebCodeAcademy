@@ -12,7 +12,7 @@ const auth = new google.auth.GoogleAuth({
 
 // Mapeo de cursos a IDs de hojas de cálculo
 const COURSE_SHEET_IDS: Record<string, string> = {
-  'primeros-pasos-en-python': '1CAbWH_GNSn82oWKnFKFy7PbiOpCPBeOKQpvs_amA_vc',
+  'first-steps-in-python': '1CAbWH_GNSn82oWKnFKFy7PbiOpCPBeOKQpvs_amA_vc',
   // Agrega aquí más cursos y sus IDs de hojas
 };
 
@@ -23,6 +23,8 @@ export async function saveRegistrationToSheet(registration: LiveCourseRegistrati
     const sheetId = COURSE_SHEET_IDS[courseSlug];
 
     if (!sheetId) {
+      console.error(`No se encontró una hoja de cálculo configurada para el curso: ${courseSlug}`);
+      console.log('Slugs disponibles:', Object.keys(COURSE_SHEET_IDS));
       throw new Error(`No se encontró una hoja de cálculo configurada para el curso: ${courseSlug}`);
     }
 

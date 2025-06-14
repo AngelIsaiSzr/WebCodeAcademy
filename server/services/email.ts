@@ -16,12 +16,24 @@ if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
   console.error('SMTP_PASS:', process.env.SMTP_PASS ? 'Configurado' : 'No configurado');
 }
 
+// Log de la configuración (sin mostrar la contraseña)
+console.log('Configuración SMTP:', {
+  user: process.env.SMTP_USER,
+  pass: process.env.SMTP_PASS ? '****' : 'No configurado',
+  host: 'smtp.gmail.com',
+  port: 587
+});
+
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false,
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
   },
+  debug: true, // Habilitar logs de debug
+  logger: true // Habilitar logs del transportador
 });
 
 // Verificar la conexión
@@ -31,6 +43,8 @@ transporter.verify(function (err: Error | null, success: true) {
     const error = err as Error & { code?: string };
     if (error.code === 'EAUTH') {
       console.error('Error de autenticación. Verifica que las credenciales SMTP_USER y SMTP_PASS estén configuradas correctamente en las variables de entorno.');
+      console.error('SMTP_USER:', process.env.SMTP_USER);
+      console.error('SMTP_PASS:', process.env.SMTP_PASS ? '****' : 'No configurado');
     }
   } else {
     console.log('Servidor listo para enviar correos');
@@ -60,10 +74,25 @@ ${data.text}
       `,
     };
 
+    console.log('Intentando enviar correo a:', data.to);
+    console.log('Configuración del correo:', {
+      from: mailOptions.from,
+      to: mailOptions.to,
+      subject: mailOptions.subject
+    });
+
     const info = await transporter.sendMail(mailOptions);
     console.log('Correo enviado:', info.response);
   } catch (error) {
     console.error('Error al enviar el correo:', error);
+    if (error instanceof Error) {
+      console.error('Detalles del error:', {
+        message: error.message,
+        stack: error.stack,
+        code: (error as any).code,
+        response: (error as any).response
+      });
+    }
     throw new Error('No se pudo enviar el correo electrónico');
   }
 } 
