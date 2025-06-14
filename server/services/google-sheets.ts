@@ -1,18 +1,11 @@
 import { google } from 'googleapis';
 import { LiveCourseRegistration } from '@shared/schema';
-import { readFileSync } from 'fs';
-import { join } from 'path';
 
-// Leer las credenciales del archivo JSON
-const credentials = JSON.parse(
-  readFileSync(join(process.cwd(), 'credentials', 'webcodeacademy-8417c76450e7.json'), 'utf-8')
-);
-
-// Configuración de las credenciales
+// Configuración de las credenciales usando variables de entorno
 const auth = new google.auth.GoogleAuth({
   credentials: {
-    client_email: credentials.client_email,
-    private_key: credentials.private_key,
+    client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+    private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
   },
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
@@ -55,7 +48,7 @@ export async function saveRegistrationToSheet(registration: LiveCourseRegistrati
     // Agregar los datos a la hoja
     await sheets.spreadsheets.values.append({
       spreadsheetId: sheetId,
-      range: 'A:M', // Ajustado a 12 columnas
+      range: 'A:M', // Ajustado a 13 columnas
       valueInputOption: 'USER_ENTERED',
       requestBody: {
         values,
