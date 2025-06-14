@@ -13,7 +13,8 @@ const auth = new google.auth.GoogleAuth({
 // Mapeo de cursos a IDs de hojas de cálculo
 const COURSE_SHEET_IDS: Record<string, string> = {
   'first-steps-in-python': '1CAbWH_GNSn82oWKnFKFy7PbiOpCPBeOKQpvs_amA_vc',
-  // Agrega aquí más cursos y sus IDs de hojas
+  'web-development': '1-ewKbBEiXvVLuTuDZL-JEZFBj1sdpTmEv64oekppa-s'
+  // Agregar aquí más cursos y sus IDs de hojas
 };
 
 // Función para guardar un registro en la hoja de cálculo
