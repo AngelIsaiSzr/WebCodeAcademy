@@ -8,8 +8,3 @@ vite.config.ts.*
 
 # Google Cloud credentials
 credentials/
-*.json
-!package.json
-!package-lock.json
-!tsconfig.json
-!drizzle.config.ts
