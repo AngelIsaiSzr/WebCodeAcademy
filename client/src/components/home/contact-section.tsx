@@ -113,7 +113,7 @@ export default function ContactSection() {
                 <a href="https://facebook.com/webcodeacademy0" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-secondary-800 flex items-center justify-center text-muted hover:bg-accent-red hover:text-white transition-colors" aria-label="Síguenos en Facebook">
                   <i className="fab fa-facebook-f"></i>
                 </a>
-                <a href="https://twitter.com/webcodeacademy0" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-secondary-800 flex items-center justify-center text-muted hover:bg-accent-blue hover:text-white transition-colors" aria-label="Síguenos en Twitter">
+                <a href="https://x.com/webcodeacademy0" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-secondary-800 flex items-center justify-center text-muted hover:bg-accent-blue hover:text-white transition-colors" aria-label="Síguenos en Twitter">
                   <i className="fab fa-twitter"></i>
                 </a>
                 <a href="https://instagram.com/webcodeacademy0" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-secondary-800 flex items-center justify-center text-muted hover:bg-accent-red hover:text-white transition-colors" aria-label="Síguenos en Instagram">
