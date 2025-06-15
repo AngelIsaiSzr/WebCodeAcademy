@@ -2522,6 +2522,16 @@ export default function AdminPage() {
                                   GitHub
                                 </a>
                               )}
+                              {member.twitter && (
+                                <a href={member.twitter} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-800">
+                                  Twitter
+                                </a>
+                              )}
+                              {member.instagram && (
+                                <a href={member.instagram} target="_blank" rel="noopener noreferrer" className="text-gray-800 dark:text-gray-300 hover:text-black dark:hover:text-white">
+                                  Instagram
+                                </a>
+                              )}
                             </div>
                           </div>
                         </div>
