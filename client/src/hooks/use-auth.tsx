@@ -12,7 +12,7 @@ import { useLocation } from 'wouter';
 
 // Extended schema for login
 const loginSchema = z.object({
-  email: z.string().email("Invalid email format"),
+  email: z.string().email("Formato de correo no válido"),
   password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
 });
 
