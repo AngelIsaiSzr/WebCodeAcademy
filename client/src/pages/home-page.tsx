@@ -10,6 +10,7 @@ import TeamSection from "@/components/home/team-section";
 import TestimonialsSection from "@/components/home/testimonials-section";
 import CtaSection from "@/components/home/cta-section";
 import { useEffect, useState } from "react";
+import LogosCarousel from "@/components/home/logos-carousel";
 
 export default function HomePage() {
   const [isReady, setIsReady] = useState(false);
@@ -48,6 +49,7 @@ export default function HomePage() {
               <TeamSection />
               <TestimonialsSection />
               <CtaSection />
+              <LogosCarousel />
             </>
           )}
         </main>
