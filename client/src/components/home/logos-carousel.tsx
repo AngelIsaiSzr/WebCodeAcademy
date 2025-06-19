@@ -1,4 +1,30 @@
 import React, { useRef, useEffect, useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
+
+// Componente para manejar la carga individual de cada logo
+const LogoImage = ({ src, alt }: { src: string; alt: string }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  return (
+    <div className="relative h-28 w-56">
+      {!isLoaded && (
+        <Skeleton className="absolute inset-0 h-full w-full rounded-md bg-primary-700" />
+      )}
+      <img
+        src={src}
+        alt={alt}
+        className={cn(
+          "object-contain h-full w-auto max-w-full select-none transition-opacity duration-500 ease-in-out",
+          isLoaded ? "opacity-100" : "opacity-0"
+        )}
+        onLoad={() => setIsLoaded(true)}
+        draggable={false}
+        style={{ background: "transparent" }}
+      />
+    </div>
+  );
+};
 
 // Array de rutas de logos (usa PNG con fondo transparente para mejor resultado)
 const logos = [
@@ -98,13 +124,7 @@ export const LogosCarousel: React.FC = () => {
         >
           {repeatedLogos.map((src, idx) => (
             <div key={idx} className="flex-shrink-0 h-32 w-56 flex items-center justify-center">
-              <img
-                src={src}
-                alt={`Logo ${(idx % logos.length) + 1}`}
-                className="object-contain h-28 w-auto max-w-full select-none"
-                draggable={false}
-                style={{ background: "transparent" }}
-              />
+              <LogoImage src={src} alt={`Logo ${(idx % logos.length) + 1}`} />
             </div>
           ))}
         </div>
