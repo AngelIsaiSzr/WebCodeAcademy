@@ -84,7 +84,7 @@ export const LogosCarousel: React.FC = () => {
   }, [baseWidth]);
 
   return (
-    <div ref={containerRef} className="w-full overflow-hidden py-8 bg-secondary-900 border-y-0">
+    <div ref={containerRef} className="w-full overflow-hidden py-8 bg-primary-900 border-y-0">
       <div className="relative flex items-center justify-center">
         <div
           ref={trackRef}
