@@ -15,7 +15,7 @@ export default function HeroSection() {
 
   return (
     <section className="min-h-[100vh] bg-gradient-to-b from-primary-900 to-primary-800 relative overflow-hidden max-w-[100vw] flex items-center pt-24 md:pt-32 pb-16 md:pb-24">
-      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1587620962725-abab7fe55159?ixlib=rb-4.0.3&auto=format&fit=crop&w=1489&q=80')] opacity-[0.06] bg-center bg-cover"></div>
+      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1587620962725-abab7fe55159?ixlib=rb-4.0.3&auto=format&fit=crop&w=1489&q=80')] opacity-[0.1] bg-center bg-cover"></div>
       <div className="absolute inset-0 bg-gradient-to-r from-primary-900/95 to-primary-800/95"></div>
       
       <div className="container mx-auto px-4 relative z-10 overflow-x-hidden">
