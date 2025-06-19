@@ -7,7 +7,7 @@
 :root {
   --background: 0 0% 98%;
   --foreground: 240 10% 3.9%;
-  --muted: 240 4.8% 96.9%;
+  --muted: 240 4.8% 85%;
   --muted-foreground: 240 3.8% 46.1%;
   --popover: 0 0% 98%;
   --popover-foreground: 240 10% 3.9%;
@@ -34,7 +34,7 @@
   --primary-900: 0 0% 98%;
   --primary-800: 240 4.8% 96.9%;
   --primary-700: 240 5.9% 92%;
-  --secondary-900: 240 4.8% 96.9%;
+  --secondary-900: 240 4.8% 94.1%;
   --secondary-800: 240 5.9% 92%;
   --secondary-700: 240 5.9% 88%;
   --text-light: 240 10% 3.9%;

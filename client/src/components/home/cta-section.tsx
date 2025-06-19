@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 export default function CtaSection() {
   return (
     <section className="py-20 bg-gradient-to-r from-secondary-900 to-primary-800 relative overflow-hidden">
-      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=1489&q=80')] opacity-5 bg-center bg-cover"></div>
+      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=1489&q=80')] opacity-[0.1] bg-center bg-cover"></div>
       <div className="absolute inset-0 bg-gradient-to-r from-secondary-900 to-primary-800 opacity-90"></div>
       
       <div className="container mx-auto px-4 relative z-10 text-center">
