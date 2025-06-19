@@ -42,6 +42,7 @@ export default function HomePage() {
           {isReady && (
             <>
               <HeroSection />
+              <LogosCarousel />
               <FeaturesSection />
               <CoursesSection />
               <CourseDetailPreview />

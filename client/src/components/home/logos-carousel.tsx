@@ -2,8 +2,10 @@ import React, { useRef, useEffect, useState } from "react";
 
 // Array de rutas de logos (usa PNG con fondo transparente para mejor resultado)
 const logos = [
-    "https://res.cloudinary.com/dw6igi7fc/image/upload/v1750310846/logo1_jjxzlo.png",
-    "https://res.cloudinary.com/dw6igi7fc/image/upload/v1750310845/logo2_b2f10o.png"
+    "https://res.cloudinary.com/dw6igi7fc/image/upload/v1750371526/logo1_vvirpf.png",
+    "https://res.cloudinary.com/dw6igi7fc/image/upload/v1750371526/logo2_wqdznp.png",
+    "https://res.cloudinary.com/dw6igi7fc/image/upload/v1750371525/logo3_s02rgy.png",
+    "https://res.cloudinary.com/dw6igi7fc/image/upload/v1750371529/logo4_ilfyy0.png"
 ];
 
 // Genera una secuencia alternada de logos para llenar el ancho visible y que sea múltiplo exacto de logos.length
