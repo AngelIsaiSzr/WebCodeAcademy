@@ -51,7 +51,6 @@ export default function Footer() {
               <li><Link href="/courses" className="text-muted hover-accent-blue">Descubre la Computación</Link></li>
               <li><Link href="/courses" className="text-muted hover-accent-blue">Primeros Pasos en Python</Link></li>
               <li><Link href="/courses" className="text-muted hover-accent-blue">Edición de Video</Link></li>
-              <li><Link href="/courses" className="text-muted hover-accent-blue">Ciencia de Datos</Link></li>
               <li><Link href="/courses" className="text-muted hover-accent-blue">Desarrollo Móvil</Link></li>
             </ul>
           </div>
@@ -64,7 +63,6 @@ export default function Footer() {
               <li><a href="/merch" target="_blank" rel="noopener noreferrer" className="text-muted hover-accent-blue">Merch Oficial</a></li>
               <li><a href="#" className="text-muted hover-accent-blue">Documentación</a></li>
               <li><a href="#" className="text-muted hover-accent-blue">Blog y Comunidad</a></li>
-              <li><a href="#" className="text-muted hover-accent-blue">Preguntas Frecuentes</a></li>
             </ul>
           </div>
         </div>
