@@ -17,6 +17,8 @@ import EditorPage from "@/pages/editor-page";
 import AdminPage from "@/pages/admin-page";
 import ProfilePage from "@/pages/profile-page";
 import NotFound from "@/pages/not-found";
+import MerchPage from "@/pages/merch-page";
+import MerchDetailPage from "@/pages/merch-detail-page";
 import { ProtectedRoute } from "@/lib/protected-route";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
@@ -36,6 +38,8 @@ function Router() {
         <ProtectedRoute path="/courses/:slug/learn" component={CourseLearningPage} />
         <Route path="/about" component={AboutPage} />
         <Route path="/contact" component={ContactPage} />
+        <Route path="/merch" component={MerchPage} />
+        <Route path="/merch/:id" component={MerchDetailPage} />
         <ProtectedRoute path="/editor" component={EditorPage} />
         <ProtectedRoute path="/profile" component={ProfilePage} />
         <ProtectedRoute path="/admin" component={AdminPage} />

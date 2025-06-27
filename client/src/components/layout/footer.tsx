@@ -61,7 +61,7 @@ export default function Footer() {
             <ul className="space-y-4">
               <li><a href="https://drive.google.com/file/d/1S1mso-85u3bV2eSc94dmoPYSALQD5zzr/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="text-muted hover-accent-blue">Historia, Origen y Propósito</a></li>
               <li><a href="#" className="text-muted hover-accent-blue">Tutoriales</a></li>
-              <li><a href="#" className="text-muted hover-accent-blue">Merch Oficial</a></li>
+              <li><a href="/merch" target="_blank" rel="noopener noreferrer" className="text-muted hover-accent-blue">Merch Oficial</a></li>
               <li><a href="#" className="text-muted hover-accent-blue">Documentación</a></li>
               <li><a href="#" className="text-muted hover-accent-blue">Blog y Comunidad</a></li>
               <li><a href="#" className="text-muted hover-accent-blue">Preguntas Frecuentes</a></li>

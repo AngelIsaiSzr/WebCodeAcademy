@@ -155,6 +155,10 @@
     @apply bg-[hsl(var(--accent-red))];
   }
 
+  .bg-accent-green {
+    @apply bg-[hsl(var(--accent-green))];
+  }
+
   .bg-accent-blue {
     @apply bg-[hsl(var(--accent-blue))];
   }
