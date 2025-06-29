@@ -23,10 +23,10 @@ export default function AboutPage() {
             <div className="container mx-auto px-4">
               <div className="max-w-3xl mx-auto text-center">
                 <h1 className="text-4xl md:text-5xl font-heading font-bold mt-6 mb-4">
-                  Nuestra Historia
+                  Conócenos
                 </h1>
                 <p className="text-muted text-lg">
-                  Somos una comunidad comprometida con la educación tecnológica inclusiva y accesible para todos.
+                  Somos una academia comprometida con la educación tecnológica inclusiva, gratuita y accesible para todas las personas.
                 </p>
               </div>
             </div>
@@ -119,7 +119,7 @@ export default function AboutPage() {
                       </div>
                       <div>
                         <h4 className="font-medium">Comunidad</h4>
-                        <p className="text-muted text-sm">Fomentamos un ambiente colaborativo donde estudiantes y profesores aprenden juntos y se apoyan mutuamente.</p>
+                        <p className="text-muted text-sm">Fomentamos un ambiente colaborativo donde estudiantes e instructores aprenden juntos y se apoyan mutuamente.</p>
                       </div>
                     </div>
                     
@@ -165,7 +165,7 @@ export default function AboutPage() {
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="bg-primary-700 rounded-xl p-8 text-center">
-                  <div className="text-4xl font-bold accent-red mb-4">120+</div>
+                  <div className="text-4xl font-bold accent-red mb-4">+120</div>
                   <h3 className="text-xl font-heading font-semibold mb-2">Estudiantes</h3>
                   <p className="text-muted">Personas que han accedido a educación gratuita de calidad en programación y tecnología.</p>
                 </div>
