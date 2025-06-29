@@ -16,10 +16,10 @@ export default function TermsPage() {
       <div className="flex flex-col min-h-screen">
         <Navbar />
 
-        <main className="flex-grow py-20 bg-primary-900">
+        <main className="flex-grow py-10 bg-primary-900">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
-              <h1 className="text-4xl font-heading font-bold mb-8 text-center">
+              <h1 className="text-4xl font-heading font-bold m-8 text-center py-5">
                 Términos y Condiciones
               </h1>
               
