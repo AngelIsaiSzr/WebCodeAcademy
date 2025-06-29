@@ -10,7 +10,7 @@ const products = [
   {
     id: 1,
     name: "Playera Web Code Academy",
-    price: 250.00,
+    price: 300.00,
     image: "https://res.cloudinary.com/dw6igi7fc/image/upload/v1750383073/playera1_soj6qu.png",
     category: "Ropa",
     description: "Viste el cambio. Con esta playera, no solo llevas nuestro logo, sino nuestro compromiso con la educación accesible para todos.",
@@ -19,7 +19,7 @@ const products = [
   {
     id: 2,
     name: "Sudadera de la Comunidad",
-    price: 300.00,
+    price: 350.00,
     image: "https://res.cloudinary.com/dw6igi7fc/image/upload/v1750383991/sudadera1_ysuzwc.png",
     category: "Ropa",
     description: "Perfecta para largas sesiones de código. Representa la colaboración y el apoyo mutuo que nos define como comunidad.",
@@ -43,7 +43,7 @@ export default function MerchPage() {
 
         <main className="flex-grow">
           {/* Hero Section */}
-          <section className="bg-gradient-to-r from-primary-900 to-secondary-900 py-20 pb-4 md:pb-8">
+          <section className="bg-gradient-to-r from-primary-900 to-secondary-900 py-20 pb-2 md:pb-2">
             <div className="container mx-auto px-4">
               <div className="max-w-3xl mx-auto text-center">
                 <h1 className="text-4xl md:text-5xl font-heading font-bold mt-6 mb-4">
