@@ -33,7 +33,10 @@ export function setupAuth(app: Express) {
     saveUninitialized: false,
     store: storage.sessionStore,
     cookie: {
-      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 días (168 horas)
+      secure: process.env.NODE_ENV === 'production', // Solo HTTPS en producción
+      httpOnly: true, // Previene acceso desde JavaScript
+      sameSite: 'lax' // Protección CSRF
     }
   };
 

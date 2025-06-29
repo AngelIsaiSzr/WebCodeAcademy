@@ -43,7 +43,7 @@ export default function MerchPage() {
 
         <main className="flex-grow">
           {/* Hero Section */}
-          <section className="bg-gradient-to-r from-primary-900 to-secondary-900 py-20 pb-2 md:pb-2">
+          <section className="bg-gradient-to-r from-primary-900 to-secondary-900 py-20 pb-4 md:pb-4">
             <div className="container mx-auto px-4">
               <div className="max-w-3xl mx-auto text-center">
                 <h1 className="text-4xl md:text-5xl font-heading font-bold mt-6 mb-4">
@@ -57,7 +57,7 @@ export default function MerchPage() {
           </section>
 
           {/* Products Grid */}
-          <section className="py-16">
+          <section className="py-12">
             <div className="container mx-auto px-4">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {products.map((product) => (

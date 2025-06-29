@@ -62,7 +62,7 @@ export default function Footer() {
               <li><a href="https://youtube.com/playlist?list=PLv1UrQWkBmdladnWqAqN8boVGfhH4BUNq&si=SoH0nOup6Bat2pK9" className="text-muted hover-accent-blue">Tutoriales</a></li>
               <li><a href="/merch" target="_blank" rel="noopener noreferrer" className="text-muted hover-accent-blue">Merch Oficial</a></li>
               <li><a href="#" className="text-muted hover-accent-blue">Documentación</a></li>
-              <li><a href="#" className="text-muted hover-accent-blue">Blog y Comunidad</a></li>
+              <li><Link href="/community" className="text-muted hover-accent-blue">Blog y Comunidad</Link></li>
             </ul>
           </div>
         </div>
@@ -73,9 +73,9 @@ export default function Footer() {
               © {currentYear} Web Code Academy. Todos los derechos reservados.
             </p>
             <div className="flex space-x-6">
-              <a href="#" className="text-muted hover-accent-blue text-sm">Términos y Condiciones</a>
-              <a href="#" className="text-muted hover-accent-blue text-sm">Política de Privacidad</a>
-              <a href="#" className="text-muted hover-accent-blue text-sm">Cookies</a>
+              <Link href="/terms" className="text-muted hover-accent-blue text-sm">Términos y Condiciones</Link>
+              <Link href="/privacy" className="text-muted hover-accent-blue text-sm">Política de Privacidad</Link>
+              <Link href="/cookies" className="text-muted hover-accent-blue text-sm">Cookies</Link>
             </div>
           </div>
         </div>
