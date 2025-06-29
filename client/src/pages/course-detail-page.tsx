@@ -210,11 +210,6 @@ export default function CourseDetailPage() {
                           Destacado
                         </span>
                       )}
-                      {course.comingSoon && (
-                        <span className="px-3 py-1 text-xs font-medium rounded bg-purple-500 text-white">
-                          Próximamente
-                        </span>
-                      )}
                     </div>
 
                     <AnimateInView animation="slideRight" delay={0.2}>
@@ -314,10 +309,10 @@ export default function CourseDetailPage() {
                                   }`}
                                 disabled={enrollMutation.isPending || isLoadingEnrollments || hasRegisteredForLiveCourse || !!course.isDisabled || !!course.comingSoon}
                               >
-                                {hasRegisteredForLiveCourse ? (
-                                  <span>Ya Registrado</span>
-                                ) : course.comingSoon ? (
+                                {course.comingSoon ? (
                                   <span>Próximamente</span>
+                                ) : hasRegisteredForLiveCourse ? (
+                                  <span>Ya Registrado</span>
                                 ) : (
                                   <span>Registrate al Curso en Vivo</span>
                                 )}
@@ -335,10 +330,12 @@ export default function CourseDetailPage() {
                                 }`}
                               disabled={enrollMutation.isPending || isLoadingEnrollments || !!course.isDisabled || !!course.comingSoon}
                             >
-                              {enrollMutation.isPending ? (
+                              {course.comingSoon ? (
+                                <span>Próximamente</span>
+                              ) : enrollMutation.isPending ? (
                                 <span className="mr-2 inline-block h-4 w-4 animate-spin">⟳</span>
                               ) : null}
-                              {course.comingSoon ? "Próximamente" : "Inscribirme Gratis"}
+                              {course.comingSoon ? "" : "Inscribirme Gratis"}
                             </Button>
                             )}
                           </>
@@ -383,10 +380,10 @@ export default function CourseDetailPage() {
                                 }`}
                                 disabled={enrollMutation.isPending || isLoadingEnrollments || hasRegisteredForLiveCourse || !!course.isDisabled || !!course.comingSoon}
                               >
-                                {hasRegisteredForLiveCourse ? (
-                                  <span>¡Ya Estás Registrado!</span>
-                                ) : course.comingSoon ? (
+                                {course.comingSoon ? (
                                   <span>Próximamente</span>
+                                ) : hasRegisteredForLiveCourse ? (
+                                  <span>¡Ya Estás Registrado!</span>
                                 ) : (
                                   <span>Formulario de Registro</span>
                                 )}
@@ -404,10 +401,12 @@ export default function CourseDetailPage() {
                                 }`}
                               disabled={enrollMutation.isPending || isLoadingEnrollments || !!course.isDisabled || !!course.comingSoon}
                             >
-                              {enrollMutation.isPending ? (
+                              {course.comingSoon ? (
+                                <span>Próximamente</span>
+                              ) : enrollMutation.isPending ? (
                                 <span className="mr-2 inline-block h-4 w-4 animate-spin">⟳</span>
                               ) : null}
-                              {course.comingSoon ? "Próximamente" : "Inscribirme Gratis"}
+                              {course.comingSoon ? "" : "Inscribirme Gratis"}
                             </Button>
                             )
                           )}

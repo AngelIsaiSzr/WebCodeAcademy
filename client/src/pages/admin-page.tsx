@@ -355,7 +355,7 @@ export default function AdminPage() {
     isLive: false,
     liveDetails: undefined,
     isDisabled: false, // Nuevo campo
-    comingSoon: false, // Campo para cursos próximamente
+    comingSoon: false, // Nuevo campo
   };
 
   // Course form
