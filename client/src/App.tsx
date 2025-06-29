@@ -19,9 +19,6 @@ import ProfilePage from "@/pages/profile-page";
 import NotFound from "@/pages/not-found";
 import MerchPage from "@/pages/merch-page";
 import MerchDetailPage from "@/pages/merch-detail-page";
-import CommunityPage from "@/pages/community-page";
-import CommunityNewPostPage from "@/pages/community-new-post-page";
-import CommunityPostDetailPage from "@/pages/community-post-detail-page";
 import TermsPage from "@/pages/terms-page";
 import PrivacyPage from "@/pages/privacy-page";
 import CookiesPage from "@/pages/cookies-page";
@@ -46,9 +43,6 @@ function Router() {
         <Route path="/contact" component={ContactPage} />
         <Route path="/merch" component={MerchPage} />
         <Route path="/merch/:id" component={MerchDetailPage} />
-        <Route path="/community" component={CommunityPage} />
-        <Route path="/community/new" component={CommunityNewPostPage} />
-        <Route path="/community/post/:id" component={CommunityPostDetailPage} />
         <Route path="/terms" component={TermsPage} />
         <Route path="/privacy" component={PrivacyPage} />
         <Route path="/cookies" component={CookiesPage} />
