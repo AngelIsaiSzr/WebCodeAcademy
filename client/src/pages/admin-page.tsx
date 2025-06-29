@@ -104,6 +104,7 @@ const courseFormSchema = insertCourseSchema.extend({
     contact: z.string().min(1, "El contacto del curso en vivo es requerido."),
   }).optional(),
   isDisabled: z.boolean().optional().default(false),
+  comingSoon: z.boolean().optional().default(false),
 }).superRefine((data, ctx) => {
   if (data.isLive) {
     if (!data.liveDetails) {
@@ -354,6 +355,7 @@ export default function AdminPage() {
     isLive: false,
     liveDetails: undefined,
     isDisabled: false, // Nuevo campo
+    comingSoon: false, // Campo para cursos próximamente
   };
 
   // Course form
@@ -382,6 +384,7 @@ export default function AdminPage() {
         isLive: editingCourse.isLive || false,
         liveDetails: editingCourse.liveDetails || undefined,
         isDisabled: editingCourse.isDisabled || false, // Cargar valor de isDisabled
+        comingSoon: editingCourse.comingSoon || false, // Cargar valor de comingSoon
       });
       // Si estamos editando un curso en vivo, mostrar las configuraciones
       if (editingCourse.isLive) {
@@ -1520,10 +1523,10 @@ export default function AdminPage() {
                             )}
                           />
 
-                          {/* Campo para curso inhabilitado */}
+                          {/* Campo para curso próximo */}
                           <FormField
                             control={courseForm.control}
-                            name="isDisabled"
+                            name="comingSoon"
                             render={({ field }) => (
                               <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                                 <FormControl>
@@ -1533,9 +1536,9 @@ export default function AdminPage() {
                                   />
                                 </FormControl>
                                 <div className="space-y-1 leading-none">
-                                  <FormLabel>Inhabilitar curso</FormLabel>
+                                  <FormLabel>Próximamente</FormLabel>
                                   <FormDescription>
-                                    Desactiva el registro o inscripción al curso.
+                                    Marca si este curso estará disponible próximamente.
                                   </FormDescription>
                                 </div>
                               </FormItem>
@@ -1722,6 +1725,13 @@ export default function AdminPage() {
                                     Inhabilitado
                                   </span>
                                 )}
+
+                                {/* Mostrar 'Próximamente' si comingSoon es true */}
+                                {course.comingSoon && (
+                                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-500/20 text-purple-700 dark:text-purple-300">
+                                    Próximamente
+                                  </span>
+                                )}
                               </div>
 
                               <div className="flex flex-wrap gap-2 mt-4 border-t pt-3">
@@ -1786,6 +1796,7 @@ export default function AdminPage() {
                                         isLive: course.isLive as boolean,
                                         liveDetails: (course.liveDetails || undefined) as CourseFormValues['liveDetails'],
                                         isDisabled: !(course.isDisabled as boolean),
+                                        comingSoon: course.comingSoon as boolean,
                                       },
                                     });
                                   }}

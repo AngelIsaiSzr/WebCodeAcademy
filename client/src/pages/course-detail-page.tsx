@@ -210,6 +210,11 @@ export default function CourseDetailPage() {
                           Destacado
                         </span>
                       )}
+                      {course.comingSoon && (
+                        <span className="px-3 py-1 text-xs font-medium rounded bg-purple-500 text-white">
+                          Próximamente
+                        </span>
+                      )}
                     </div>
 
                     <AnimateInView animation="slideRight" delay={0.2}>
@@ -307,10 +312,12 @@ export default function CourseDetailPage() {
                                       ? 'bg-accent-red hover:bg-accent-red hover:opacity-90'
                                       : 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
                                   }`}
-                                disabled={enrollMutation.isPending || isLoadingEnrollments || hasRegisteredForLiveCourse || !!course.isDisabled}
+                                disabled={enrollMutation.isPending || isLoadingEnrollments || hasRegisteredForLiveCourse || !!course.isDisabled || !!course.comingSoon}
                               >
                                 {hasRegisteredForLiveCourse ? (
                                   <span>Ya Registrado</span>
+                                ) : course.comingSoon ? (
+                                  <span>Próximamente</span>
                                 ) : (
                                   <span>Registrate al Curso en Vivo</span>
                                 )}
@@ -326,12 +333,12 @@ export default function CourseDetailPage() {
                                     ? 'bg-accent-red hover:bg-accent-red hover:opacity-90'
                                     : 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
                                 }`}
-                              disabled={enrollMutation.isPending || isLoadingEnrollments || !!course.isDisabled}
+                              disabled={enrollMutation.isPending || isLoadingEnrollments || !!course.isDisabled || !!course.comingSoon}
                             >
                               {enrollMutation.isPending ? (
                                 <span className="mr-2 inline-block h-4 w-4 animate-spin">⟳</span>
                               ) : null}
-                              Inscribirme Gratis
+                              {course.comingSoon ? "Próximamente" : "Inscribirme Gratis"}
                             </Button>
                             )}
                           </>
@@ -374,10 +381,12 @@ export default function CourseDetailPage() {
                                       ? 'bg-accent-red hover:bg-accent-red hover:opacity-90'
                                       : 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
                                 }`}
-                                disabled={enrollMutation.isPending || isLoadingEnrollments || hasRegisteredForLiveCourse || !!course.isDisabled}
+                                disabled={enrollMutation.isPending || isLoadingEnrollments || hasRegisteredForLiveCourse || !!course.isDisabled || !!course.comingSoon}
                               >
                                 {hasRegisteredForLiveCourse ? (
                                   <span>¡Ya Estás Registrado!</span>
+                                ) : course.comingSoon ? (
+                                  <span>Próximamente</span>
                                 ) : (
                                   <span>Formulario de Registro</span>
                                 )}
@@ -393,12 +402,12 @@ export default function CourseDetailPage() {
                                     ? 'bg-accent-red hover:bg-accent-red hover:opacity-90'
                                     : 'bg-accent-blue hover:bg-accent-blue hover:opacity-90'
                                 }`}
-                              disabled={enrollMutation.isPending || isLoadingEnrollments || !!course.isDisabled}
+                              disabled={enrollMutation.isPending || isLoadingEnrollments || !!course.isDisabled || !!course.comingSoon}
                             >
                               {enrollMutation.isPending ? (
                                 <span className="mr-2 inline-block h-4 w-4 animate-spin">⟳</span>
                               ) : null}
-                              Inscribirme Gratis
+                              {course.comingSoon ? "Próximamente" : "Inscribirme Gratis"}
                             </Button>
                             )
                           )}

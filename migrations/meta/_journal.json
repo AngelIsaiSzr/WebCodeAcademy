@@ -22,6 +22,20 @@
       "when": 1749875435054,
       "tag": "0002_material_amazoness",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1751164553106,
+      "tag": "0003_productive_brood",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1751164553107,
+      "tag": "0004_add_coming_soon_to_courses",
+      "breakpoints": true
     }
   ]
 }

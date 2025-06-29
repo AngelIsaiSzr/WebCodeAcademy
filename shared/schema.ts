@@ -32,6 +32,7 @@ export const courses = pgTable("courses", {
   isLive: boolean("is_live").default(false),
   liveDetails: jsonb("live_details"),
   isDisabled: boolean("is_disabled").default(false),
+  comingSoon: boolean("coming_soon").default(false),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
