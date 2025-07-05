@@ -19,7 +19,7 @@ export default function TestimonialsSection() {
         setCurrentIndex((prevIndex) => 
           prevIndex + 3 >= testimonials.length ? 0 : prevIndex + 3
         );
-      }, 5000); // 5 segundos
+      }, 10000); // 10 segundos
       return () => clearInterval(interval);
     }
   }, [testimonials]);
