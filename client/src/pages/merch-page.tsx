@@ -11,7 +11,7 @@ const products = [
     id: 1,
     name: "Playera Web Code Academy",
     price: 300.00,
-    image: "https://res.cloudinary.com/dw6igi7fc/image/upload/v1750383073/playera1_soj6qu.png",
+    image: "https://i.ibb.co/Q7VZgWQs/playera1-soj6qu.png",
     category: "Ropa",
     description: "Viste el cambio. Con esta playera, no solo llevas nuestro logo, sino nuestro compromiso con la educación accesible para todos.",
     inStock: true
@@ -20,7 +20,7 @@ const products = [
     id: 2,
     name: "Sudadera de la Comunidad",
     price: 350.00,
-    image: "https://res.cloudinary.com/dw6igi7fc/image/upload/v1750383991/sudadera1_ysuzwc.png",
+    image: "https://i.ibb.co/CxD10rL/sudadera1-ysuzwc.png",
     category: "Ropa",
     description: "Perfecta para largas sesiones de código. Representa la colaboración y el apoyo mutuo que nos define como comunidad.",
     inStock: false

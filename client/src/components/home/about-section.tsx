@@ -14,7 +14,7 @@ export default function AboutSection() {
             transition={{ duration: 0.5 }}
           >
             <img 
-              src="https://res.cloudinary.com/dw6igi7fc/image/upload/v1746129856/about1_cy3qzm.jpg" 
+              src="https://i.ibb.co/xbFQPY1/about1-cy3qzm.jpg" 
               alt="Misión de Web Code Academy" 
               className="rounded-xl shadow-lg"
             />

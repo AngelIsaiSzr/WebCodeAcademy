@@ -616,8 +616,8 @@ export default function CourseLearningPage() {
                       <video
                         className="w-full h-full"
                         controls
-                        src="https://res.cloudinary.com/dw6igi7fc/video/upload/v1746151518/Back_animado_Lab_FFF_akn4mf.mp4"
-                        poster="https://res.cloudinary.com/dw6igi7fc/image/upload/v1746134148/back1_sngqjn.jpg"
+                        src="https://files.catbox.moe/g2nlhd.mp4"
+                        poster="https://i.ibb.co/BSjjCWc/back1-sngqjn.jpg"
                         onTimeUpdate={(e) => handleVideoProgress(Math.floor(e.currentTarget.currentTime))}
                         onEnded={() => handleVideoProgress(100)}
                         autoPlay={false}

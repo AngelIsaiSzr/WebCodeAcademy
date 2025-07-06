@@ -69,7 +69,7 @@ export default function AboutPage() {
                 
                 <div className="w-full md:w-1/2 order-1 md:order-2">
                   <img 
-                    src="https://res.cloudinary.com/dw6igi7fc/image/upload/v1746129856/about1_cy3qzm.jpg" 
+                    src="https://i.ibb.co/xbFQPY1/about1-cy3qzm.jpg" 
                     alt="Misión de Web Code Academy" 
                     className="rounded-xl shadow-lg"
                   />
@@ -84,7 +84,7 @@ export default function AboutPage() {
               <div className="flex flex-col md:flex-row items-center gap-12">
                 <div className="w-full md:w-1/2">
                   <img 
-                    src="https://res.cloudinary.com/dw6igi7fc/image/upload/v1746129856/about2_rxuu0v.jpg" 
+                    src="https://i.ibb.co/rKPSpHYq/about2-rxuu0v.jpg" 
                     alt="Valores de Web Code Academy" 
                     className="rounded-xl shadow-lg"
                   />

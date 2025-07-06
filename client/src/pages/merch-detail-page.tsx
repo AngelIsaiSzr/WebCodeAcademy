@@ -13,11 +13,11 @@ const products = [
     id: 1,
     name: "Playera Web Code Academy",
     price: 250.00,
-    image: "https://res.cloudinary.com/dw6igi7fc/image/upload/v1750383073/playera1_soj6qu.png",
+    image: "https://i.ibb.co/Q7VZgWQs/playera1-soj6qu.png",
     gallery: [
-        "https://res.cloudinary.com/dw6igi7fc/image/upload/v1750383073/playera1_soj6qu.png",
-        "https://res.cloudinary.com/dw6igi7fc/image/upload/v1750382994/playera2_qkbnua.png",
-        "https://res.cloudinary.com/dw6igi7fc/image/upload/v1750382998/playera3_gbcwvj.png"
+        "https://i.ibb.co/Q7VZgWQs/playera1-soj6qu.png",
+        "https://i.ibb.co/VPjLYxB/playera2-qkbnua.png",
+        "https://i.ibb.co/JRVppW6N/playera3-gbcwvj.png"
     ],
     category: "Ropa",
     description: "Viste el cambio. Con esta playera, no solo llevas nuestro logo, sino nuestro compromiso con la educación accesible para todos.",
@@ -37,11 +37,11 @@ const products = [
     id: 2,
     name: "Sudadera de la Comunidad",
     price: 300.00,
-    image: "https://res.cloudinary.com/dw6igi7fc/image/upload/v1750383991/sudadera1_ysuzwc.png",
+    image: "https://i.ibb.co/CxD10rL/sudadera1-ysuzwc.png",
     gallery: [
-        "https://res.cloudinary.com/dw6igi7fc/image/upload/v1750383991/sudadera1_ysuzwc.png",
-        "https://res.cloudinary.com/dw6igi7fc/image/upload/v1750383988/sudadera2_nlrpx1.png",
-        "https://res.cloudinary.com/dw6igi7fc/image/upload/v1750383992/sudadera3_hemyoj.png"
+        "https://i.ibb.co/CxD10rL/sudadera1-ysuzwc.png",
+        "https://i.ibb.co/YTwynZTJ/sudadera2-nlrpx1.png",
+        "https://i.ibb.co/4nG6Lkwd/sudadera3-hemyoj.png"
     ],
     category: "Ropa",
     description: "Perfecta para largas sesiones de código. Representa la colaboración y el apoyo mutuo que nos define como comunidad.",
