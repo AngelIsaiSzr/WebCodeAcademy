@@ -15,7 +15,7 @@ export default function Footer() {
               <span className="font-heading font-bold text-xl">Web Code Academy</span>
             </div>
             <p className="text-muted mb-6">
-              Academia de programación y tecnología completamente gratuita, comprometida con la educación de calidad y la reducción del analfabetismo digital.
+              La Primera Academia Tecnológica, Multidisciplinaria y Colaborativa 100% Gratuita, comprometida con la educación de calidad y la reducción del analfabetismo digital creciente en el mundo.
             </p>
             <div className="flex space-x-4">
               <a href="https://facebook.com/webcodeacademy0" target="_blank" rel="noopener noreferrer" className="text-muted hover-accent-blue" aria-label="Síguenos en Facebook">

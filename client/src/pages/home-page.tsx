@@ -32,7 +32,7 @@ export default function HomePage() {
         <title>Web Code Academy</title>
         <meta
           name="description"
-          content="Academia de programación y tecnología completamente gratuita, combatiendo el analfabetismo digital con cursos de programación y tecnología"
+          content="La Primera Academia Tecnológica, Multidisciplinaria y Colaborativa 100% Gratuita que busca combatir el analfabetismo digital creciente en el mundo, brindando educación tecnológica gratuita, accesible y de calidad para todas las personas."
         />
       </Helmet>
 

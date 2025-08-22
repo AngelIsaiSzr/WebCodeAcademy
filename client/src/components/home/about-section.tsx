@@ -29,7 +29,7 @@ export default function AboutSection() {
           >
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">Nuestra Misión</h2>
             <p className="text-muted mb-6">
-              En <span className="accent-blue font-medium">Web Code Academy</span>, creemos que la educación tecnológica de calidad debe ser accesible para todos. Nuestra misión es combatir el analfabetismo digital ofreciendo cursos de programación y tecnología gratuitos que permitan a nuestros estudiantes desarrollar habilidades relevantes para el mercado laboral actual.
+              En <span className="accent-blue font-medium">Web Code Academy</span>, creemos que la educación tecnológica de calidad debe ser accesible para todos. Nuestra misión es combatir el analfabetismo digital ofreciendo cursos 100% gratuitos en alianza con otros proyectos educativos, que permitan a nuestros estudiantes desarrollar habilidades relevantes para el mercado laboral actual.
             </p>
             
             <div className="mb-8">
@@ -46,8 +46,16 @@ export default function AboutSection() {
                   Trabajo Decente
                 </div>
                 <div className="px-3 py-2 bg-primary-800 rounded-lg text-sm flex items-center">
+                  <span className="w-6 h-6 flex items-center justify-center bg-accent-purple rounded-full mr-2 text-xs font-bold">9</span>
+                  Industria, Innovación e Infraestructura
+                </div>
+                <div className="px-3 py-2 bg-primary-800 rounded-lg text-sm flex items-center">
                   <span className="w-6 h-6 flex items-center justify-center bg-accent-yellow rounded-full mr-2 text-xs font-bold">10</span>
                   Reducción de Desigualdades
+                </div>
+                <div className="px-3 py-2 bg-primary-800 rounded-lg text-sm flex items-center">
+                  <span className="w-6 h-6 flex items-center justify-center bg-accent-green rounded-full mr-2 text-xs font-bold">17</span>
+                  Alianzas para los Objetivos
                 </div>
               </div>
             </div>
@@ -55,7 +63,7 @@ export default function AboutSection() {
             <div>
               <h3 className="text-xl font-heading font-semibold mb-4">Nuestro Compromiso</h3>
               <p className="text-muted mb-6">
-                Nos comprometemos a brindar contenido educativo actualizado, práctico y de alta calidad, desarrollado por expertos en la industria. Creemos en el aprendizaje práctico y en crear una comunidad donde estudiantes de diversos orígenes puedan crecer juntos.
+              Nos comprometemos a brindar contenido educativo actualizado, práctico y de alta calidad, desarrollado por expertos en la industria. Creemos en el aprendizaje práctico y en crear una comunidad donde estudiantes de diversos orígenes puedan crecer juntos.
               </p>
               
               <Link href="/about" className="text-accent-blue underline-effect">

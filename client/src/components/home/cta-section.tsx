@@ -14,7 +14,7 @@ export default function CtaSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">¿Listo para comenzar tu viaje en el mundo digital?</h2>
+          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">¿Listo para ser parte de la revolución educativa?</h2>
           <p className="text-muted max-w-2xl mx-auto mb-10">
             Únete a más de 120 estudiantes que ya están transformando su futuro profesional con nuestros cursos gratuitos.
           </p>
@@ -30,7 +30,7 @@ export default function CtaSection() {
               Explorar Cursos
             </Link>
             <Link href="/contact" className="px-8 py-4 border border-accent-blue text-accent-blue font-medium rounded-md hover:bg-accent-blue hover:text-white transition-colors inline-block">
-              Contáctanos
+              Únete a la Revolución
             </Link>
           </motion.div>
         </motion.div>

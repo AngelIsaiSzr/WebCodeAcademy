@@ -7,8 +7,8 @@ export default function HeroSection() {
   const codeLines = [
     { content: 'class <span class="text-accent-yellow">WebCodeAcademy</span> {', className: 'text-accent-blue' },
     { content: '<span class="text-accent-red">constructor</span><span class="text-white">() {</span>', className: 'ml-4' },
-    { content: '// Comienza tu viaje en programación', className: 'ml-8 text-muted' },
-    { content: 'this<span class="text-white">.</span>mission <span class="text-white">=</span> <span class="text-accent-red">"Educación tecnológica para todos"</span>;', className: 'ml-8 text-accent-blue' },
+    { content: '// Academia Tecnológica Multidisciplinaria y Colaborativa', className: 'ml-8 text-muted' },
+    { content: 'this<span class="text-white">.</span>mission <span class="text-white">=</span> <span class="text-accent-red">"Educación tecnológica gratuita para todos"</span>;', className: 'ml-8 text-accent-blue' },
     { content: '}', className: 'text-white ml-4' },
     { content: '}', className: 'text-accent-blue' },
   ];
@@ -23,10 +23,10 @@ export default function HeroSection() {
           <AnimateInView className="w-full md:w-1/2 mb-10 md:mb-0 md:pr-10" animation="slideUp">
             <div className="mb-8">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-4 leading-tight">
-                Aprende a <span className="accent-blue">programar</span> gratis y transforma tu futuro
+                Aprende, <span className="accent-blue">Crea</span> y <br /><span className="accent-yellow">Transforma</span> tu FUTURO
               </h1>
               <p className="text-lg md:text-xl text-muted mb-8">
-                Web Code Academy te ofrece cursos de programación y tecnología totalmente gratuitos para combatir el analfabetismo digital y brindarte las herramientas para un futuro brillante en la era digital.
+                Web Code Academy es una academia tecnológica integral que te ofrece cursos totalmente gratuitos para combatir el analfabetismo digital y brindarte las herramientas para transformar tu futuro.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link href="/courses" className="px-6 py-3 bg-accent-blue text-white font-medium rounded-md hover:opacity-90 transition-colors inline-block">
@@ -42,9 +42,9 @@ export default function HeroSection() {
               <AnimateInView animation="fadeIn" delay={0.3}>
                 <div className="flex items-center">
                   <div className="flex -space-x-2">
-                    <img src="https://i.ibb.co/8n56sdgd/portraits3-itzkds.png" className="w-10 h-10 rounded-full border-2 border-primary-800" alt="Estudiante" />
-                    <img src="https://i.ibb.co/hJ57kcmW/portraits2-wzwuuv.png" className="w-10 h-10 rounded-full border-2 border-primary-800" alt="Estudiante" />
-                    <img src="https://i.ibb.co/8n56sdgd/portraits3-itzkds.png" className="w-10 h-10 rounded-full border-2 border-primary-800" alt="Estudiante" />
+                    <img src="https://i.ibb.co/PvX8XW8K/portraits1-n976eu.png" className="w-10 h-10 rounded-full border-2 border-primary-800" alt="Estudiante" />
+                    <img src="https://i.ibb.co/G4wxX952/portraits2-wzwuuv.png" className="w-10 h-10 rounded-full border-2 border-primary-800" alt="Estudiante" />
+                    <img src="https://i.ibb.co/SDnRydwd/portraits3-itzkds.png" className="w-10 h-10 rounded-full border-2 border-primary-800" alt="Estudiante" />
                   </div>
                   <div className="ml-4">
                     <p className="font-medium">+120 estudiantes</p>

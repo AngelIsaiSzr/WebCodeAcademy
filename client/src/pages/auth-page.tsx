@@ -90,10 +90,10 @@ export default function AuthPage() {
   return (
     <>
       <Helmet>
-        <title>Web Code Academy</title>
+        <title>Iniciar Sesión - Web Code Academy | Academia Tecnológica Multidisciplinaria y Colaborativa</title>
         <meta 
           name="description" 
-          content="Inicia sesión o regístrate en Web Code Academy para acceder a cursos gratuitos de programación y tecnología."
+          content="Inicia sesión o regístrate en Web Code Academy, la academia tecnológica multidisciplinaria y colaborativa 100% gratuita que revoluciona la educación del siglo XXI."
         />
       </Helmet>
 
@@ -321,10 +321,10 @@ export default function AuthPage() {
           
           <div className="relative z-10 flex flex-col justify-center px-12 w-full">
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
-              Aprende a <span className="accent-blue">programar</span> gratis y transforma tu futuro
+              Aprende, <span className="accent-blue">Crea</span> y <span className="accent-yellow">Transforma</span><br /> tu FUTURO 100% Gratis
             </h2>
             <p className="text-muted mb-8">
-              Web Code Academy te ofrece cursos de programación y tecnología totalmente gratuitos para combatir el analfabetismo digital y brindarte las herramientas para un futuro brillante en el mundo digital.
+              Web Code Academy es una academia tecnológica integral donde conviven cursos de computación, historia, literatura, idiomas, matemáticas, arte digital y más, todos con la tecnología como eje transversal usando presentaciones hasta Realidad Virtual, IA y más.
             </p>
             
             <div className="space-y-6">
@@ -333,8 +333,8 @@ export default function AuthPage() {
                   <i className="fas fa-check-circle"></i>
                 </div>
                 <div>
-                  <h3 className="font-medium">Cursos 100% Gratuitos</h3>
-                  <p className="text-muted text-sm">Accede a educación de calidad sin ningún costo.</p>
+                  <h3 className="font-medium">Academia Multidisciplinaria</h3>
+                  <p className="text-muted text-sm">Cursos de computación, historia, literatura, idiomas, matemáticas, arte digital y más.</p>
                 </div>
               </div>
               
@@ -343,8 +343,8 @@ export default function AuthPage() {
                   <i className="fas fa-check-circle"></i>
                 </div>
                 <div>
-                  <h3 className="font-medium">Clases Mixtas</h3>
-                  <p className="text-muted text-sm">Modalidad presencial y virtual disponible.</p>
+                  <h3 className="font-medium">Colaborativa y Descentralizada</h3>
+                  <p className="text-muted text-sm">Abrimos nuestras puertas a otros proyectos educativos y con impacto social.</p>
                 </div>
               </div>
               
@@ -353,8 +353,8 @@ export default function AuthPage() {
                   <i className="fas fa-check-circle"></i>
                 </div>
                 <div>
-                  <h3 className="font-medium">Certificación Reconocida</h3>
-                  <p className="text-muted text-sm">Obtén certificados al completar cada curso.</p>
+                  <h3 className="font-medium">Metodología Educativa</h3>
+                  <p className="text-muted text-sm">Integrando ODS y proyectos que resuelven problemas reales del mundo.</p>
                 </div>
               </div>
             </div>

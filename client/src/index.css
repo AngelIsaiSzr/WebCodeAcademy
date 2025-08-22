@@ -31,6 +31,7 @@
   --accent-yellow: 50 100% 52%;
   --accent-red: 355 100% 60%;
   --accent-green: 135 89% 25%;
+  --accent-purple: 270 100% 60%;
   --primary-900: 0 0% 98%;
   --primary-800: 240 4.8% 96.9%;
   --primary-700: 240 5.9% 92%;
@@ -69,6 +70,7 @@
   --accent-yellow: 50 100% 52%;
   --accent-red: 355 100% 60%;
   --accent-green: 135 89% 25%;
+  --accent-purple: 270 100% 60%;
   --primary-900: 0 0% 3%;
   --primary-800: 0 0% 7%;
   --primary-700: 0 0% 12%;
@@ -135,6 +137,10 @@
     @apply text-[hsl(var(--accent-green))];
   }
 
+  .accent-purple {
+    @apply text-[hsl(var(--accent-purple))];
+  }
+
   .text-accent-red {
     @apply text-[hsl(var(--accent-red))];
   }
@@ -149,6 +155,10 @@
 
   .text-accent-green {
     @apply text-[hsl(var(--accent-green))];
+  }
+
+  .text-accent-purple {
+    @apply text-[hsl(var(--accent-purple))];
   }
   
   .bg-accent-red {
@@ -167,6 +177,10 @@
     @apply bg-[hsl(var(--accent-yellow))];
   }
 
+  .bg-accent-purple {
+    @apply bg-[hsl(var(--accent-purple))];
+  }
+
   .border-accent-red {
     @apply border-[hsl(var(--accent-red))];
   }
@@ -179,6 +193,10 @@
     @apply border-[hsl(var(--accent-yellow))];
   }
 
+  .border-accent-purple {
+    @apply border-[hsl(var(--accent-purple))];
+  }
+
   .hover-accent-red {
     @apply hover:text-[hsl(var(--accent-red))] transition-colors;
   }
@@ -189,6 +207,10 @@
 
   .hover-accent-yellow {
     @apply hover:text-[hsl(var(--accent-yellow))] transition-colors;
+  }
+
+  .hover-accent-purple {
+    @apply hover:text-[hsl(var(--accent-purple))] transition-colors;
   }
 
   .hover-text-primary-900 {
