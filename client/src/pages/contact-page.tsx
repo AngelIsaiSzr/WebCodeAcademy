@@ -262,7 +262,7 @@ export default function ContactSection() {
                       ¿Cómo funcionan las clases mixtas?
                     </AccordionTrigger>
                     <AccordionContent className="bg-primary-700 px-6 pb-6 rounded-b-xl text-muted">
-                      Ofrecemos clases tanto presenciales como virtuales. Las clases virtuales se transmiten en vivo y también quedan grabadas para que puedas revisarlas en cualquier momento. Las clases presenciales se realizan en Papantla de Olarte, Veracruz, MX.
+                      Ofrecemos clases tanto presenciales como virtuales. Las clases virtuales se transmiten en vivo y también quedan grabadas para que puedas revisarlas en cualquier momento. Las clases presenciales se realizan en alguna de nuestras sedes.
                     </AccordionContent>
                   </AccordionItem>
 
