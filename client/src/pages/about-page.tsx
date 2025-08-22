@@ -237,9 +237,9 @@ export default function AboutPage() {
                 </div>
                 
                 <div className="bg-primary-700 rounded-xl p-8 text-center">
-                  <div className="text-4xl font-bold accent-blue mb-4">9</div>
-                  <h3 className="text-xl font-heading font-semibold mb-2">Países</h3>
-                  <p className="text-muted">México, Venezuela, Argentina, Colombia, Brasil, Chile, Ecuador, Honduras, Nicaragua y España.</p>
+                  <div className="text-4xl font-bold accent-blue mb-4">4</div>
+                  <h3 className="text-xl font-heading font-semibold mb-2">Sedes</h3>
+                  <p className="text-muted">Contamos con Sede en Veracruz, Guadalajara, Nuevo León y Nacional. Y pronto abriremos más sedes.</p>
                 </div>
                 
                 <div className="bg-primary-700 rounded-xl p-8 text-center">
