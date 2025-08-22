@@ -76,7 +76,7 @@ export default function CoursesPage() {
         <title>Web Code Academy</title>
         <meta 
           name="description" 
-          content="Explora nuestra variedad de cursos gratuitos de programación y tecnología, desde desarrollo web hasta ciencia de datos."
+          content="Explora nuestra variedad de cursos 100% gratuitos, desde programación hasta idiomas."
         />
       </Helmet>
       
@@ -93,7 +93,7 @@ export default function CoursesPage() {
                     Nuestros Cursos
                   </h1>
                   <p className="text-muted text-lg">
-                    Explora nuestra variedad de cursos diseñados para todos los niveles, desde principiantes hasta desarrolladores avanzados.
+                    Explora nuestra variedad de cursos diseñados para todos los niveles, desde principiantes hasta estudiantes avanzados.
                   </p>
                 </div>
               </div>

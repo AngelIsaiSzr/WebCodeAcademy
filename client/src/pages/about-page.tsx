@@ -45,10 +45,10 @@ export default function AboutPage() {
                   </p>
                   
                   <h3 className="text-xl font-heading font-semibold mb-4">
-                    Metodología Lifelong Kindergarten
+                    Metodología Play&Impact Learning
                   </h3>
                   <p className="text-muted mb-4">
-                    Nuestra metodología se basa en el enfoque del creador de LEGO, donde aprender es como jugar en el jardín de niños, pero para toda la vida. Nos alineamos con los siguientes ODS de la Agenda 2030 de la ONU:
+                    Nuestra metodología se basa en el enfoque del creador de LEGO, donde aprender es como jugar en el jardín de niños, pero para toda la vida, y lo combinamos con lo mejor del Modelo Tec21. Nos alineamos con los siguientes ODS de la Agenda 2030 de la ONU:
                   </p>
                   
                   <div className="flex flex-wrap gap-4">
@@ -137,7 +137,7 @@ export default function AboutPage() {
                       </div>
                       <div>
                         <h4 className="font-medium">Innovación Educativa</h4>
-                        <p className="text-muted text-sm">Implementamos la metodología Lifelong Kindergarten del creador de LEGO, integrando ODS, proyectos y retos que resuelven problemas reales del mundo.</p>
+                        <p className="text-muted text-sm">Implementamos y desarrollamos nuestra metodología "Play&Impact Learning", integrando ODS, proyectos y retos que resuelven problemas reales del mundo.</p>
                       </div>
                     </div>
                     

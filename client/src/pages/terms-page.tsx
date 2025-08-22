@@ -42,7 +42,7 @@ export default function TermsPage() {
                     Web Code Academy es una plataforma educativa gratuita que ofrece:
                   </p>
                   <ul className="text-muted leading-relaxed space-y-2 ml-6">
-                    <li>• Cursos de programación y tecnología</li>
+                    <li>• Cursos de todas las áreas</li>
                     <li>• Editor de código integrado</li>
                     <li>• Recursos educativos digitales</li>
                     <li>• Comunidad de aprendizaje</li>
