@@ -107,7 +107,7 @@ export default function AboutPage() {
                   </p>
                   
                   <h3 className="text-xl font-heading font-semibold mb-4">
-                    Nuestros Nuevos Valores
+                    Nuestros Valores
                   </h3>
                   
                   <div className="space-y-4">
