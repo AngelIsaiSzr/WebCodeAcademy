@@ -35,7 +35,8 @@ const logos = [
     "https://i.ibb.co/G4FbZGLy/logo5-xq2wnf.png",
     "https://i.ibb.co/MJPggHQ/logo6-iT3Wnt.png",
     "https://i.ibb.co/fYTRxP2G/logo7-o8Mj5c.png",
-    "https://i.ibb.co/zHBmTtsW/logo8-b3kTz6.png"
+    "https://i.ibb.co/XfdjR9bk/logo8-z6C9yx.png",
+    "https://i.ibb.co/nMQZNYZL/logo11-b3kTz6.png"
 ];
 
 // Genera una secuencia alternada de logos para llenar el ancho visible y que sea múltiplo exacto de logos.length
